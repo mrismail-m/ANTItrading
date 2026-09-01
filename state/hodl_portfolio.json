@@ -1,8 +1,94 @@
 {
-  "cash": 10000.0,
+  "cash": 9450.0,
   "starting_cash": 10000.0,
-  "positions": [],
-  "dca_history": [],
+  "positions": [
+    {
+      "symbol": "AVAX",
+      "name": "Avalanche",
+      "qty": 41.090262,
+      "avg_entry_price": 7.301,
+      "cost_basis": 300.0,
+      "current_price": 7.301,
+      "market_value": 300.0,
+      "unrealized_pnl_usd": 0.0,
+      "unrealized_pnl_pct": 0.0,
+      "opened_at": "2026-09-01T16:39:09+05:00"
+    },
+    {
+      "symbol": "HNT",
+      "name": "Helium",
+      "qty": 21.413276,
+      "avg_entry_price": 4.67,
+      "cost_basis": 100.0,
+      "current_price": 4.67,
+      "market_value": 100.0,
+      "unrealized_pnl_usd": 0.0,
+      "unrealized_pnl_pct": 0.0,
+      "opened_at": "2026-09-01T16:39:09+05:00"
+    },
+    {
+      "symbol": "NEAR",
+      "name": "NEAR Protocol",
+      "qty": 50.890585,
+      "avg_entry_price": 1.965,
+      "cost_basis": 100.0,
+      "current_price": 1.965,
+      "market_value": 100.0,
+      "unrealized_pnl_usd": 0.0,
+      "unrealized_pnl_pct": 0.0,
+      "opened_at": "2026-09-01T16:39:09+05:00"
+    },
+    {
+      "symbol": "INJ",
+      "name": "Injective Protocol",
+      "qty": 10.313531,
+      "avg_entry_price": 4.848,
+      "cost_basis": 50.0,
+      "current_price": 4.848,
+      "market_value": 50.0,
+      "unrealized_pnl_usd": 0.0,
+      "unrealized_pnl_pct": 0.0,
+      "opened_at": "2026-09-01T16:39:09+05:00"
+    }
+  ],
+  "dca_history": [
+    {
+      "timestamp": "2026-09-01T16:39:09+05:00",
+      "symbol": "AVAX",
+      "action": "STRONG_BUY_ACCUMULATE",
+      "price": 7.301,
+      "amount_usd": 300.0,
+      "qty": 41.090262,
+      "reasoning": "Deep value discount zone (-17.02% from 200D EMA, MVRV -0.43, Drawdown -79.81%)."
+    },
+    {
+      "timestamp": "2026-09-01T16:39:09+05:00",
+      "symbol": "HNT",
+      "action": "STRONG_BUY_ACCUMULATE",
+      "price": 4.67,
+      "amount_usd": 100.0,
+      "qty": 21.413276,
+      "reasoning": "Deep value discount zone (-55.31% from 200D EMA, MVRV -1.38, Drawdown -92.12%)."
+    },
+    {
+      "timestamp": "2026-09-01T16:39:09+05:00",
+      "symbol": "NEAR",
+      "action": "MODERATE_DCA_BUY",
+      "price": 1.965,
+      "amount_usd": 100.0,
+      "qty": 50.890585,
+      "reasoning": "Fair valuation zone (+10.0% from 200D EMA, RSI 59.18 <= 60)."
+    },
+    {
+      "timestamp": "2026-09-01T16:39:09+05:00",
+      "symbol": "INJ",
+      "action": "MODERATE_DCA_BUY",
+      "price": 4.848,
+      "amount_usd": 50.0,
+      "qty": 10.313531,
+      "reasoning": "Fair valuation zone (-2.95% from 200D EMA, RSI 47.59 <= 60)."
+    }
+  ],
   "metrics": {
     "total_value": 10000.0,
     "unrealized_pnl_usd": 0.0,

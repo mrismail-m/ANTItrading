@@ -139,18 +139,18 @@ def compute_hodl_metrics(name, symbol):
     mvrv_proxy = round((close_price / ema200_val - 1) * 2.5, 2) if ema200_val > 0 else 0.0
 
     # Determine HODL DCA Action Zone
-    if pct_from_ema200 < -10 or (mvrv_proxy < 0 and rsi_val < 45):
+    if pct_from_ema200 > 50 or rsi_val > 75:
+        dca_signal = "TRIM_PROFIT_TAKE"
+        recommendation = "Asset is overheated relative to 200D EMA or daily RSI > 75. Consider scaling out 20-30% into BTC/Cash."
+    elif pct_from_ema200 < -10 or (mvrv_proxy < 0 and rsi_val < 45):
         dca_signal = "STRONG_BUY_ACCUMULATE"
         recommendation = "Deep value discount zone. Ideal for heavy DCA accumulation."
     elif -10 <= pct_from_ema200 <= 15 and rsi_val <= 60:
         dca_signal = "MODERATE_DCA_BUY"
         recommendation = "Fair valuation zone. Standard DCA recurring purchase recommended."
-    elif 15 < pct_from_ema200 <= 50:
-        dca_signal = "HOLD"
-        recommendation = "Price is above structural support. Hold existing position; pause new buys."
     else:
-        dca_signal = "TRIM_PROFIT_TAKE"
-        recommendation = "Asset is overheated relative to 200D EMA. Consider scaling out 20-30% into BTC/Cash."
+        dca_signal = "HOLD"
+        recommendation = "Price is above structural support or RSI is elevated. Hold existing position; pause new buys."
 
     short_symbol = symbol.replace("USDT", "")
 
