@@ -287,6 +287,18 @@ def compute_technical_indicators(name, symbol):
     oi_change_24h, taker_ratio = fetch_derivatives_microstructure(symbol)
     ob_imbalance_2pct = fetch_orderbook_imbalance(symbol)
 
+    # Classify Intraday Whale Activity
+    if taker_ratio >= 1.10 and oi_change_24h > 3.0 and ob_imbalance_2pct >= 0.52:
+        whale_alert = "WHALE_ACCUMULATION"
+    elif taker_ratio <= 0.90 and oi_change_24h > 3.0 and ob_imbalance_2pct <= 0.48:
+        whale_alert = "WHALE_DISTRIBUTION"
+    elif taker_ratio >= 1.20 or ob_imbalance_2pct >= 0.65:
+        whale_alert = "BULLISH_WHALE_WALL"
+    elif taker_ratio <= 0.80 or ob_imbalance_2pct <= 0.35:
+        whale_alert = "BEARISH_WHALE_WALL"
+    else:
+        whale_alert = "NEUTRAL_FLOW"
+
     # Dynamic ATR Position Sizing ($100 risk target / (2 * ATR / Price))
     risk_target = 100.0
     risk_per_unit = 2.0 * atr_val if atr_val > 0 else (0.05 * close_price)
@@ -316,6 +328,7 @@ def compute_technical_indicators(name, symbol):
         "oi_change_24h": oi_change_24h,
         "taker_ratio": taker_ratio,
         "ob_imbalance_2pct": ob_imbalance_2pct,
+        "whale_alert": whale_alert,
         "suggested_pos_size": suggested_pos_size,
         "divergence": divergence,
         "trend_bias": trend_bias

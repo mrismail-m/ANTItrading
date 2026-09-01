@@ -34,6 +34,7 @@ For all tracked assets in `state/watchlist.json`, fetch live market data from Bi
 - **Momentum & Oscillators:** RSI(14), MACD (Line, Signal, Histogram), 10-Day Rate of Change (ROC10).
 - **Volume, VWAP & Volatility:** Volume MA(20), Volume Ratio (`Volume / VMA20`), VWAP (Volume Weighted Average Price), Bollinger Bands (%B), ATR(14).
 - **Microstructure & Order Flow:** 24h Open Interest % Change (Futures leverage buildup), Taker Buy/Sell Ratio (> 1.0 = buyer aggressive pressure), ±2% Order Book Imbalance (`ob_imbalance_2pct` > 0.50 = bid side dominance/support).
+- **Daily Whale Alert Indicator:** `WHALE_ACCUMULATION` (Taker Ratio >= 1.10, OI Surge > 3%, Bid Wall), `WHALE_DISTRIBUTION` (Taker Ratio <= 0.90, OI Surge > 3%, Ask Wall), `BULLISH_WHALE_WALL`, `BEARISH_WHALE_WALL`, or `NEUTRAL_FLOW`.
 - **Advanced Indicators:** RSI Swing Divergence (Bullish / Bearish / None), 1D Trend Bias, 4H Trend Bias, 4H Alignment (`aligned` vs `diverging`).
 - **Correlation & Funding:** 30-Day Rolling BTC Correlation, Binance Futures Funding Rates.
 - **Macro & Market Regime:** Crypto Fear & Greed Index (`api.alternative.me/fng/`), BTC Dominance (`api.coingecko.com`), Market Regime Classification (`bullish_trend`, `volatility_crash`, `ranging`, `neutral`).
@@ -47,16 +48,19 @@ Apply the core risk management rules:
   - `bullish_trend`: Trend-following buys enabled with standard criteria.
   - `ranging`: Mean-reversion mode (buy oversold RSI < 40, sell RSI > 60).
   - `volatility_crash`: Cash-preservation mode (no new buys).
+- **Daily Whale Flow Filter:** 
+  - `WHALE_ACCUMULATION` / `BULLISH_WHALE_WALL`: Enhances buy conviction score by +0.10.
+  - `WHALE_DISTRIBUTION` / `BEARISH_WHALE_WALL`: Vetoes/skips buy entries to avoid getting dumped on by institutional sellers.
 - **Dynamic Position Sizing:** Dynamic ATR-based risk allocation ($100 target risk / (2 * ATR / Price)), capped at $1,000 USD maximum per trade.
 - **Correlation Risk Filter:** Skip candidate buys if asset has > 0.85 BTC correlation and portfolio already holds 2+ high-correlation positions.
 - **Position Cap:** Max 6 open positions simultaneously.
 - **Trading Rules:** Long-only, no leverage, no shorting.
 - **Open Positions Evaluation & Trailing Stop:**
-  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop (`trailing_stop_price` = highest price reached - 2 * ATR), daily trend bias flips to bearish, RSI reaches extreme overbought (> 70) with bearish RSI divergence, or fundamental risk emerges.
+  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop (`trailing_stop_price` = highest price reached - 2 * ATR), daily trend bias flips to bearish, RSI reaches extreme overbought (> 70) with bearish RSI divergence, `WHALE_DISTRIBUTION` alert triggered, or fundamental risk emerges.
   - `HOLD` trigger: Position setup remains intact, price is above trailing stop, trend alignment is bullish/neutral, and profit target is not yet exhausted.
 - **Watchlist Candidates Evaluation:**
-  - `BUY` trigger: Both 1D and 4H trend biases are aligned **bullish**, ADX(14) > 20 (confirming trend presence), Order Book Imbalance `ob_imbalance_2pct` > 0.50 (bid dominance), Taker Buy/Sell ratio > 0.95, price trading near/above VWAP, daily RSI is in healthy buying territory (45–65), volume ratio is expanding (> 0.50x), conviction score $\ge 0.80$, and position cap is not reached.
-  - `HOLD / SKIP` trigger: RSI is overbought (> 65), ADX < 15 (choppy range-bound), orderbook bid ratio < 0.45 (heavy ask pressure), 4H trend is diverging, trend is bearish/neutral, or conviction is insufficient.
+  - `BUY` trigger: Both 1D and 4H trend biases are aligned **bullish**, ADX(14) > 20 (confirming trend presence), Order Book Imbalance `ob_imbalance_2pct` > 0.50 (bid dominance), Taker Buy/Sell ratio > 0.95, Whale Alert is `WHALE_ACCUMULATION` or `NEUTRAL_FLOW`, price trading near/above VWAP, daily RSI is in healthy buying territory (45–65), volume ratio is expanding (> 0.50x), conviction score $\ge 0.80$, and position cap is not reached.
+  - `HOLD / SKIP` trigger: RSI is overbought (> 65), ADX < 15 (choppy range-bound), orderbook bid ratio < 0.45 (heavy ask pressure), Whale Alert is `WHALE_DISTRIBUTION`, 4H trend is diverging, trend is bearish/neutral, or conviction is insufficient.
 
 ### STEP 5: Execute Trades & Update Persistent State
 Construct a structured decision JSON containing all decision records for all watchlist assets, then execute:

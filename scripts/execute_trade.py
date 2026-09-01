@@ -146,7 +146,7 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
         "divergence", "trend_bias", "news_sentiment", "event_risk",
         "btc_correlation", "funding_rate", "onchain_signal", "social_trend",
         "adx14", "vwap", "oi_change_24h", "taker_ratio", "ob_imbalance_2pct",
-        "market_regime", "suggested_pos_size"
+        "whale_alert", "market_regime", "suggested_pos_size"
     ]
 
     file_exists = os.path.exists(filepath)
@@ -189,6 +189,7 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
                 "oi_change_24h": d.get("oi_change_24h"),
                 "taker_ratio": d.get("taker_ratio"),
                 "ob_imbalance_2pct": d.get("ob_imbalance_2pct"),
+                "whale_alert": d.get("whale_alert", "NEUTRAL_FLOW"),
                 "market_regime": d.get("market_regime", "neutral"),
                 "suggested_pos_size": d.get("suggested_pos_size")
             }
