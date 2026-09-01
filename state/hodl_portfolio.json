@@ -1,0 +1,12 @@
+{
+  "cash": 10000.0,
+  "starting_cash": 10000.0,
+  "positions": [],
+  "dca_history": [],
+  "metrics": {
+    "total_value": 10000.0,
+    "unrealized_pnl_usd": 0.0,
+    "unrealized_pnl_pct": 0.0,
+    "benchmark_return_pct": 0.0
+  }
+}
