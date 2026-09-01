@@ -1,0 +1,12 @@
+{
+  "bitcoin": "BTCUSDT",
+  "ethereum": "ETHUSDT",
+  "solana": "SOLUSDT",
+  "binancecoin": "BNBUSDT",
+  "arbitrum": "ARBUSDT",
+  "near": "NEARUSDT",
+  "avalanche-2": "AVAXUSDT",
+  "chainlink": "LINKUSDT",
+  "injective-protocol": "INJUSDT",
+  "helium": "HNTUSDT"
+}
