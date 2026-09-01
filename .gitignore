@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment & Local files
+.env
+.env.local
+.env.*.local
+*.log
+
+# OS generated
+.DS_Store
+Thumbs.db

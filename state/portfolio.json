@@ -1,0 +1,21 @@
+{
+  "cash": 8175.801447776628,
+  "starting_cash": 10000.0,
+  "positions": [
+    {
+      "symbol": "NEAR",
+      "qty": 528.541226,
+      "entry_price": 1.892,
+      "cost_basis": 1000.0,
+      "opened_at": "2026-08-30T08:26:43.910366+00:00"
+    },
+    {
+      "symbol": "DOT",
+      "qty": 1189.0606420927468,
+      "entry_price": 0.841,
+      "cost_basis": 1000.0,
+      "opened_at": "2026-08-30T13:45:00+00:00"
+    }
+  ],
+  "trade_counter": 3
+}
