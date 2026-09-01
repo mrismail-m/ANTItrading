@@ -132,6 +132,60 @@ def detect_rsi_divergence(df, order=3, lookback=40):
     return "none"
 
 
+def fetch_orderbook_imbalance(symbol):
+    """
+    Fetches Binance order book depth (100 levels) and calculates bid-ask volume imbalance ratio within +/- 2% of mid-price.
+
+    :param symbol: Binance symbol (e.g. BTCUSDT)
+    :return: Float imbalance ratio between 0.0 and 1.0 (> 0.50 = bid dominance/support)
+    """
+    try:
+        url = f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100"
+        res = requests.get(url, timeout=5)
+        if res.status_code == 200:
+            data = res.json()
+            bids = data.get("bids", [])
+            asks = data.get("asks", [])
+            if bids and asks:
+                best_bid = float(bids[0][0])
+                best_ask = float(asks[0][0])
+                mid_price = (best_bid + best_ask) / 2.0
+
+                lower_bound = mid_price * 0.98
+                upper_bound = mid_price * 1.02
+
+                bid_vol = sum(float(b[1]) * float(b[0]) for b in bids if float(b[0]) >= lower_bound)
+                ask_vol = sum(float(a[1]) * float(a[0]) for a in asks if float(a[0]) <= upper_bound)
+
+                total_vol = bid_vol + ask_vol
+                if total_vol > 0:
+                    return round(bid_vol / total_vol, 4)
+    except Exception:
+        pass
+    return 0.50
+
+
+def classify_market_regime(btc_price, btc_ema50, btc_adx14, fear_greed_val):
+    """
+    Classifies macro market regime into one of 4 states:
+    - 'bullish_trend': BTC > EMA50, ADX > 25, Fear&Greed > 50
+    - 'volatility_crash': BTC < EMA50, Fear&Greed < 30
+    - 'ranging': ADX < 20
+    - 'neutral': default state
+    """
+    fg = fear_greed_val if isinstance(fear_greed_val, (int, float)) else 50
+
+    if btc_price > 0 and btc_ema50 > 0:
+        if btc_price < btc_ema50 and fg < 30:
+            return "volatility_crash"
+        elif btc_price > btc_ema50 and btc_adx14 > 25 and fg > 50:
+            return "bullish_trend"
+        elif btc_adx14 < 20:
+            return "ranging"
+
+    return "neutral"
+
+
 def fetch_derivatives_microstructure(symbol):
     """
     Fetches futures Open Interest 24h % change and Taker Buy/Sell ratio from Binance Futures API.
@@ -229,8 +283,9 @@ def compute_technical_indicators(name, symbol):
     else:
         trend_bias = "neutral"
 
-    # Microstructure: OI Change & Taker Ratio
+    # Microstructure: OI Change, Taker Ratio, Orderbook Imbalance
     oi_change_24h, taker_ratio = fetch_derivatives_microstructure(symbol)
+    ob_imbalance_2pct = fetch_orderbook_imbalance(symbol)
 
     # Dynamic ATR Position Sizing ($100 risk target / (2 * ATR / Price))
     risk_target = 100.0
@@ -260,6 +315,7 @@ def compute_technical_indicators(name, symbol):
         "vwap": round(float(last["vwap"]), 4),
         "oi_change_24h": oi_change_24h,
         "taker_ratio": taker_ratio,
+        "ob_imbalance_2pct": ob_imbalance_2pct,
         "suggested_pos_size": suggested_pos_size,
         "divergence": divergence,
         "trend_bias": trend_bias
@@ -311,6 +367,20 @@ def run_research(watchlist_path="state/watchlist.json"):
             ta_results[ticker] = {"symbol": ticker, "error": str(e)}
 
     market_ctx = fetch_global_market_context()
+
+    # Determine Market Regime
+    btc = ta_results.get("BTCUSDT", {})
+    btc_p = btc.get("price", 0)
+    btc_ema50 = btc.get("ema50", 0)
+    btc_adx = btc.get("adx14", 0)
+    fg_val = market_ctx.get("fear_and_greed", {}).get("value", 50)
+    try:
+        fg_val = int(fg_val)
+    except Exception:
+        fg_val = 50
+
+    regime = classify_market_regime(btc_p, btc_ema50, btc_adx, fg_val)
+    market_ctx["market_regime"] = regime
 
     return {
         "market_context": market_ctx,

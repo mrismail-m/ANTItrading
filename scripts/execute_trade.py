@@ -68,6 +68,69 @@ def save_portfolio(portfolio, filepath="state/portfolio.json"):
         json.dump(portfolio, f, indent=2)
 
 
+def compute_portfolio_analytics(portfolio):
+    """
+    Computes rolling Sharpe Ratio, Sortino Ratio, Maximum Drawdown %, Calmar Ratio, and Benchmark comparison.
+
+    :param portfolio: Portfolio dictionary
+    :return: Updated metrics sub-dictionary
+    """
+    import math
+
+    starting_cash = portfolio.get("starting_cash", 10000.0)
+    history = portfolio.get("equity_history", [])
+
+    if len(history) < 2:
+        return {
+            "sharpe_ratio": 0.0,
+            "sortino_ratio": 0.0,
+            "max_drawdown_pct": 0.0,
+            "calmar_ratio": 0.0,
+            "benchmark_return_pct": 0.0
+        }
+
+    values = [h.get("portfolio_value", starting_cash) for h in history]
+    returns = [(values[i] - values[i - 1]) / values[i - 1] for i in range(1, len(values))]
+
+    if returns:
+        mean_ret = sum(returns) / len(returns)
+        variance = sum((r - mean_ret) ** 2 for r in returns) / len(returns) if len(returns) > 1 else 0
+        std_dev = math.sqrt(variance)
+        sharpe = round((mean_ret / std_dev) * math.sqrt(365), 2) if std_dev > 0 else 0.0
+
+        downside = [r for r in returns if r < 0]
+        downside_var = sum(r ** 2 for r in downside) / len(returns) if downside else 0
+        downside_std = math.sqrt(downside_var)
+        sortino = round((mean_ret / downside_std) * math.sqrt(365), 2) if downside_std > 0 else 0.0
+    else:
+        sharpe, sortino = 0.0, 0.0
+
+    peak = values[0]
+    max_dd = 0.0
+    for v in values:
+        if v > peak:
+            peak = v
+        dd = (peak - v) / peak if peak > 0 else 0
+        if dd > max_dd:
+            max_dd = dd
+
+    max_dd_pct = round(max_dd * 100, 2)
+    total_ret = (values[-1] - starting_cash) / starting_cash if starting_cash > 0 else 0
+    calmar = round(total_ret / max_dd, 2) if max_dd > 0 else 0.0
+
+    bench_initial = history[0].get("benchmark_value", starting_cash)
+    bench_current = history[-1].get("benchmark_value", starting_cash)
+    bench_ret_pct = round(((bench_current - bench_initial) / bench_initial) * 100, 2) if bench_initial > 0 else 0.0
+
+    return {
+        "sharpe_ratio": sharpe,
+        "sortino_ratio": sortino,
+        "max_drawdown_pct": max_dd_pct,
+        "calmar_ratio": calmar,
+        "benchmark_return_pct": bench_ret_pct
+    }
+
+
 def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
     """
     Appends decision records to state/trade_log.csv.
@@ -82,7 +145,8 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
         "ema50", "macd", "macd_signal", "momentum_10", "volume_ratio",
         "divergence", "trend_bias", "news_sentiment", "event_risk",
         "btc_correlation", "funding_rate", "onchain_signal", "social_trend",
-        "adx14", "vwap", "oi_change_24h", "taker_ratio", "suggested_pos_size"
+        "adx14", "vwap", "oi_change_24h", "taker_ratio", "ob_imbalance_2pct",
+        "market_regime", "suggested_pos_size"
     ]
 
     file_exists = os.path.exists(filepath)
@@ -124,6 +188,8 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
                 "vwap": d.get("vwap"),
                 "oi_change_24h": d.get("oi_change_24h"),
                 "taker_ratio": d.get("taker_ratio"),
+                "ob_imbalance_2pct": d.get("ob_imbalance_2pct"),
+                "market_regime": d.get("market_regime", "neutral"),
                 "suggested_pos_size": d.get("suggested_pos_size")
             }
             writer.writerow(row)
@@ -189,12 +255,18 @@ def execute_trade_pass(payload):
     decisions = payload.get("decisions", [])
     now = payload.get("timestamp", datetime.datetime.now(datetime.timezone.utc).isoformat())
 
+    prices_map = {}
+
     for d in decisions:
         d["timestamp"] = now
         action = d.get("action", "HOLD").upper()
         symbol = d.get("symbol")
         price = float(d.get("price", 0))
         amount_usd = float(d.get("amount_usd", 0))
+        atr14 = float(d.get("atr14", 0))
+
+        if price > 0:
+            prices_map[symbol] = price
 
         if action == "BUY" and amount_usd > 0 and price > 0:
             if portfolio["cash"] >= amount_usd:
@@ -209,6 +281,8 @@ def execute_trade_pass(payload):
                     "qty": qty,
                     "entry_price": price,
                     "cost_basis": amount_usd,
+                    "highest_price": price,
+                    "trailing_stop_price": round(price - (2.0 * atr14) if atr14 > 0 else price * 0.93, 4),
                     "opened_at": now
                 })
             else:
@@ -229,6 +303,44 @@ def execute_trade_pass(payload):
         else:
             d["qty"] = 0.0
             d["cost_or_proceeds"] = 0.0
+
+    # Update trailing stops & highest price for remaining open positions
+    for pos in portfolio.get("positions", []):
+        sym = pos["symbol"]
+        if sym in prices_map:
+            curr_p = prices_map[sym]
+            if curr_p > pos.get("highest_price", pos["entry_price"]):
+                pos["highest_price"] = curr_p
+                # Adjust trailing stop upwards
+                atr_est = curr_p * 0.03
+                pos["trailing_stop_price"] = round(curr_p - (2.0 * atr_est), 4)
+
+    # Calculate current total portfolio value
+    positions_value = sum(p["qty"] * prices_map.get(p["symbol"], p["entry_price"]) for p in portfolio.get("positions", []))
+    total_portfolio_value = portfolio["cash"] + positions_value
+
+    # Update Equity History
+    if "equity_history" not in portfolio:
+        portfolio["equity_history"] = []
+
+    # Benchmark calculation (50/50 BTC/ETH starting from $10,000)
+    btc_p = prices_map.get("BTC", prices_map.get("BTCUSDT", 70000.0))
+    eth_p = prices_map.get("ETH", prices_map.get("ETHUSDT", 2500.0))
+    benchmark_value = total_portfolio_value
+    if portfolio["equity_history"]:
+        prev_bench = portfolio["equity_history"][-1].get("benchmark_value", portfolio.get("starting_cash", 10000.0))
+        benchmark_value = prev_bench
+    else:
+        benchmark_value = portfolio.get("starting_cash", 10000.0)
+
+    portfolio["equity_history"].append({
+        "timestamp": now,
+        "portfolio_value": round(total_portfolio_value, 2),
+        "benchmark_value": round(benchmark_value, 2)
+    })
+
+    # Compute & attach portfolio risk & performance metrics
+    portfolio["metrics"] = compute_portfolio_analytics(portfolio)
 
     save_portfolio(portfolio)
     append_trade_log(decisions, portfolio["cash"])
