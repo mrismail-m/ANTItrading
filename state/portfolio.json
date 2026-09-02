@@ -1,5 +1,5 @@
 {
-  "cash": 8175.801447776628,
+  "cash": 7175.801447776628,
   "starting_cash": 10000.0,
   "positions": [
     {
@@ -14,8 +14,33 @@
       "qty": 1189.0606420927468,
       "entry_price": 0.841,
       "cost_basis": 1000.0,
-      "opened_at": "2026-08-30T13:45:00+00:00"
+      "opened_at": "2026-08-30T13:45:00+00:00",
+      "highest_price": 0.884,
+      "trailing_stop_price": 0.831
+    },
+    {
+      "symbol": "SOL",
+      "qty": 10.0080064051241,
+      "entry_price": 99.92,
+      "cost_basis": 1000.0,
+      "highest_price": 99.92,
+      "trailing_stop_price": 89.9292,
+      "opened_at": "2026-09-02T04:24:05.439461+00:00"
     }
   ],
-  "trade_counter": 3
+  "trade_counter": 4,
+  "equity_history": [
+    {
+      "timestamp": "2026-09-02T04:24:05.439461+00:00",
+      "portfolio_value": 10213.72,
+      "benchmark_value": 10000.0
+    }
+  ],
+  "metrics": {
+    "sharpe_ratio": 0.0,
+    "sortino_ratio": 0.0,
+    "max_drawdown_pct": 0.0,
+    "calmar_ratio": 0.0,
+    "benchmark_return_pct": 0.0
+  }
 }
