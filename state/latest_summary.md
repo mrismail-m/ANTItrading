@@ -1,6 +1,6 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-03T12:27:58.294003+00:00`  
+**Execution Timestamp:** `2026-09-03T12:37:28.629555+00:00`  
 **Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  
 **Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
 
@@ -10,9 +10,9 @@
 
 | Metric | Current Value | Baseline / Target | Notes |
 | :--- | :--- | :--- | :--- |
-| **Total Portfolio Value** | **$10,211.93 USD** | $10,000.00 Starting Cash | **+$211.93 Net P&L (+2.12%)** |
-| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **44.17%** Capital in Liquid Cash |
-| **Active Positions Value** | **$5,701.51 USD** | Max 6 Positions | **55.83%** Capital Allocated |
+| **Total Portfolio Value** | **$10,175.80 USD** | $10,000.00 Starting Cash | **+$175.80 Net P&L (+1.76%)** |
+| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **44.32%** Capital in Liquid Cash |
+| **Active Positions Value** | **$5,665.38 USD** | Max 6 Positions | **55.68%** Capital Allocated |
 | **Open Positions Count** | **6 / 6** | Max Cap: 6 | 0 Position Slots Available |
 | **Total Executed Trades** | **7 Trades** | — | Audit trail synchronized in CSV |
 
@@ -22,18 +22,18 @@
 
 | Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |
 | :--- | :--- | :--- | :--- |
-| **Total Cumulative Return** | **+2.12%** | **-1.10%** | **+3.22% Alpha** |
-| **Current Benchmark Value** | $10,211.93 | $9,890.14 | **+$321.79 Value Premium** |
-| **Max Drawdown (%)** | **0.65%** | Macro Benchmark Variance | Capital preservation filter active |
-| **Calmar Ratio** | **3.24** | — | Return to max drawdown ratio |
-| **Rolling Sharpe Ratio** | **0.64** | — | Annualized risk-adjusted return |
-| **Rolling Sortino Ratio** | **0.64** | — | Downside-volatility weighted |
+| **Total Cumulative Return** | **+1.76%** | **-1.98%** | **+3.74% Alpha** |
+| **Current Benchmark Value** | $10,175.80 | $9,802.00 | **+$373.80 Value Premium** |
+| **Max Drawdown (%)** | **0.70%** | Macro Benchmark Variance | Capital preservation filter active |
+| **Calmar Ratio** | **2.51** | — | Return to max drawdown ratio |
+| **Rolling Sharpe Ratio** | **0.28** | — | Annualized risk-adjusted return |
+| **Rolling Sortino Ratio** | **0.28** | — | Downside-volatility weighted |
 
 ---
 
 ## 3. 🌐 Macro Market Regime & Sentiment Context
 
-* **Market Regime:** `bullish_trend`
+* **Market Regime:** `neutral`
 * **Fear & Greed Index:** **65 / 100 (Greed)**
 * **BTC Dominance:** **59.54%** | **ETH Dominance:** **11.17%**
 
@@ -56,28 +56,28 @@
 
 | Asset | Action | Live Price | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |
 | :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **SOL** | **HOLD** | $100.7700 | 63.97 | #9 (+0.38) | `SOLID` | `+0.277` | `NORMAL` | $98.4285 | Active position in profit (+0.85% from $99.9200 entry). Price $100.7700 comfortably above Chandelier stop ($95.2904); holding. |
-| **DOT** | **HOLD** | $0.8740 | 55.63 | #11 (-0.25) | `SOLID` | `+0.102` | `NORMAL` | $0.9161 | Active position in profit (+3.92% from $0.8410 entry). Price $0.8740 comfortably above Chandelier stop ($0.8318); holding. |
-| **LTC** | **HOLD** | $50.8400 | 61.72 | #4 (+2.63) | `SOLID` | `+0.111` | `NORMAL` | $50.7092 | Active position in profit (+0.28% from $50.7000 entry). Price $50.8400 comfortably above Chandelier stop ($47.2002); holding. |
-| **NEAR** | **HOLD** | $1.9000 | 55.42 | #8 (+1.16) | `CAUTIOUS` | `+0.057` | `NORMAL` | $1.8376 | Active position in profit (+0.42% from $1.8920 entry). Price $1.9000 comfortably above Chandelier stop ($1.7911); holding. |
-| **APT** | **HOLD** | $0.6040 | 56.46 | #3 (+4.19) | `A+` | `+0.099` | `NORMAL` | $0.6146 | Active position intact (-1.31% from $0.6120 entry). Price $0.6040 is well above Chandelier stop ($0.5324); trend structure intact. |
-| **ICP** | **HOLD** | $2.4920 | 58.74 | #7 (+1.52) | `SOLID` | `+0.078` | `NORMAL` | $2.3711 | Active position intact (-0.95% from $2.5160 entry). Price $2.4920 is well above Chandelier stop ($2.3707); trend structure intact. |
-| **ARB** | **HOLD** | $0.1360 | 80.35 | #1 (+47.63) | `A+` | `+0.236` | `NORMAL` | $0.1170 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **UNI** | **HOLD** | $6.2250 | 81.13 | #2 (+44.91) | `A+` | `+0.281` | `NORMAL` | $5.3123 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **BNB** | **HOLD** | $711.2700 | 69.96 | #5 (+2.40) | `SOLID` | `+0.208` | `NORMAL` | $676.6915 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **HYPE** | **HOLD** | $81.9420 | 64.29 | #6 (+1.53) | `SOLID` | `+0.237` | `NORMAL` | $75.4124 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **BTC** | **HOLD** | $77970.0900 | 66.80 | #10 (+0.00) | `SOLID` | `+0.327` | `NORMAL` | $75952.6409 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **SUI** | **HOLD** | $0.7642 | 54.75 | #12 (-0.52) | `CAUTIOUS` | `+0.076` | `NORMAL` | $0.8329 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **ADA** | **HOLD** | $0.2076 | 56.59 | #13 (-1.02) | `SOLID` | `+0.139` | `NORMAL` | $0.2260 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **XRP** | **HOLD** | $1.3722 | 60.69 | #14 (-1.07) | `CAUTIOUS` | `+0.117` | `NORMAL` | $1.5091 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **LINK** | **HOLD** | $11.2850 | 61.87 | #15 (-1.98) | `CAUTIOUS` | `+0.228` | `NORMAL` | $11.2416 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **ETH** | **HOLD** | $2408.2500 | 62.33 | #16 (-2.06) | `CAUTIOUS` | `+0.219` | `NORMAL` | $2336.9275 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **AVAX** | **HOLD** | $7.2870 | 56.46 | #17 (-2.94) | `CAUTIOUS` | `+0.196` | `NORMAL` | $7.4688 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **TRX** | **HOLD** | $0.3278 | 42.34 | #18 (-3.91) | `CAUTIOUS` | `+0.022` | `NORMAL` | $0.3376 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **XLM** | **HOLD** | $0.1784 | 50.96 | #19 (-4.58) | `CAUTIOUS` | `+0.022` | `NORMAL` | $0.1993 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **INJ** | **HOLD** | $4.9430 | 50.38 | #20 (-5.60) | `CAUTIOUS` | `+0.031` | `NORMAL` | $5.1828 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **HNT** | **HOLD** | $4.6700 | 46.94 | #21 (-8.23) | `CAUTIOUS` | `+0.043` | `NORMAL` | $4.6346 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-11.23) | `CAUTIOUS` | `-0.116` | `NORMAL` | $0.5173 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **SOL** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for SOLUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=SOLUSDT&interval=1d&limit=100). Skipping trade. |
+| **DOT** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for DOTUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=DOTUSDT&interval=1d&limit=100). Skipping trade. |
+| **LTC** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for LTCUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=LTCUSDT&interval=1d&limit=100). Skipping trade. |
+| **NEAR** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for NEARUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=NEARUSDT&interval=1d&limit=100). Skipping trade. |
+| **APT** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for APTUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=APTUSDT&interval=1d&limit=100). Skipping trade. |
+| **ICP** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for ICPUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=ICPUSDT&interval=1d&limit=100). Skipping trade. |
+| **BTC** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for BTCUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=100). Skipping trade. |
+| **ETH** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for ETHUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=ETHUSDT&interval=1d&limit=100). Skipping trade. |
+| **XRP** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for XRPUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=XRPUSDT&interval=1d&limit=100). Skipping trade. |
+| **ADA** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for ADAUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=ADAUSDT&interval=1d&limit=100). Skipping trade. |
+| **AVAX** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for AVAXUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=AVAXUSDT&interval=1d&limit=100). Skipping trade. |
+| **LINK** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for LINKUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=LINKUSDT&interval=1d&limit=100). Skipping trade. |
+| **MATIC** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for MATICUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=MATICUSDT&interval=1d&limit=100). Skipping trade. |
+| **UNI** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for UNIUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=UNIUSDT&interval=1d&limit=100). Skipping trade. |
+| **XLM** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for XLMUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=XLMUSDT&interval=1d&limit=100). Skipping trade. |
+| **SUI** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for SUIUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=SUIUSDT&interval=1d&limit=100). Skipping trade. |
+| **ARB** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for ARBUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=ARBUSDT&interval=1d&limit=100). Skipping trade. |
+| **INJ** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for INJUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=INJUSDT&interval=1d&limit=100). Skipping trade. |
+| **BNB** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for BNBUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=BNBUSDT&interval=1d&limit=100). Skipping trade. |
+| **TRX** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for TRXUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=TRXUSDT&interval=1d&limit=100). Skipping trade. |
+| **HNT** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for HNTUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=HNTUSDT&interval=1d&limit=100). Skipping trade. |
+| **HYPE** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (Failed to fetch klines from Spot & Futures for HYPEUSDT: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=HYPEUSDT&interval=1d&limit=100). Skipping trade. |
 
 ---
 
