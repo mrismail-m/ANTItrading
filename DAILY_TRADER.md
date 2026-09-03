@@ -61,10 +61,13 @@ Apply the core quantitative and risk management rules:
   - `bullish_trend`: Trend-following momentum buys enabled (dual 1D/4H bullish alignment, ADX > 20, RSI 45–65, VWAP reclaim).
   - `ranging`: Active Mean-Reversion Mode (BUY oversold lower Bollinger Band %B <= 0.25 / RSI <= 38 with bid wall; SELL upper band %B >= 0.85 / RSI >= 62).
   - `volatility_crash`: Cash-preservation mode (all new buys vetoed).
-- **Dynamic Position Sizing:** Dynamic ATR-based risk allocation ($100 target risk / (2 * ATR / Price)), capped at $1,000 USD maximum per trade.
-- **Position Cap & Long-Only:** Max 6 open positions simultaneously. Long-only, no leverage, no shorting.
+- **Dynamic Progressive Profit-Lock Trailing Stop (Full Position Kept Running):**
+  - Keeps 100% of the position running without premature trimming to capture full trend expansion.
+  - Once a position's peak gain reaches $\ge +2.0\%$, the trailing stop automatically ratchets upward to lock in at least $60\%$ of peak gains (guaranteeing at least $+1.0\%$ locked profit, e.g. +2% peak $\rightarrow$ locks +1.2%, +5% peak $\rightarrow$ locks +3.0%, +5.8% peak $\rightarrow$ locks +3.5%).
+  - Ensures winning trades never turn into losing trades while leaving room for the full position to run to the +10% TP1 target.
+- **Position Cap & Long-Only:** Max 10 open positions simultaneously. Long-only, no leverage, no shorting. Available cash is deployed into market-leading RS candidates while preserving liquid cash reserves.
 - **Open Positions Evaluation & Trailing Stop:**
-  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop, daily trend bias flips to bearish with negative P&L, extreme overbought (RSI > 75) with bearish divergence, or `WHALE_DISTRIBUTION` detected.
+  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop / Profit-Lock Floor, daily trend bias flips to bearish with negative P&L, extreme overbought (RSI > 75) with bearish divergence, or `WHALE_DISTRIBUTION` detected.
   - `HOLD` trigger: Position setup intact, price above trailing stop, and runner intact.
 
 ### STEP 5: Autonomous Execution & Persistent State Synchronization

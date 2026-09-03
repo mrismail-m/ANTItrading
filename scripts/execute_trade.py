@@ -371,6 +371,16 @@ def execute_trade_pass(payload):
                 new_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
                 if pos.get("tp1_hit", False):
                     new_stop = max(new_stop, float(pos.get("entry_price", new_stop)))
+
+                # Dynamic Progressive Profit-Lock:
+                # Ratchet stop to lock in 60% of peak gain (min 1.0%) once gain reaches >= +2.0%
+                entry_val = float(pos.get("entry_price", curr_p))
+                peak_gain_pct = ((pos["highest_price"] - entry_val) / entry_val) * 100 if entry_val > 0 else 0.0
+                if peak_gain_pct >= 2.0:
+                    profit_lock_pct = max(1.0, peak_gain_pct * 0.60)
+                    dynamic_profit_stop = round(entry_val * (1.0 + (profit_lock_pct / 100.0)), 4)
+                    new_stop = max(new_stop, dynamic_profit_stop)
+
                 if new_stop > pos["trailing_stop_price"]:
                     pos["trailing_stop_price"] = new_stop
 

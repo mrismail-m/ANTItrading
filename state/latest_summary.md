@@ -1,6 +1,6 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-03T12:43:44.590432+00:00`  
+**Execution Timestamp:** `2026-09-03T17:12:44.754709+00:00`  
 **Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  
 **Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
 
@@ -10,10 +10,10 @@
 
 | Metric | Current Value | Baseline / Target | Notes |
 | :--- | :--- | :--- | :--- |
-| **Total Portfolio Value** | **$10,228.02 USD** | $10,000.00 Starting Cash | **+$228.02 Net P&L (+2.28%)** |
-| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **44.10%** Capital in Liquid Cash |
-| **Active Positions Value** | **$5,717.60 USD** | Max 6 Positions | **55.90%** Capital Allocated |
-| **Open Positions Count** | **6 / 6** | Max Cap: 6 | 0 Position Slots Available |
+| **Total Portfolio Value** | **$10,343.88 USD** | $10,000.00 Starting Cash | **+$343.88 Net P&L (+3.44%)** |
+| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **43.60%** Capital in Liquid Cash |
+| **Active Positions Value** | **$5,833.46 USD** | Max 10 Positions | **56.40%** Capital Allocated |
+| **Open Positions Count** | **6 / 10** | Max Cap: 10 | 4 Position Slots Available |
 | **Total Executed Trades** | **7 Trades** | — | Audit trail synchronized in CSV |
 
 ---
@@ -22,12 +22,12 @@
 
 | Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |
 | :--- | :--- | :--- | :--- |
-| **Total Cumulative Return** | **+2.28%** | **-0.83%** | **+3.11% Alpha** |
-| **Current Benchmark Value** | $10,228.02 | $9,917.24 | **+$310.78 Value Premium** |
+| **Total Cumulative Return** | **+3.44%** | **+2.66%** | **+0.78% Alpha** |
+| **Current Benchmark Value** | $10,343.88 | $10,266.13 | **+$77.75 Value Premium** |
 | **Max Drawdown (%)** | **0.70%** | Macro Benchmark Variance | Capital preservation filter active |
-| **Calmar Ratio** | **3.25** | — | Return to max drawdown ratio |
-| **Rolling Sharpe Ratio** | **0.80** | — | Annualized risk-adjusted return |
-| **Rolling Sortino Ratio** | **0.80** | — | Downside-volatility weighted |
+| **Calmar Ratio** | **4.90** | — | Return to max drawdown ratio |
+| **Rolling Sharpe Ratio** | **1.94** | — | Annualized risk-adjusted return |
+| **Rolling Sortino Ratio** | **1.94** | — | Downside-volatility weighted |
 
 ---
 
@@ -35,7 +35,7 @@
 
 * **Market Regime:** `bullish_trend`
 * **Fear & Greed Index:** **65 / 100 (Greed)**
-* **BTC Dominance:** **59.59%** | **ETH Dominance:** **11.17%**
+* **BTC Dominance:** **59.35%** | **ETH Dominance:** **11.11%**
 
 ---
 
@@ -43,12 +43,12 @@
 
 | Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Scaling Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TRADE-001** | `NEAR` | 528.5412 | $1.8920 | $1.9080 | $1.7911 | $1000.00 | FULL POSITION |
-| **TRADE-002** | `DOT` | 1189.0606 | $0.8410 | $0.8840 | $0.8318 | $1000.00 | FULL POSITION |
-| **TRADE-003** | `SOL` | 10.0080 | $99.9200 | $101.3300 | $95.2904 | $1000.00 | FULL POSITION |
-| **TRADE-004** | `ICP` | 356.1367 | $2.5160 | $2.5220 | $2.3707 | $896.04 | FULL POSITION |
+| **TRADE-001** | `NEAR` | 528.5412 | $1.8920 | $1.9970 | $1.9550 | $1000.00 | FULL POSITION |
+| **TRADE-002** | `DOT` | 1189.0606 | $0.8410 | $0.8900 | $0.8704 | $1000.00 | FULL POSITION |
+| **TRADE-003** | `SOL` | 10.0080 | $99.9200 | $104.6000 | $102.7280 | $1000.00 | FULL POSITION |
+| **TRADE-004** | `ICP` | 356.1367 | $2.5160 | $2.5350 | $2.3707 | $896.04 | FULL POSITION |
 | **TRADE-005** | `APT` | 1257.0915 | $0.6120 | $0.6120 | $0.5324 | $769.34 | FULL POSITION |
-| **TRADE-006** | `LTC` | 19.7239 | $50.7000 | $50.9900 | $47.2308 | $1000.00 | FULL POSITION |
+| **TRADE-006** | `LTC` | 19.7239 | $50.7000 | $51.3700 | $47.5188 | $1000.00 | FULL POSITION |
 
 ---
 
@@ -56,28 +56,28 @@
 
 | Asset | Action | Live Price | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |
 | :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **SOL** | **HOLD** | $100.9900 | 64.23 | #10 (+0.21) | `SOLID` | `+0.287` | `NORMAL` | $98.4878 | Active position in profit (+1.07% from $99.9200 entry). Price $100.9900 comfortably above Chandelier stop ($95.2904); holding. |
-| **DOT** | **HOLD** | $0.8770 | 56.09 | #12 (-0.35) | `SOLID` | `+0.104` | `NORMAL` | $0.9179 | Active position in profit (+4.28% from $0.8410 entry). Price $0.8770 comfortably above Chandelier stop ($0.8318); holding. |
-| **LTC** | **HOLD** | $50.9000 | 61.95 | #5 (+2.35) | `SOLID` | `+0.113` | `NORMAL` | $50.7411 | Active position in profit (+0.39% from $50.7000 entry). Price $50.9000 comfortably above Chandelier stop ($47.2308); holding. |
-| **NEAR** | **HOLD** | $1.9059 | 55.78 | #9 (+1.01) | `CAUTIOUS` | `+0.050` | `NORMAL` | $1.8429 | Active position in profit (+0.73% from $1.8920 entry). Price $1.9059 comfortably above Chandelier stop ($1.7911); holding. |
-| **APT** | **HOLD** | $0.6051 | 56.57 | #4 (+3.90) | `SOLID` | `+0.153` | `NORMAL` | $0.6179 | Active position intact (-1.13% from $0.6120 entry). Price $0.6051 is well above Chandelier stop ($0.5338); trend structure intact. |
-| **ICP** | **HOLD** | $2.5050 | 59.56 | #8 (+1.62) | `SOLID` | `+0.114` | `NORMAL` | $2.3823 | Active position intact (-0.44% from $2.5160 entry). Price $2.5050 is well above Chandelier stop ($2.3707); trend structure intact. |
-| **HNT** | **HOLD** | $0.4958 | 62.96 | #1 (+142.78) | `A+` | `+0.057` | `NORMAL` | $0.7493 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **ARB** | **HOLD** | $0.1350 | 80.24 | #2 (+46.13) | `A+` | `+0.230` | `NORMAL` | $0.1167 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **UNI** | **HOLD** | $6.1950 | 80.82 | #3 (+43.79) | `A+` | `+0.328` | `NORMAL` | $5.3182 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **BNB** | **HOLD** | $712.5200 | 70.21 | #6 (+2.17) | `SOLID` | `+0.223` | `NORMAL` | $677.2524 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **HYPE** | **HOLD** | $82.3800 | 64.86 | #7 (+1.65) | `SOLID` | `+0.241` | `NORMAL` | $75.7667 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **BTC** | **HOLD** | $78262.9200 | 67.51 | #11 (+0.00) | `SOLID` | `+0.311` | `NORMAL` | $75958.8334 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **SUI** | **HOLD** | $0.7665 | 55.08 | #13 (-0.63) | `CAUTIOUS` | `+0.068` | `NORMAL` | $0.8343 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **XRP** | **HOLD** | $1.3753 | 60.93 | #14 (-1.24) | `CAUTIOUS` | `+0.126` | `NORMAL` | $1.5078 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **ADA** | **HOLD** | $0.2078 | 56.67 | #15 (-1.34) | `SOLID` | `+0.144` | `NORMAL` | $0.2261 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **LINK** | **HOLD** | $11.3360 | 62.56 | #16 (-1.91) | `CAUTIOUS` | `+0.260` | `NORMAL` | $11.2514 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **ETH** | **HOLD** | $2412.3600 | 62.62 | #17 (-2.29) | `CAUTIOUS` | `+0.206` | `NORMAL` | $2337.6703 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **AVAX** | **HOLD** | $7.2930 | 56.64 | #18 (-3.26) | `SOLID` | `+0.248` | `NORMAL` | $7.4863 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **TRX** | **HOLD** | $0.3278 | 42.31 | #19 (-4.29) | `CAUTIOUS` | `+0.047` | `NORMAL` | $0.3372 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **XLM** | **HOLD** | $0.1784 | 50.98 | #20 (-4.95) | `CAUTIOUS` | `-0.004` | `NORMAL` | $0.1996 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **INJ** | **HOLD** | $4.9600 | 50.78 | #21 (-5.70) | `CAUTIOUS` | `+0.046` | `NORMAL` | $5.1963 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
-| **MATIC** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `SOLID` | `+0.000` | `NORMAL` | $0.0000 | Data fetch error or inactive Binance spot ticker (All global exchange sources (Binance, MEXC, Bybit) failed for MATICUSDT). Skipping trade. |
+| **SOL** | **HOLD** | $104.6000 | 67.81 | #7 (+0.25) | `SOLID` | `+0.289` | `NORMAL` | $97.6660 | Active position in profit (+4.68% from $99.9200 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $102.7280 locks +2.81% profit]. Price $104.6000 comfortably above trailing stop ($102.7280); holding full amount. |
+| **DOT** | **HOLD** | $0.8890 | 57.89 | #16 (-2.51) | `SOLID` | `+0.123` | `NORMAL` | $0.9148 | Active position in profit (+5.71% from $0.8410 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $0.8704 locks +3.50% profit]. Price $0.8890 comfortably above trailing stop ($0.8704); holding full amount. |
+| **LTC** | **HOLD** | $51.3700 | 63.44 | #11 (-0.28) | `SOLID` | `+0.125` | `NORMAL` | $50.6359 | Active position in profit (+1.32% from $50.7000 entry). Price $51.3700 comfortably above trailing stop ($47.5188); holding full amount. |
+| **NEAR** | **HOLD** | $1.9970 | 60.58 | #3 (+2.39) | `SOLID` | `+0.084` | `NORMAL` | $1.8229 | Active position in profit (+5.55% from $1.8920 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $1.9550 locks +3.33% profit]. Price $1.9970 comfortably above trailing stop ($1.9550); holding full amount. |
+| **APT** | **HOLD** | $0.6030 | 56.30 | #8 (+0.03) | `A+` | `+0.096` | `NORMAL` | $0.6146 | Active position intact (-1.47% from $0.6120 entry). Price $0.6030 is well above trailing stop ($0.5324); trend structure intact. |
+| **ICP** | **HOLD** | $2.5350 | 60.73 | #12 (-0.69) | `SOLID` | `+0.098` | `NORMAL` | $2.3666 | Active position in profit (+0.76% from $2.5160 entry). Price $2.5350 comfortably above trailing stop ($2.3707); holding full amount. |
+| **UNI** | **HOLD** | $6.1880 | 80.89 | #1 (+40.06) | `A+` | `+0.268` | `NORMAL` | $5.2946 | Daily RSI is overbought (80.89 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **ARB** | **HOLD** | $0.1320 | 79.20 | #2 (+39.28) | `A+` | `+0.199` | `NORMAL` | $0.1170 | Daily RSI is overbought (79.20 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **ADA** | **HOLD** | $0.2217 | 63.30 | #4 (+1.80) | `SOLID` | `+0.165` | `NORMAL` | $0.2235 | Order book depth skewed to asks (imbalance ratio 0.4271 < 0.48). Lacks sufficient bid support. |
+| **XRP** | **HOLD** | $1.4549 | 66.73 | #5 (+0.97) | `SOLID` | `+0.138` | `NORMAL` | $1.4933 | Daily RSI is overbought (66.73 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **HYPE** | **HOLD** | $84.2490 | 66.75 | #6 (+0.44) | `SOLID` | `+0.255` | `NORMAL` | $75.0469 | Daily RSI is overbought (66.75 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **BTC** | **HOLD** | $81040.7000 | 72.65 | #9 (+0.00) | `SOLID` | `+0.343` | `NORMAL` | $75383.6373 | Daily RSI is overbought (72.65 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **BNB** | **HOLD** | $722.1700 | 72.25 | #10 (+0.00) | `SOLID` | `+0.219` | `NORMAL` | $676.3919 | Daily RSI is overbought (72.25 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **SUI** | **HOLD** | $0.7893 | 58.18 | #13 (-1.20) | `CAUTIOUS` | `+0.117` | `NORMAL` | $0.8309 | 1H timeframe is overextended (1H RSI overbought (73.70 > 68)). Awaiting intraday pullback for precision entry. |
+| **LINK** | **HOLD** | $11.7280 | 66.30 | #14 (-2.07) | `CAUTIOUS` | `+0.235` | `NORMAL` | $11.1461 | Daily RSI is overbought (66.30 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **ETH** | **HOLD** | $2496.4600 | 67.03 | #15 (-2.42) | `CAUTIOUS` | `+0.232` | `NORMAL` | $2319.1293 | Daily RSI is overbought (67.03 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **XLM** | **HOLD** | $0.1874 | 57.55 | #17 (-3.70) | `CAUTIOUS` | `+0.040` | `NORMAL` | $0.1977 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **AVAX** | **HOLD** | $7.5130 | 61.09 | #18 (-3.88) | `CAUTIOUS` | `+0.219` | `NORMAL` | $7.4331 | Order book depth skewed to asks (imbalance ratio 0.4791 < 0.48). Lacks sufficient bid support. |
+| **TRX** | **HOLD** | $0.3316 | 47.37 | #19 (-6.77) | `CAUTIOUS` | `+0.040` | `NORMAL` | $0.3369 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **INJ** | **HOLD** | $5.0500 | 52.83 | #20 (-7.51) | `CAUTIOUS` | `+0.042` | `NORMAL` | $5.1628 | Order book depth skewed to asks (imbalance ratio 0.4245 < 0.48). Lacks sufficient bid support. |
+| **HNT** | **HOLD** | $4.6700 | 46.94 | #21 (-12.21) | `CAUTIOUS` | `+0.043` | `NORMAL` | $4.6346 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-15.21) | `CAUTIOUS` | `-0.116` | `NORMAL` | $0.5173 | Institutional money flow is negative (CMF -0.1162 <= -0.10). Smart money distribution vetoes buy entry. |
 
 ---
 

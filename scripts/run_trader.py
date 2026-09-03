@@ -41,6 +41,11 @@ from scripts.news_research import analyze_news_sentiment
 from scripts.execute_trade import load_portfolio, execute_trade_pass
 from scripts.discord_notifier import send_discord_notification
 
+# Portfolio & Risk Limits
+MAX_POSITIONS = 10
+PROFIT_LOCK_TRIGGER_PCT = 2.0  # Dynamic profit lock activates once gain reaches +2.0%
+PROFIT_LOCK_RATIO = 0.60       # Ratchets stop to lock in 60% of peak gain (min 1.0% locked)
+
 
 def evaluate_asset_decision(
     symbol: str,
@@ -49,7 +54,8 @@ def evaluate_asset_decision(
     portfolio: Dict[str, Any],
     sentiment: Dict[str, Any],
     regime: str,
-    now: str
+    now: str,
+    active_open_count: int = None
 ) -> Dict[str, Any]:
     """
     Evaluates trading rules for a single cryptocurrency asset.
@@ -249,6 +255,16 @@ def evaluate_asset_decision(
         trailing_stop = max(std_trail, trade_chandelier_stop)
         if pos.get("tp1_hit", False):
             trailing_stop = max(trailing_stop, entry_p)
+
+        # Dynamic Progressive Profit-Lock Trailing Stop:
+        # Keep whole amount in, but once peak gain reaches >= +2.0%,
+        # dynamically lock in at least 60% of peak gain (min 1.0% guaranteed)
+        peak_gain_pct = ((highest_p - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+        if peak_gain_pct >= PROFIT_LOCK_TRIGGER_PCT:
+            profit_lock_pct = max(1.0, peak_gain_pct * PROFIT_LOCK_RATIO)
+            dynamic_profit_stop = round(entry_p * (1.0 + (profit_lock_pct / 100.0)), 4)
+            trailing_stop = max(trailing_stop, dynamic_profit_stop)
+
         pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
         tp1_hit = pos.get("tp1_hit", False)
 
@@ -260,11 +276,18 @@ def evaluate_asset_decision(
                 f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash, "
                 f"locking runner trailing stop to breakeven (${entry_p:.4f})."
             )
-        # Trailing / Chandelier Stop Breach Exit
+        # Trailing / Dynamic Profit-Lock / Chandelier Stop Breach Exit
         elif price < trailing_stop:
             action = "SELL"
             confidence = 0.92
-            reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+            locked_ret_pct = ((trailing_stop - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+            if locked_ret_pct > 0:
+                reasoning = (
+                    f"Dynamic Profit-Lock Triggered: Price ${price:.4f} dropped below ratcheted profit stop (${trailing_stop:.4f}, "
+                    f"+{locked_ret_pct:.2f}% locked profit from ${entry_p:.4f} entry). Executing SELL to bank gains."
+                )
+            else:
+                reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
         # Ranging Regime Mean-Reversion Exit
         elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 62.0):
             action = "SELL"
@@ -288,23 +311,29 @@ def evaluate_asset_decision(
         else:
             action = "HOLD"
             confidence = final_conviction
-            runner_tag = " [RUNNER - ZERO RISK]" if tp1_hit else ""
+            runner_tag = ""
+            if tp1_hit:
+                runner_tag = " [RUNNER - ZERO RISK]"
+            elif peak_gain_pct >= PROFIT_LOCK_TRIGGER_PCT:
+                locked_gain = ((trailing_stop - entry_p) / entry_p) * 100
+                runner_tag = f" [🔒 PROFIT-LOCK ACTIVE: Stop at ${trailing_stop:.4f} locks +{locked_gain:.2f}% profit]"
+
             if pnl_pct >= 0:
-                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above Chandelier stop (${trailing_stop:.4f}); holding."
+                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding full amount."
             else:
-                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above Chandelier stop (${trailing_stop:.4f}); trend structure intact."
+                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
 
     # -------------------------------------------------------------------------
     # 2. EVALUATE WATCHLIST CANDIDATES FOR BUY ENTRIES
     # -------------------------------------------------------------------------
     else:
-        open_count = len(portfolio.get("positions", []))
+        open_count = active_open_count if active_open_count is not None else len(portfolio.get("positions", []))
         cash = float(portfolio.get("cash", 0.0))
 
-        if open_count >= 6:
+        if open_count >= MAX_POSITIONS:
             action = "HOLD"
             confidence = 0.80
-            reasoning = f"Portfolio position cap reached ({open_count}/6 max positions). Cash reserved until an existing position exits."
+            reasoning = f"Portfolio position cap reached ({open_count}/{MAX_POSITIONS} max positions). Cash reserved until an existing position exits."
         elif regime == "volatility_crash":
             action = "HOLD"
             confidence = 0.85
@@ -495,8 +524,8 @@ def generate_executive_summary_markdown(
     lines.append(f"| **Total Portfolio Value** | **${curr_equity:,.2f} USD** | ${start_cash:,.2f} Starting Cash | **{'+' if total_pnl_usd >= 0 else ''}${total_pnl_usd:,.2f} Net P&L ({'+' if total_pnl_pct >= 0 else ''}{total_pnl_pct:.2f}%)** |")
     lines.append(f"| **Cash Balance** | **${cash:,.2f} USD** | Min 20% Reserve | **{(cash / curr_equity * 100):.2f}%** Capital in Liquid Cash |")
     pos_val = curr_equity - cash
-    lines.append(f"| **Active Positions Value** | **${pos_val:,.2f} USD** | Max 6 Positions | **{(pos_val / curr_equity * 100):.2f}%** Capital Allocated |")
-    lines.append(f"| **Open Positions Count** | **{len(positions)} / 6** | Max Cap: 6 | {6 - len(positions)} Position Slots Available |")
+    lines.append(f"| **Active Positions Value** | **${pos_val:,.2f} USD** | Max {MAX_POSITIONS} Positions | **{(pos_val / curr_equity * 100):.2f}%** Capital Allocated |")
+    lines.append(f"| **Open Positions Count** | **{len(positions)} / {MAX_POSITIONS}** | Max Cap: {MAX_POSITIONS} | {MAX_POSITIONS - len(positions)} Position Slots Available |")
     lines.append(f"| **Total Executed Trades** | **{portfolio.get('trade_counter', 0)} Trades** | — | Audit trail synchronized in CSV |")
     lines.append("\n---\n")
 
@@ -641,21 +670,29 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
         decisions.append(d)
 
     # Evaluate candidate assets (leaders get priority for available slots)
+    current_open_count = len(open_items)
+    sim_cash = float(portfolio.get("cash", 0.0))
+    sim_portfolio = dict(portfolio)
+
     for sym, ticker in candidate_items:
         asset_ta = ta_data.get(ticker, {})
+        sim_portfolio["cash"] = sim_cash
         d = evaluate_asset_decision(
             symbol=sym,
             ticker=ticker,
             data=asset_ta,
-            portfolio=portfolio,
+            portfolio=sim_portfolio,
             sentiment=sentiment_data,
             regime=regime,
-            now=now
+            now=now,
+            active_open_count=current_open_count
         )
         decisions.append(d)
         # If candidate triggered BUY, simulate adding to temp open count so subsequent candidates respect cap
         if d.get("action") == "BUY":
             pos_symbols.add(sym)
+            current_open_count += 1
+            sim_cash -= float(d.get("amount_usd", 0.0))
 
     # Save decisions to fixed state file
     decisions_payload = {
