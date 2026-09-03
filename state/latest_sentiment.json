@@ -2,12 +2,12 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
+      "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
       "Here\u2019s what happened in crypto today",
-      "Mantle adds Paxos\u2019 USDG stablecoin, joins Global Dollar Network",
-      "Michigan authorities continue pursuit to block Kalshi as Supreme Court fight looms"
+      "Mantle adds Paxos\u2019 USDG stablecoin, joins Global Dollar Network"
     ],
     "overall_sentiment": "mixed",
-    "macro_event_risk": "sec"
+    "macro_event_risk": "lawsuit"
   },
   "BTC": {
     "symbol": "BTC",
@@ -33,7 +33,7 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 11
+    "headline_count": 12
   },
   "ETH": {
     "symbol": "ETH",
@@ -65,10 +65,10 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -105,10 +105,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -119,10 +119,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -147,10 +147,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -161,10 +161,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -175,10 +175,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -189,10 +189,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -203,10 +203,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -217,10 +217,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -231,10 +231,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -245,10 +245,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -259,24 +259,24 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Sui DeFi protocol Full Sail to wind down after Switchboard incident",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Wed, 02 Sep 2026 13:40:03 +0000",
-        "link": "https://cointelegraph.com/news/full-sail-sui-wind-down-switchboard-incident?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "headline_count": 1
+    "headline_count": 0
   },
   "ARB": {
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -287,10 +287,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -301,10 +301,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -315,10 +315,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -329,10 +329,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -343,10 +343,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Here\u2019s what happened in crypto today",
+        "title": "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
-        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 21:09:13 +0000",
+        "link": "https://cointelegraph.com/news/cftc-dismiss-cme-lawsuit-crypto-perpetual-futures?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
