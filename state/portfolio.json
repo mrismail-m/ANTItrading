@@ -8,7 +8,7 @@
       "entry_price": 1.892,
       "cost_basis": 1000.0,
       "opened_at": "2026-08-30T08:26:43.910366+00:00",
-      "highest_price": 1.905,
+      "highest_price": 1.908,
       "trailing_stop_price": 1.7911
     },
     {
@@ -108,13 +108,18 @@
       "timestamp": "2026-09-03T12:37:28.629555+00:00",
       "portfolio_value": 10175.8,
       "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-03T12:41:56.465322+00:00",
+      "portfolio_value": 10229.76,
+      "benchmark_value": 9919.27
     }
   ],
   "metrics": {
-    "sharpe_ratio": 0.28,
-    "sortino_ratio": 0.28,
+    "sharpe_ratio": 0.82,
+    "sortino_ratio": 0.82,
     "max_drawdown_pct": 0.7,
-    "calmar_ratio": 2.51,
-    "benchmark_return_pct": -1.98
+    "calmar_ratio": 3.28,
+    "benchmark_return_pct": -0.81
   }
 }

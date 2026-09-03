@@ -54,7 +54,9 @@ def format_active_trades_table(positions: List[Dict[str, Any]], price_map: Dict[
         entry = float(p.get("entry_price", 0.0))
         qty = float(p.get("qty", 0.0))
         cost_basis = float(p.get("cost_basis", entry * qty))
-        curr = price_map.get(sym, entry)
+        curr = price_map.get(sym, 0.0)
+        if curr <= 0.0:
+            curr = entry if entry > 0.0 else float(p.get("highest_price", 1.0))
 
         val = qty * curr
         diff_usd = val - cost_basis
@@ -95,14 +97,23 @@ def send_discord_notification(
     start_cash = float(portfolio.get("starting_cash", 10000.0))
     positions = portfolio.get("positions", [])
 
-    # Map current prices from decisions
-    price_map = {d.get("symbol"): float(d.get("price", 0.0)) for d in decisions}
+    # Map current prices from decisions (filter out 0.0 errors)
+    price_map = {}
+    for d in decisions:
+        p_val = float(d.get("price", 0.0))
+        if p_val > 0.0:
+            price_map[d.get("symbol")] = p_val
 
     total_cost_basis = sum(float(p.get("cost_basis", 0.0)) for p in positions)
-    current_market_val = sum(
-        float(p.get("qty", 0.0)) * price_map.get(p.get("symbol"), float(p.get("entry_price", 0.0)))
-        for p in positions
-    )
+    current_market_val = 0.0
+    for p in positions:
+        sym = p.get("symbol", "-")
+        qty = float(p.get("qty", 0.0))
+        entry = float(p.get("entry_price", 0.0))
+        curr = price_map.get(sym, 0.0)
+        if curr <= 0.0:
+            curr = entry if entry > 0.0 else float(p.get("highest_price", 1.0))
+        current_market_val += qty * curr
 
     unrealized_pnl = current_market_val - total_cost_basis
     realized_pnl = (cash + total_cost_basis) - start_cash

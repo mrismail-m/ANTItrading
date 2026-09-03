@@ -73,41 +73,71 @@ def load_watchlist(filepath="state/watchlist.json"):
 
 def fetch_binance_klines(symbol, interval="1d", limit=100):
     """
-    Fetches OHLCV candles from Binance API for a given symbol.
-    Attempts Binance Spot API first; if unlisted or fails (e.g. HYPEUSDT), falls back to Binance Futures API.
+    Fetches OHLCV candles with multi-exchange global failover:
+    1. Binance Spot API
+    2. Binance Futures API
+    3. MEXC Global Spot API (unrestricted globally / US cloud runners)
+    4. Bybit Global Spot API
 
-    :param symbol: Binance ticker symbol (e.g., BTCUSDT, HYPEUSDT)
+    :param symbol: Ticker symbol (e.g., BTCUSDT, HYPEUSDT)
     :param interval: Candle timeframe (default "1d")
     :param limit: Number of candles (default 100)
     :return: pandas.DataFrame containing open, high, low, close, volume as floats
     """
     raw_data = None
+
     # 1. Try Binance Spot API
     try:
         url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=5)
         if response.status_code == 200:
             raw_data = response.json()
     except Exception:
         pass
 
-    # 2. Fall back to Binance Futures API if Spot API failed or is unavailable
+    # 2. Fall back to Binance Futures API
     if not raw_data:
         try:
             fapi_url = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval={interval}&limit={limit}"
-            f_resp = requests.get(fapi_url, timeout=10)
+            f_resp = requests.get(fapi_url, timeout=5)
             if f_resp.status_code == 200:
                 raw_data = f_resp.json()
-            else:
-                f_resp.raise_for_status()
-        except Exception as err:
-            raise RuntimeError(f"Failed to fetch klines from Spot & Futures for {symbol}: {err}")
+        except Exception:
+            pass
 
-    columns = [
-        "open_time", "open", "high", "low", "close", "volume",
-        "close_time", "qav", "num_trades", "tb_base", "tb_quote", "ignore"
-    ]
-    df = pd.DataFrame(raw_data, columns=columns)
+    # 3. Failover to MEXC Global API (identical schema, accessible from cloud runners)
+    if not raw_data:
+        try:
+            mexc_url = f"https://api.mexc.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
+            m_resp = requests.get(mexc_url, timeout=6)
+            if m_resp.status_code == 200:
+                raw_data = m_resp.json()
+        except Exception:
+            pass
+
+    # 4. Failover to Bybit Global API
+    if not raw_data:
+        try:
+            bybit_int_map = {"1d": "D", "4h": "240", "1h": "60"}
+            b_interval = bybit_int_map.get(interval, "D")
+            bybit_url = f"https://api.bybit.com/v5/market/kline?category=spot&symbol={symbol}&interval={b_interval}&limit={limit}"
+            b_resp = requests.get(bybit_url, timeout=6)
+            if b_resp.status_code == 200:
+                b_data = b_resp.json().get("result", {}).get("list", [])
+                if b_data:
+                    b_data = list(reversed(b_data))
+                    raw_data = [
+                        [int(row[0]), float(row[1]), float(row[2]), float(row[3]), float(row[4]), float(row[5])]
+                        for row in b_data
+                    ]
+        except Exception:
+            pass
+
+    if not raw_data:
+        raise RuntimeError(f"All global exchange sources (Binance, MEXC, Bybit) failed for {symbol}")
+
+    df = pd.DataFrame(raw_data).iloc[:, :6]
+    df.columns = ["open_time", "open", "high", "low", "close", "volume"]
 
     # Cast numerical columns from string to float
     for col in ["open", "high", "low", "close", "volume"]:
@@ -179,9 +209,11 @@ def fetch_orderbook_imbalance(symbol):
     """
     try:
         url = f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100"
-        res = requests.get(url, timeout=5)
+        res = requests.get(url, timeout=4)
         if res.status_code != 200:
-            res = requests.get(f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100", timeout=5)
+            res = requests.get(f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100", timeout=4)
+        if res.status_code != 200:
+            res = requests.get(f"https://api.mexc.com/api/v3/depth?symbol={symbol}&limit=100", timeout=4)
 
         if res.status_code == 200:
             data = res.json()
@@ -267,6 +299,13 @@ def fetch_derivatives_microstructure(symbol):
         r_fr = requests.get(f"https://fapi.binance.com/fapi/v1/premiumIndex?symbol={symbol}", timeout=4)
         if r_fr.status_code == 200:
             funding_rate = round(float(r_fr.json().get("lastFundingRate", 0.0001)), 6)
+        else:
+            # Fallback to Bybit linear funding rate
+            r_bybit = requests.get(f"https://api.bybit.com/v5/market/funding/history?category=linear&symbol={symbol}&limit=1", timeout=4)
+            if r_bybit.status_code == 200:
+                f_list = r_bybit.json().get("result", {}).get("list", [])
+                if f_list:
+                    funding_rate = round(float(f_list[0].get("fundingRate", 0.0001)), 6)
     except Exception:
         pass
 

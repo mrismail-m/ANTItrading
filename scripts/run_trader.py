@@ -65,11 +65,13 @@ def evaluate_asset_decision(
     """
     if not data or "error" in data:
         err_msg = data.get("error", "Data unavailable") if data else "Data unavailable"
+        pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
+        fallback_price = float(pos_map.get(symbol, {}).get("entry_price", 0.0))
         return {
             "timestamp": now,
             "symbol": symbol,
             "action": "HOLD",
-            "price": 0.0,
+            "price": fallback_price,
             "qty": 0.0,
             "cost_or_proceeds": 0.0,
             "reasoning": f"Data fetch error or inactive Binance spot ticker ({err_msg}). Skipping trade.",
