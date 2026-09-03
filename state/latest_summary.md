@@ -1,6 +1,6 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-03T02:29:55.292902+00:00`  
+**Execution Timestamp:** `2026-09-03T07:13:23.191128+00:00`  
 **Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  
 **Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
 
@@ -10,9 +10,9 @@
 
 | Metric | Current Value | Baseline / Target | Notes |
 | :--- | :--- | :--- | :--- |
-| **Total Portfolio Value** | **$10,182.02 USD** | $10,000.00 Starting Cash | **+$182.02 Net P&L (+1.82%)** |
-| **Cash Balance** | **$6,279.76 USD** | Min 20% Reserve | **61.68%** Capital in Liquid Cash |
-| **Active Positions Value** | **$3,902.26 USD** | Max 6 Positions | **38.32%** Capital Allocated |
+| **Total Portfolio Value** | **$10,247.67 USD** | $10,000.00 Starting Cash | **+$247.67 Net P&L (+2.48%)** |
+| **Cash Balance** | **$6,279.76 USD** | Min 20% Reserve | **61.28%** Capital in Liquid Cash |
+| **Active Positions Value** | **$3,967.91 USD** | Max 6 Positions | **38.72%** Capital Allocated |
 | **Open Positions Count** | **4 / 6** | Max Cap: 6 | 2 Position Slots Available |
 | **Total Executed Trades** | **5 Trades** | — | Audit trail synchronized in CSV |
 
@@ -22,12 +22,12 @@
 
 | Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |
 | :--- | :--- | :--- | :--- |
-| **Total Cumulative Return** | **+1.82%** | **-1.98%** | **+3.80% Alpha** |
-| **Current Benchmark Value** | $10,182.02 | $9,802.00 | **+$380.02 Value Premium** |
+| **Total Cumulative Return** | **+2.48%** | **-0.88%** | **+3.36% Alpha** |
+| **Current Benchmark Value** | $10,247.67 | $9,911.91 | **+$335.76 Value Premium** |
 | **Max Drawdown (%)** | **0.65%** | Macro Benchmark Variance | Capital preservation filter active |
-| **Calmar Ratio** | **2.78** | — | Return to max drawdown ratio |
-| **Rolling Sharpe Ratio** | **-5.89** | — | Annualized risk-adjusted return |
-| **Rolling Sortino Ratio** | **-6.37** | — | Downside-volatility weighted |
+| **Calmar Ratio** | **3.79** | — | Return to max drawdown ratio |
+| **Rolling Sharpe Ratio** | **3.86** | — | Annualized risk-adjusted return |
+| **Rolling Sortino Ratio** | **5.68** | — | Downside-volatility weighted |
 
 ---
 
@@ -35,7 +35,7 @@
 
 * **Market Regime:** `bullish_trend`
 * **Fear & Greed Index:** **65 / 100 (Greed)**
-* **BTC Dominance:** **59.07%** | **ETH Dominance:** **11.08%**
+* **BTC Dominance:** **59.10%** | **ETH Dominance:** **11.11%**
 
 ---
 
@@ -43,10 +43,10 @@
 
 | Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Scaling Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TRADE-001** | `NEAR` | 528.5412 | $1.8920 | $1.8920 | $1.7802 | $1000.00 | FULL POSITION |
+| **TRADE-001** | `NEAR` | 528.5412 | $1.8920 | $1.9050 | $1.7907 | $1000.00 | FULL POSITION |
 | **TRADE-002** | `DOT` | 1189.0606 | $0.8410 | $0.8840 | $0.8318 | $1000.00 | FULL POSITION |
-| **TRADE-003** | `SOL` | 10.0080 | $99.9200 | $100.1400 | $94.1316 | $1000.00 | FULL POSITION |
-| **TRADE-004** | `ICP` | 356.1367 | $2.5160 | $2.5160 | $2.2352 | $896.04 | FULL POSITION |
+| **TRADE-003** | `SOL` | 10.0080 | $99.9200 | $101.3300 | $95.2502 | $1000.00 | FULL POSITION |
+| **TRADE-004** | `ICP` | 356.1367 | $2.5160 | $2.5220 | $2.3707 | $896.04 | FULL POSITION |
 
 ---
 
@@ -54,27 +54,27 @@
 
 | Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Funding Alert | Whale Alert | Confidence | Decision Rationale |
 | :--- | :---: | :--- | :--- | :--- | :--- | :---: | :---: | :--- |
-| **SOL** | **HOLD** | $100.4200 | 63.56 | #7 (+0.50) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+0.50% from $99.9200 entry). Price $100.4200 comfortably above trailing stop ($94.1316); holding. |
-| **DOT** | **HOLD** | $0.8750 | 55.79 | #8 (+0.34) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+4.04% from $0.8410 entry). Price $0.8750 comfortably above trailing stop ($0.8318); holding. |
-| **NEAR** | **HOLD** | $1.8710 | 53.44 | #10 (+0.08) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position intact (-1.11% from $1.8920 entry). Price $1.8710 is well above trailing stop ($1.7802); trend structure intact. |
-| **ICP** | **HOLD** | $2.4790 | 58.10 | #3 (+1.46) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position intact (-1.47% from $2.5160 entry). Price $2.4790 is well above trailing stop ($2.2352); trend structure intact. |
-| **ARB** | **HOLD** | $0.1278 | 77.83 | #1 (+39.14) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (77.83 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **UNI** | **HOLD** | $5.7400 | 74.99 | #2 (+34.01) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (74.99 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **LTC** | **HOLD** | $50.0300 | 58.76 | #4 (+1.45) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
-| **SUI** | **HOLD** | $0.7699 | 55.57 | #5 (+0.71) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
-| **APT** | **HOLD** | $0.5810 | 52.23 | #6 (+0.66) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
-| **BNB** | **HOLD** | $692.2100 | 64.88 | #9 (+0.10) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
-| **BTC** | **HOLD** | $77603.6600 | 65.93 | #11 (+0.00) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (65.93 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **XRP** | **HOLD** | $1.3634 | 59.91 | #12 (-1.23) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
-| **ADA** | **HOLD** | $0.2057 | 55.50 | #13 (-1.45) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
-| **ETH** | **HOLD** | $2395.7600 | 61.56 | #14 (-2.10) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bearish'). Requires dual bullish alignment. |
-| **LINK** | **HOLD** | $11.1470 | 60.24 | #15 (-2.71) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bearish'). Requires dual bullish alignment. |
-| **AVAX** | **HOLD** | $7.2230 | 54.94 | #16 (-3.32) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bearish'). Requires dual bullish alignment. |
-| **TRX** | **HOLD** | $0.3252 | 38.30 | #17 (-4.20) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (38.30 < 45) with lack of upward momentum. Awaiting technical recovery. |
-| **XLM** | **HOLD** | $0.1778 | 50.45 | #18 (-4.43) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
-| **HNT** | **HOLD** | $4.6700 | 46.94 | #19 (-7.75) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
-| **INJ** | **HOLD** | $4.8020 | 46.72 | #20 (-7.85) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
-| **MATIC** | **HOLD** | $0.3794 | 38.00 | #21 (-10.75) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (38.00 < 45) with lack of upward momentum. Awaiting technical recovery. |
+| **SOL** | **HOLD** | $101.3300 | 64.59 | #7 (+0.76) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+1.41% from $99.9200 entry). Price $101.3300 comfortably above trailing stop ($94.1316); holding. |
+| **DOT** | **HOLD** | $0.8820 | 56.87 | #8 (+0.49) | `NEUTRAL_FUNDING` | `BEARISH_WHALE_WALL` | 0.85 | Active position in profit (+4.88% from $0.8410 entry). Price $0.8820 comfortably above trailing stop ($0.8318); holding. |
+| **NEAR** | **HOLD** | $1.9050 | 55.72 | #6 (+1.25) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+0.69% from $1.8920 entry). Price $1.9050 comfortably above trailing stop ($1.7802); holding. |
+| **ICP** | **HOLD** | $2.5220 | 60.15 | #4 (+2.57) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+0.24% from $2.5160 entry). Price $2.5220 comfortably above trailing stop ($2.2352); holding. |
+| **ARB** | **HOLD** | $0.1341 | 79.82 | #1 (+45.38) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (79.82 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **UNI** | **HOLD** | $5.7490 | 75.25 | #2 (+33.57) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (75.25 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **APT** | **HOLD** | $0.6210 | 59.09 | #3 (+6.97) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.80 | 1H timeframe is overextended (1H RSI 78.94 > 68, +6.08% above 1H EMA20). Awaiting intraday pullback for precision entry. |
+| **LTC** | **HOLD** | $50.5000 | 60.53 | #5 (+1.75) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **BNB** | **HOLD** | $698.7600 | 66.81 | #9 (+0.40) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (66.81 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **SUI** | **HOLD** | $0.7701 | 55.60 | #10 (+0.08) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **BTC** | **HOLD** | $78108.0200 | 67.12 | #11 (+0.00) | `NEUTRAL_FUNDING` | `BEARISH_WHALE_WALL` | 0.85 | Whale flow alert 'BEARISH_WHALE_WALL' detected. Institutional selling pressure vetoes buy entry. |
+| **XRP** | **HOLD** | $1.3748 | 60.91 | #12 (-1.06) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
+| **ADA** | **HOLD** | $0.2063 | 55.85 | #13 (-1.82) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **ETH** | **HOLD** | $2414.6100 | 62.72 | #14 (-1.98) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bearish'). Requires dual bullish alignment. |
+| **LINK** | **HOLD** | $11.2710 | 61.71 | #15 (-2.28) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bearish'). Requires dual bullish alignment. |
+| **AVAX** | **HOLD** | $7.3290 | 57.40 | #16 (-2.55) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **TRX** | **HOLD** | $0.3265 | 40.39 | #17 (-4.48) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (40.39 < 45) with lack of upward momentum. Awaiting technical recovery. |
+| **XLM** | **HOLD** | $0.1773 | 50.02 | #18 (-5.35) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
+| **INJ** | **HOLD** | $4.8700 | 48.55 | #19 (-7.18) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **HNT** | **HOLD** | $4.6700 | 46.94 | #20 (-8.40) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **MATIC** | **HOLD** | $0.3794 | 38.00 | #21 (-11.41) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (38.00 < 45) with lack of upward momentum. Awaiting technical recovery. |
 | **HYPE** | **HOLD** | $0.0000 | 0.00 | #- (+0.00) | `NEUTRAL` | `NEUTRAL_FLOW` | 0.00 | Data fetch error or inactive Binance spot ticker (400 Client Error: Bad Request for url: https://api.binance.com/api/v3/klines?symbol=HYPEUSDT&interval=1d&limit=100). Skipping trade. |
 
 ---
