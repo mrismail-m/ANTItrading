@@ -121,6 +121,15 @@ def evaluate_asset_decision(
     volume_breakout = bool(data.get("volume_breakout", False))
     donchian_h20 = float(data.get("donchian_high_20", price))
     donchian_l20 = float(data.get("donchian_low_20", price))
+    cmf20 = float(data.get("cmf20", 0.0))
+    mfi14 = float(data.get("mfi14", 50.0))
+    chop14 = float(data.get("chop14", 50.0))
+    di_plus = float(data.get("di_plus", 20.0))
+    di_minus = float(data.get("di_minus", 20.0))
+    squeeze_on = bool(data.get("squeeze_on", False))
+    squeeze_fired = bool(data.get("squeeze_fired", False))
+    chandelier_stop = float(data.get("chandelier_stop", price * 0.93))
+
     pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
     is_open = symbol in pos_map
 
@@ -129,41 +138,65 @@ def evaluate_asset_decision(
     event_risk = asset_sentiment.get("event_risk", "none")
 
     # -------------------------------------------------------------------------
-    # CALCULATE MULTI-FACTOR CONFLUENCE CONVICTION SCORE (0.0 to 1.0)
+    # CALCULATE ADVANCED QUANT CONFLUENCE CONVICTION SCORE (0.0 to 1.0)
     # -------------------------------------------------------------------------
-    conv_score = 0.20  # baseline
+    conv_score = 0.15  # baseline
+
+    # 1. Trend & Directional Movement (DMI)
     if trend_1d == "bullish" and trend_4h == "bullish":
-        conv_score += 0.25
+        conv_score += 0.20
     elif trend_1d == "bullish" or trend_4h == "bullish":
+        conv_score += 0.08
+    if di_plus > di_minus:
         conv_score += 0.10
 
+    # 2. Relative Strength Leadership
     try:
         rank_num = int(rs_rank)
     except Exception:
         rank_num = 99
 
     if rank_num in [1, 2, 3] or rs_score >= 5.0:
-        conv_score += 0.25
-    elif rank_num in [4, 5, 6] or rs_score > 0:
-        conv_score += 0.15
-
-    if volume_breakout:
         conv_score += 0.20
-    elif vol_ratio >= 1.5:
+    elif rank_num in [4, 5, 6] or rs_score > 0:
         conv_score += 0.10
 
-    if whale_alert in ["WHALE_ACCUMULATION", "BULLISH_WHALE_WALL"] or ob_imbalance >= 0.58:
-        conv_score += 0.15
-    elif taker_ratio >= 1.05:
+    # 3. Institutional Money Flow (CMF & MFI)
+    if cmf20 >= 0.08 and mfi14 >= 55.0:
+        conv_score += 0.20  # Heavy smart-money accumulation
+    elif cmf20 >= 0.02:
+        conv_score += 0.10
+    elif cmf20 <= -0.10:
+        conv_score -= 0.15  # Distribution warning penalty
+
+    # 4. Volatility Expansion & Squeeze (TTM Squeeze & Volume Breakout)
+    if squeeze_fired:
+        conv_score += 0.20  # Volatility compression exploding outward
+    elif volume_breakout:
+        conv_score += 0.15  # 20-Day Donchian range breakout on heavy volume
+    elif vol_ratio >= 1.5:
         conv_score += 0.08
+
+    # 5. Market Microstructure & Whale Flow
+    if whale_alert in ["WHALE_ACCUMULATION", "BULLISH_WHALE_WALL"] or ob_imbalance >= 0.58:
+        conv_score += 0.12
+    elif taker_ratio >= 1.05:
+        conv_score += 0.06
 
     if funding_alert == "SHORT_SQUEEZE_ALERT":
         conv_score += 0.15
 
+    # 6. Choppiness Index (Trend Efficiency)
+    if chop14 < 45.0:
+        conv_score += 0.08  # Strong directional efficiency
+    elif chop14 > 61.8:
+        conv_score -= 0.08  # Consolidation penalty for breakout setups
+
+    # 7. News & Sentiment Alignment
     if news_sent == "bullish" and event_risk == "none":
-        conv_score += 0.10
+        conv_score += 0.08
     elif news_sent == "cautious_bullish" and event_risk == "none":
-        conv_score += 0.05
+        conv_score += 0.04
 
     final_conviction = min(0.98, max(0.50, round(conv_score, 2)))
 
@@ -201,13 +234,18 @@ def evaluate_asset_decision(
     amount_usd = 0.0
 
     # -------------------------------------------------------------------------
-    # 1. EVALUATE ACTIVE OPEN POSITIONS
+    # 1. EVALUATE ACTIVE OPEN POSITIONS (Incorporating Chandelier Exit)
     # -------------------------------------------------------------------------
     if is_open:
         pos = pos_map[symbol]
         entry_p = float(pos.get("entry_price", price))
         highest_p = max(float(pos.get("highest_price", entry_p)), price)
-        trailing_stop = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
+        # Position-level Chandelier Exit hangs from trade's highest price peak
+        trade_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else round(entry_p * 0.93, 4)
+        std_trail = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
+        trailing_stop = max(std_trail, trade_chandelier_stop)
+        if pos.get("tp1_hit", False):
+            trailing_stop = max(trailing_stop, entry_p)
         pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
         tp1_hit = pos.get("tp1_hit", False)
 
@@ -219,11 +257,11 @@ def evaluate_asset_decision(
                 f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash, "
                 f"locking runner trailing stop to breakeven (${entry_p:.4f})."
             )
-        # Trailing Stop Breach Exit
+        # Trailing / Chandelier Stop Breach Exit
         elif price < trailing_stop:
             action = "SELL"
             confidence = 0.92
-            reasoning = f"Price ${price:.4f} breached dynamic ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+            reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
         # Ranging Regime Mean-Reversion Exit
         elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 62.0):
             action = "SELL"
@@ -240,18 +278,18 @@ def evaluate_asset_decision(
             confidence = 0.90
             reasoning = f"Extreme overbought RSI ({rsi14:.2f}) combined with confirmed bearish RSI divergence. Executing profit take."
         # Institutional Whale Distribution Exit
-        elif whale_alert == "WHALE_DISTRIBUTION":
+        elif whale_alert == "WHALE_DISTRIBUTION" or cmf20 <= -0.18:
             action = "SELL"
-            confidence = 0.85
-            reasoning = "Heavy institutional whale distribution detected (Taker Ratio <= 0.90 & Ask Wall). Exiting to avoid institutional dump."
+            confidence = 0.88
+            reasoning = f"Heavy institutional distribution detected (Whale Alert '{whale_alert}', CMF {cmf20:.4f}). Exiting to avoid institutional dump."
         else:
             action = "HOLD"
             confidence = final_conviction
             runner_tag = " [RUNNER - ZERO RISK]" if tp1_hit else ""
             if pnl_pct >= 0:
-                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding."
+                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above Chandelier stop (${trailing_stop:.4f}); holding."
             else:
-                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
+                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above Chandelier stop (${trailing_stop:.4f}); trend structure intact."
 
     # -------------------------------------------------------------------------
     # 2. EVALUATE WATCHLIST CANDIDATES FOR BUY ENTRIES
@@ -272,6 +310,10 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Whale flow alert '{whale_alert}' detected. Institutional selling pressure vetoes buy entry."
+        elif cmf20 <= -0.10:
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = f"Institutional money flow is negative (CMF {cmf20:.4f} <= -0.10). Smart money distribution vetoes buy entry."
         elif funding_alert == "LONG_FLUSH_ALERT":
             action = "HOLD"
             confidence = 0.85
@@ -300,7 +342,7 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Daily RSI is overbought ({rsi14:.2f} > {max_rsi:.0f} cutoff threshold). Standing aside to catch a healthier pullback."
-        elif rsi14 < 45.0:
+        elif rsi14 < 45.0 and not squeeze_fired:
             action = "HOLD"
             confidence = 0.75
             reasoning = f"RSI is weak ({rsi14:.2f} < 45) with lack of upward momentum. Awaiting technical recovery."
@@ -308,7 +350,7 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.75
             reasoning = f"Multi-timeframe trend alignment unfulfilled (1D: '{trend_1d}', 4H: '{trend_4h}'). Requires dual bullish alignment."
-        elif adx14 < 20.0 and not volume_breakout:
+        elif adx14 < 20.0 and not (volume_breakout or squeeze_fired):
             action = "HOLD"
             confidence = 0.75
             reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
@@ -343,12 +385,13 @@ def evaluate_asset_decision(
             action = "BUY"
             amount_usd = suggested_pos_size
             confidence = final_conviction
-            squeeze_tag = f" [SHORT SQUEEZE DETECTED: Funding {funding_rate:.6f} with rising OI!]" if funding_alert == "SHORT_SQUEEZE_ALERT" else ""
+            squeeze_tag = f" [⚡ TTM SQUEEZE FIRED: Coiled volatility exploding outward!]" if squeeze_fired else ""
             breakout_tag = f" [🚀 VOLUME BREAKOUT: 24h Vol {vol_ratio:.1f}x expanding into 20D High ${donchian_h20:.4f}!]" if volume_breakout else ""
+            cmf_tag = f" [💵 CMF: {cmf20:+.4f}]" if cmf20 >= 0.05 else ""
             reasoning = (
                 f"BULLISH CONFIRMATION ({conviction_tier} TIER, Score: {final_conviction:.2f}): Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
                 f"healthy RSI ({rsi14:.2f}), strong ADX ({adx14:.2f}), Order Book bid dominance ({ob_imbalance:.4f}), "
-                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{breakout_tag}{squeeze_tag} Initiating {conviction_tier} allocation (${suggested_pos_size:.2f})."
+                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{breakout_tag}{squeeze_tag}{cmf_tag} Initiating {conviction_tier} allocation (${suggested_pos_size:.2f})."
             )
 
     return {
@@ -366,6 +409,14 @@ def evaluate_asset_decision(
         "volume_breakout": volume_breakout,
         "donchian_high_20": donchian_h20,
         "donchian_low_20": donchian_l20,
+        "cmf20": cmf20,
+        "mfi14": mfi14,
+        "chop14": chop14,
+        "di_plus": di_plus,
+        "di_minus": di_minus,
+        "squeeze_on": squeeze_on,
+        "squeeze_fired": squeeze_fired,
+        "chandelier_stop": chandelier_stop,
         "rsi14": rsi14,
         "rsi_4h": float(data.get("rsi_4h", 50.0)),
         "rsi_1h": rsi_1h,
@@ -490,16 +541,19 @@ def generate_executive_summary_markdown(
     holds = [d for d in decisions if d.get("action") == "HOLD"]
 
     lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(trims)} TRIMS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
-    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Conviction Tier | Whale / Breakout | Confidence | Decision Rationale |")
-    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |")
+    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |")
+    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
     for d in decisions:
         rs_str = f"#{d.get('rs_rank', '-')} ({d.get('rs_score', 0.0):+.2f})"
         tier_str = f"`{d.get('conviction_tier', 'SOLID')}`"
-        flow_tag = "🚀 **BREAKOUT**" if d.get("volume_breakout") else f"`{d.get('whale_alert', 'NEUTRAL_FLOW')}`"
+        cmf_val = float(d.get("cmf20", 0.0))
+        cmf_str = f"`{cmf_val:+.3f}`"
+        sq_str = "⚡ **FIRED**" if d.get("squeeze_fired") else ("🟠 SQUEEZE" if d.get("squeeze_on") else ("🚀 BREAKOUT" if d.get("volume_breakout") else "`NORMAL`"))
+        ch_stop = f"${float(d.get('chandelier_stop', 0)):.4f}"
         lines.append(
             f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
-            f"{d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | "
-            f"{flow_tag} | {float(d.get('confidence', 0.75)):.2f} | {d.get('reasoning')} |"
+            f"{d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | {cmf_str} | "
+            f"{sq_str} | {ch_stop} | {d.get('reasoning')} |"
         )
     lines.append("\n---\n")
 

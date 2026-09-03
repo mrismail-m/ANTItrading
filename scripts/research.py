@@ -34,8 +34,27 @@ import json
 import os
 import sys
 import requests
+import numpy as np
 import pandas as pd
 import ta
+
+
+def compute_choppiness_index(df, window=14):
+    """
+    Computes 14-period Choppiness Index (CHOP).
+    CHOP < 38.2 = Strong directional trend
+    CHOP > 61.8 = Consolidation / Choppy market
+    """
+    try:
+        tr1 = ta.volatility.AverageTrueRange(df["high"], df["low"], df["close"], window=1).average_true_range()
+        sum_tr = tr1.rolling(window=window).sum()
+        max_hi = df["high"].rolling(window=window).max()
+        min_lo = df["low"].rolling(window=window).min()
+        diff = (max_hi - min_lo).replace(0, 0.0001)
+        chop = 100 * (np.log10(sum_tr / diff) / np.log10(window))
+        return chop.fillna(50.0)
+    except Exception:
+        return pd.Series(50.0, index=df.index)
 
 
 def load_watchlist(filepath="state/watchlist.json"):
@@ -296,12 +315,35 @@ def compute_technical_indicators(name, symbol):
     df["volume_ratio"] = df["volume"] / df["vma20"]
 
     # Bollinger Bands (%B) & Volatility (ATR)
-    df["bollinger_pct_b"] = ta.volatility.BollingerBands(df["close"], window=20, window_dev=2).bollinger_pband()
+    bb = ta.volatility.BollingerBands(df["close"], window=20, window_dev=2)
+    df["bollinger_pct_b"] = bb.bollinger_pband()
     df["atr14"] = ta.volatility.AverageTrueRange(df["high"], df["low"], df["close"], window=14).average_true_range()
 
-    # ADX & DMI
+    # TTM Volatility Squeeze (Bollinger Bands coiling inside Keltner Channels)
+    bb_upper = bb.bollinger_hband()
+    bb_lower = bb.bollinger_lband()
+    kc = ta.volatility.KeltnerChannel(df["high"], df["low"], df["close"], window=20, window_atr=10, multiplier=1.5)
+    kc_upper = kc.keltner_channel_hband()
+    kc_lower = kc.keltner_channel_lband()
+    df["squeeze_on"] = (bb_upper <= kc_upper) & (bb_lower >= kc_lower)
+    df["squeeze_fired"] = (df["squeeze_on"].shift(1) == True) & (df["squeeze_on"] == False)
+
+    # Chaikin Money Flow (CMF 20) & Money Flow Index (MFI 14)
+    df["cmf20"] = ta.volume.ChaikinMoneyFlowIndicator(df["high"], df["low"], df["close"], df["volume"], window=20).chaikin_money_flow()
+    df["mfi14"] = ta.volume.MFIIndicator(df["high"], df["low"], df["close"], df["volume"], window=14).money_flow_index()
+
+    # ADX & DMI Directional System (+DI and -DI)
     adx_ind = ta.trend.ADXIndicator(df["high"], df["low"], df["close"], window=14)
     df["adx14"] = adx_ind.adx()
+    df["di_plus"] = adx_ind.adx_pos()
+    df["di_minus"] = adx_ind.adx_neg()
+
+    # Choppiness Index (CHOP 14)
+    df["chop14"] = compute_choppiness_index(df, window=14)
+
+    # Chandelier Trailing Exit (22-period Highest High - 2.5 * ATR14)
+    highest_high_22 = df["high"].rolling(window=22).max()
+    df["chandelier_stop"] = highest_high_22 - (2.5 * df["atr14"])
 
     # VWAP
     vwap_ind = ta.volume.VolumeWeightedAveragePrice(df["high"], df["low"], df["close"], df["volume"], window=14)
@@ -445,6 +487,14 @@ def compute_technical_indicators(name, symbol):
         "donchian_high_20": round(donchian_h20, 4),
         "donchian_low_20": round(donchian_l20, 4),
         "volume_breakout": volume_breakout,
+        "squeeze_on": bool(last["squeeze_on"]) if pd.notna(last["squeeze_on"]) else False,
+        "squeeze_fired": bool(last["squeeze_fired"]) if pd.notna(last["squeeze_fired"]) else False,
+        "cmf20": round(float(last["cmf20"]), 4) if pd.notna(last["cmf20"]) else 0.0,
+        "mfi14": round(float(last["mfi14"]), 2) if pd.notna(last["mfi14"]) else 50.0,
+        "di_plus": round(float(last["di_plus"]), 2) if pd.notna(last["di_plus"]) else 20.0,
+        "di_minus": round(float(last["di_minus"]), 2) if pd.notna(last["di_minus"]) else 20.0,
+        "chop14": round(float(last["chop14"]), 2) if pd.notna(last["chop14"]) else 50.0,
+        "chandelier_stop": round(float(last["chandelier_stop"]), 4) if pd.notna(last["chandelier_stop"]) else round(close_price * 0.93, 4),
         "divergence": divergence,
         "trend_bias": trend_bias,
         "trend_bias_1d": trend_bias,

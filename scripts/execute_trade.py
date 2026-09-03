@@ -279,6 +279,7 @@ def execute_trade_pass(payload):
 
     prices_map = {}
     atr_map = {}
+    chandelier_map = {}
 
     for d in decisions:
         d["timestamp"] = now
@@ -287,11 +288,14 @@ def execute_trade_pass(payload):
         price = float(d.get("price", 0))
         amount_usd = float(d.get("amount_usd", 0))
         atr14 = float(d.get("atr14", 0))
+        chand_stop = float(d.get("chandelier_stop", 0))
 
         if price > 0:
             prices_map[symbol] = price
         if atr14 > 0:
             atr_map[symbol] = atr14
+        if chand_stop > 0:
+            chandelier_map[symbol] = chand_stop
 
         if action == "BUY" and amount_usd > 0 and price > 0:
             if portfolio["cash"] >= amount_usd:
@@ -350,7 +354,7 @@ def execute_trade_pass(payload):
             d["qty"] = 0.0
             d["cost_or_proceeds"] = 0.0
 
-    # Update trailing stops & highest price for remaining open positions using live ATR(14)
+    # Update trailing stops & highest price for remaining open positions using live ATR(14) and Chandelier Exit
     for pos in portfolio.get("positions", []):
         sym = pos["symbol"]
         if sym in prices_map:
@@ -363,7 +367,7 @@ def execute_trade_pass(payload):
             if "trailing_stop_price" not in pos:
                 pos["trailing_stop_price"] = round(pos["highest_price"] - (2.0 * asset_atr), 4)
             elif curr_p > pos["entry_price"]:
-                # Adjust trailing stop upwards if higher peak reached using true ATR(14)
+                # Adjust trailing stop upwards if higher peak reached using true ATR(14) Chandelier Exit
                 new_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
                 if pos.get("tp1_hit", False):
                     new_stop = max(new_stop, float(pos.get("entry_price", new_stop)))
