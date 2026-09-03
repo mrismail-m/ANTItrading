@@ -2,16 +2,22 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "Bybit Pay integrates with Mesh to expand crypto payments",
-      "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
-      "Kraken parent Payward partners with SoFi on stablecoin, 24/7 settlement"
+      "Here\u2019s what happened in crypto today",
+      "Mantle adds Paxos\u2019 USDG stablecoin, joins Global Dollar Network",
+      "Michigan authorities continue pursuit to block Kalshi as Supreme Court fight looms"
     ],
-    "overall_sentiment": "bullish",
-    "macro_event_risk": "hack"
+    "overall_sentiment": "mixed",
+    "macro_event_risk": "sec"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
+      {
+        "title": "Bitcoin reclaims $80K as DXY falls amid continuing suspected yen intervention",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 18:44:22 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-reclaims-810-dxy-falls-amid-continuing-suspected-yen-intervention?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
       {
         "title": "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
         "source": "CoinTelegraph",
@@ -23,17 +29,11 @@
         "source": "CoinTelegraph",
         "published_at": "Thu, 03 Sep 2026 09:31:07 +0000",
         "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
-        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 12
+    "headline_count": 11
   },
   "ETH": {
     "symbol": "ETH",
@@ -59,16 +59,16 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 6
+    "headline_count": 5
   },
   "SOL": {
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -85,6 +85,12 @@
         "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       },
       {
+        "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
+        "source": "Decrypt",
+        "published_at": "Thu, 03 Sep 2026 18:15:07 +0000",
+        "link": "https://decrypt.co/377284/bitcoin-etfs-rebound-ethereum-xrp-end-streaks"
+      },
+      {
         "title": "Japan\u2019s Remixpoint Dumps Ethereum, XRP in Shift to Bitcoin-Only Treasury",
         "source": "Decrypt",
         "published_at": "Wed, 02 Sep 2026 21:31:05 +0000",
@@ -93,16 +99,16 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 2
+    "headline_count": 3
   },
   "ADA": {
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -113,10 +119,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -141,10 +147,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -155,10 +161,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -169,10 +175,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -183,10 +189,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -197,10 +203,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -211,10 +217,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -225,10 +231,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -239,10 +245,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -267,10 +273,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -281,10 +287,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -295,10 +301,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -309,10 +315,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -323,10 +329,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -337,10 +343,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
-        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 20:30:14 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
