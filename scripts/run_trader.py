@@ -39,6 +39,7 @@ if ROOT_DIR not in sys.path:
 from scripts.research import run_research, load_watchlist
 from scripts.news_research import analyze_news_sentiment
 from scripts.execute_trade import load_portfolio, execute_trade_pass
+from scripts.discord_notifier import send_discord_notification
 
 
 def evaluate_asset_decision(
@@ -686,6 +687,14 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
 
     if not silent:
         print("\n" + summary_md)
+
+    # 7. Dispatch Discord Webhook Notification
+    if not dry_run:
+        send_discord_notification(
+            portfolio=updated_portfolio,
+            decisions=decisions,
+            regime=regime
+        )
 
     return {
         "status": "success",

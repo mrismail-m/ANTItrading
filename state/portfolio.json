@@ -98,13 +98,18 @@
       "timestamp": "2026-09-03T12:05:22.648998+00:00",
       "portfolio_value": 10219.01,
       "benchmark_value": 9886.98
+    },
+    {
+      "timestamp": "2026-09-03T12:27:58.294003+00:00",
+      "portfolio_value": 10211.93,
+      "benchmark_value": 9890.14
     }
   ],
   "metrics": {
-    "sharpe_ratio": 0.71,
-    "sortino_ratio": 0.71,
+    "sharpe_ratio": 0.64,
+    "sortino_ratio": 0.64,
     "max_drawdown_pct": 0.65,
-    "calmar_ratio": 3.35,
-    "benchmark_return_pct": -1.13
+    "calmar_ratio": 3.24,
+    "benchmark_return_pct": -1.1
   }
 }

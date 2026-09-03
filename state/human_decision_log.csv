@@ -223,3 +223,25 @@ timestamp,symbol,action,price,rsi14,trend_bias,divergence,news_sentiment,event_r
 2026-09-03T12:05:22.648998+00:00,INJ,HOLD,4.9550,50.66,neutral,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
 2026-09-03T12:05:22.648998+00:00,HNT,HOLD,4.6700,46.94,bearish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
 2026-09-03T12:05:22.648998+00:00,MATIC,HOLD,0.3794,38.0,bearish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,SOL,HOLD,100.7700,63.97,bullish,none,cautious_bullish,none,Active position in profit (+0.85% from $99.9200 entry). Price $100.7700 comfortably above Chandelier stop ($95.2904); holding.,0.67
+2026-09-03T12:27:58.294003+00:00,DOT,HOLD,0.8740,55.63,bullish,none,cautious_bullish,none,Active position in profit (+3.92% from $0.8410 entry). Price $0.8740 comfortably above Chandelier stop ($0.8318); holding.,0.69
+2026-09-03T12:27:58.294003+00:00,LTC,HOLD,50.8400,61.72,bullish,none,cautious_bullish,none,Active position in profit (+0.28% from $50.7000 entry). Price $50.8400 comfortably above Chandelier stop ($47.2002); holding.,0.79
+2026-09-03T12:27:58.294003+00:00,NEAR,HOLD,1.9000,55.42,bullish,none,cautious_bullish,none,Active position in profit (+0.42% from $1.8920 entry). Price $1.9000 comfortably above Chandelier stop ($1.7911); holding.,0.61
+2026-09-03T12:27:58.294003+00:00,APT,HOLD,0.6040,56.46,bullish,bullish,cautious_bullish,none,Active position intact (-1.31% from $0.6120 entry). Price $0.6040 is well above Chandelier stop ($0.5324); trend structure intact.,0.89
+2026-09-03T12:27:58.294003+00:00,ICP,HOLD,2.4920,58.74,bullish,none,cautious_bullish,none,Active position intact (-0.95% from $2.5160 entry). Price $2.4920 is well above Chandelier stop ($2.3707); trend structure intact.,0.69
+2026-09-03T12:27:58.294003+00:00,ARB,HOLD,0.1360,80.35,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,UNI,HOLD,6.2250,81.13,bullish,bearish,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,BNB,HOLD,711.2700,69.96,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,HYPE,HOLD,81.9420,64.29,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,BTC,HOLD,77970.0900,66.8,bullish,none,bullish,hack,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,SUI,HOLD,0.7642,54.75,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,ADA,HOLD,0.2076,56.59,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,XRP,HOLD,1.3722,60.69,bullish,none,bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,LINK,HOLD,11.2850,61.87,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,ETH,HOLD,2408.2500,62.33,bullish,none,bullish,hack,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,AVAX,HOLD,7.2870,56.46,bullish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,TRX,HOLD,0.3278,42.34,bearish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,XLM,HOLD,0.1784,50.96,neutral,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,INJ,HOLD,4.9430,50.38,neutral,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,HNT,HOLD,4.6700,46.94,bearish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
+2026-09-03T12:27:58.294003+00:00,MATIC,HOLD,0.3794,38.0,bearish,none,cautious_bullish,none,Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits.,0.80
