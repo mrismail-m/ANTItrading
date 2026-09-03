@@ -215,7 +215,7 @@ def sync_human_views(portfolio, decisions, open_pos_path="state/human_open_posit
                 f"{pos.get('qty'):.6f}",
                 f"{pos.get('cost_basis'):.2f}",
                 pos.get("opened_at"),
-                "OPEN"
+                "RUNNER (TP1)" if pos.get("tp1_hit", False) else "OPEN"
             ])
 
     # 2. Append to Human Decision Log CSV
@@ -288,6 +288,27 @@ def execute_trade_pass(payload):
                 })
             else:
                 print(f"Warning: Insufficient cash for {symbol} BUY trade.", file=sys.stderr)
+
+        elif action == "TRIM":
+            # Partial Take Profit (Sell 50% at TP1 target, bank profit, lock stop to breakeven)
+            matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
+            if matching_positions:
+                pos = matching_positions[0]
+                trim_qty = pos["qty"] * 0.5
+                proceeds = trim_qty * price
+                d["qty"] = trim_qty
+                d["cost_or_proceeds"] = proceeds
+
+                pos["qty"] -= trim_qty
+                pos["cost_basis"] = round(pos["cost_basis"] * 0.5, 2)
+                pos["tp1_hit"] = True
+                # Lock stop to breakeven minimum
+                pos["trailing_stop_price"] = max(pos.get("trailing_stop_price", 0.0), pos.get("entry_price", price))
+
+                portfolio["cash"] += proceeds
+                portfolio["trade_counter"] += 1
+            else:
+                print(f"Warning: No open position found for {symbol} TRIM.", file=sys.stderr)
 
         elif action == "SELL":
             # Locate matching position

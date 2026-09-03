@@ -1,0 +1,19 @@
+{
+  "days": 90,
+  "trading_sessions": 90,
+  "starting_equity": 10000.0,
+  "final_equity": 9960.64,
+  "total_return_pct": -0.39,
+  "benchmark_return_pct": 40.06,
+  "alpha_pct": -40.45,
+  "max_drawdown_pct": 6.96,
+  "calmar_ratio": -0.06,
+  "sharpe_ratio": -0.07,
+  "total_closed_trades": 45,
+  "winning_trades": 18,
+  "losing_trades": 27,
+  "win_rate_pct": 40.0,
+  "profit_factor": 0.62,
+  "gross_profits_usd": 601.35,
+  "gross_losses_usd": 973.4
+}

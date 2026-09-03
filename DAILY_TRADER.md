@@ -43,24 +43,29 @@ For all tracked assets in `state/watchlist.json`, fetch live market data from Bi
 - Perform web search or query news feeds for macro market headlines, Fed interest rate signals, and asset-specific catalysts/risks for open positions and top setups.
 
 ### STEP 4: Trading Decision Engine & Risk Management
-Apply the core risk management rules:
-- **Market Regime Filter:** 
-  - `bullish_trend`: Trend-following buys enabled with standard criteria.
-  - `ranging`: Mean-reversion mode (buy oversold RSI < 40, sell RSI > 60).
-  - `volatility_crash`: Cash-preservation mode (no new buys).
-- **Daily Whale Flow Filter:** 
-  - `WHALE_ACCUMULATION` / `BULLISH_WHALE_WALL`: Enhances buy conviction score by +0.10.
-  - `WHALE_DISTRIBUTION` / `BEARISH_WHALE_WALL`: Vetoes/skips buy entries to avoid getting dumped on by institutional sellers.
+Apply the core quantitative and risk management rules:
+- **Multi-Stage Profit Scaling (`TRIM` Action):**
+  - When an active position reaches `+10%` gain (`price >= entry_price * 1.10`) and `tp1_hit` is false:
+    - Execute `TRIM`: Sells 50% of the position to bank realized profit into cash.
+    - Sets `pos["tp1_hit"] = True`.
+    - Automatically ratchets trailing stop to breakeven (`entry_price`), converting the remaining 50% runner into a zero-risk trade.
+- **Relative Strength (RS) vs. BTC Ranking:**
+  - Evaluates composite 7D/14D alpha score: $RS = 0.6 \times RS_7 + 0.4 \times RS_{14}$.
+  - Ranks candidate assets by RS score; priority for available position slots is strictly awarded to market leaders ($RS > 0$).
+- **1-Hour Precision Timing Filter:**
+  - Checks 1H RSI and 1H EMA20 for candidate buys. If 1H RSI > 68 or price is stretched > +3.5% above 1H EMA20, buy is held for an intraday pullback.
+- **Derivatives Funding Rate & Squeeze Filter:**
+  - `SHORT_SQUEEZE_ALERT` (Funding <= -0.01% with rising OI): Boosts buy conviction score (+0.08) to capture explosive short squeezes.
+  - `LONG_FLUSH_ALERT` (Funding >= +0.03%): Vetoes new buys and tightens trailing stops to avoid liquidation flushes.
+- **Market Regime Strategy Switching:**
+  - `bullish_trend`: Trend-following momentum buys enabled (dual 1D/4H bullish alignment, ADX > 20, RSI 45–65, VWAP reclaim).
+  - `ranging`: Active Mean-Reversion Mode (BUY oversold lower Bollinger Band %B <= 0.25 / RSI <= 38 with bid wall; SELL upper band %B >= 0.85 / RSI >= 62).
+  - `volatility_crash`: Cash-preservation mode (all new buys vetoed).
 - **Dynamic Position Sizing:** Dynamic ATR-based risk allocation ($100 target risk / (2 * ATR / Price)), capped at $1,000 USD maximum per trade.
-- **Correlation Risk Filter:** Skip candidate buys if asset has > 0.85 BTC correlation and portfolio already holds 2+ high-correlation positions.
-- **Position Cap:** Max 6 open positions simultaneously.
-- **Trading Rules:** Long-only, no leverage, no shorting.
+- **Position Cap & Long-Only:** Max 6 open positions simultaneously. Long-only, no leverage, no shorting.
 - **Open Positions Evaluation & Trailing Stop:**
-  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop (`trailing_stop_price` = highest price reached - 2 * ATR), daily trend bias flips to bearish, RSI reaches extreme overbought (> 70) with bearish RSI divergence, `WHALE_DISTRIBUTION` alert triggered, or fundamental risk emerges.
-  - `HOLD` trigger: Position setup remains intact, price is above trailing stop, trend alignment is bullish/neutral, and profit target is not yet exhausted.
-- **Watchlist Candidates Evaluation:**
-  - `BUY` trigger: Both 1D and 4H trend biases are aligned **bullish**, ADX(14) > 20 (confirming trend presence), Order Book Imbalance `ob_imbalance_2pct` > 0.50 (bid dominance), Taker Buy/Sell ratio > 0.95, Whale Alert is `WHALE_ACCUMULATION` or `NEUTRAL_FLOW`, price trading near/above VWAP, daily RSI is in healthy buying territory (45–65), volume ratio is expanding (> 0.50x), conviction score $\ge 0.80$, and position cap is not reached.
-  - `HOLD / SKIP` trigger: RSI is overbought (> 65), ADX < 15 (choppy range-bound), orderbook bid ratio < 0.45 (heavy ask pressure), Whale Alert is `WHALE_DISTRIBUTION`, 4H trend is diverging, trend is bearish/neutral, or conviction is insufficient.
+  - `SELL` trigger: Price drops below dynamic ATR Trailing Stop, daily trend bias flips to bearish with negative P&L, extreme overbought (RSI > 75) with bearish divergence, or `WHALE_DISTRIBUTION` detected.
+  - `HOLD` trigger: Position setup intact, price above trailing stop, and runner intact.
 
 ### STEP 5: Autonomous Execution & Persistent State Synchronization
 Run the unified master runner script:

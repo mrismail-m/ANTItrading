@@ -47,3 +47,12 @@ This directory contains persistent, well-documented Python modules created for t
   ```bash
   python3 scripts/run_trader.py [--dry-run] [--silent]
   ```
+
+---
+
+## 5. `scripts/backtest.py`
+- **Purpose:** Quantitative historical simulation engine. Tests strategy rules, dynamic ATR sizing, TP1 profit scaling (+10%), and RS ranking against historical Binance candles (90-365 days) and benchmarks against 50/50 BTC/ETH.
+- **Execution Command:**
+  ```bash
+  python3 scripts/backtest.py [--days 180] [--output-json state/backtest_results.json]
+  ```

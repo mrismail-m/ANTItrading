@@ -188,16 +188,19 @@ def classify_market_regime(btc_price, btc_ema50, btc_adx14, fear_greed_val):
 
 def fetch_derivatives_microstructure(symbol):
     """
-    Fetches futures Open Interest 24h % change and Taker Buy/Sell ratio from Binance Futures API.
+    Fetches futures Open Interest 24h % change, Taker Buy/Sell ratio, and Funding Rate from Binance Futures API.
 
     :param symbol: Binance symbol (e.g. BTCUSDT)
-    :return: Tuple of (oi_change_24h, taker_ratio)
+    :return: Tuple of (oi_change_24h, taker_ratio, funding_rate, funding_alert)
     """
     oi_change_24h = 0.0
     taker_ratio = 1.0
+    funding_rate = 0.0001
+    funding_alert = "NEUTRAL_FUNDING"
+
     try:
         # Fetch OI History
-        r_oi = requests.get(f"https://fapi.binance.com/futures/data/openInterestHist?symbol={symbol}&period=1d&limit=2", timeout=5)
+        r_oi = requests.get(f"https://fapi.binance.com/futures/data/openInterestHist?symbol={symbol}&period=1d&limit=2", timeout=4)
         if r_oi.status_code == 200:
             data_oi = r_oi.json()
             if len(data_oi) >= 2:
@@ -210,7 +213,7 @@ def fetch_derivatives_microstructure(symbol):
 
     try:
         # Fetch Taker Buy/Sell Ratio
-        r_tr = requests.get(f"https://fapi.binance.com/futures/data/takerlongshortRatio?symbol={symbol}&period=1d&limit=1", timeout=5)
+        r_tr = requests.get(f"https://fapi.binance.com/futures/data/takerlongshortRatio?symbol={symbol}&period=1d&limit=1", timeout=4)
         if r_tr.status_code == 200:
             data_tr = r_tr.json()
             if len(data_tr) > 0:
@@ -218,7 +221,20 @@ def fetch_derivatives_microstructure(symbol):
     except Exception:
         pass
 
-    return oi_change_24h, taker_ratio
+    try:
+        # Fetch Current Funding Rate
+        r_fr = requests.get(f"https://fapi.binance.com/fapi/v1/premiumIndex?symbol={symbol}", timeout=4)
+        if r_fr.status_code == 200:
+            funding_rate = round(float(r_fr.json().get("lastFundingRate", 0.0001)), 6)
+    except Exception:
+        pass
+
+    if funding_rate <= -0.0001 and oi_change_24h > 2.0:
+        funding_alert = "SHORT_SQUEEZE_ALERT"
+    elif funding_rate >= 0.0003:
+        funding_alert = "LONG_FLUSH_ALERT"
+
+    return oi_change_24h, taker_ratio, funding_rate, funding_alert
 
 
 def compute_technical_indicators(name, symbol):
@@ -245,8 +261,13 @@ def compute_technical_indicators(name, symbol):
     df["macd_signal"] = macd.macd_signal()
     df["macd_hist"] = macd.macd_diff()
 
-    # Momentum / Rate of Change (10)
+    # Momentum / Rate of Change
     df["momentum_10"] = ta.momentum.ROCIndicator(df["close"], window=10).roc()
+
+    # 7-day and 14-day ROC for Relative Strength vs BTC
+    closes = df["close"].tolist()
+    roc_7 = round(((closes[-1] - closes[-8]) / closes[-8]) * 100, 2) if len(closes) >= 8 else 0.0
+    roc_14 = round(((closes[-1] - closes[-15]) / closes[-15]) * 100, 2) if len(closes) >= 15 else 0.0
 
     # Volume Indicators
     df["vma20"] = ta.trend.SMAIndicator(df["volume"], window=20).sma_indicator()
@@ -312,8 +333,24 @@ def compute_technical_indicators(name, symbol):
 
     trend_alignment = "aligned" if trend_bias == trend_bias_4h else "diverging"
 
-    # Microstructure: OI Change, Taker Ratio, Orderbook Imbalance
-    oi_change_24h, taker_ratio = fetch_derivatives_microstructure(symbol)
+    # 1H Intraday Precision Timing Indicators
+    rsi_1h = 50.0
+    ema20_1h = close_price
+    price_vs_ema20_1h = 0.0
+    try:
+        df_1h = fetch_binance_klines(symbol, interval="1h", limit=30)
+        df_1h["ema20"] = ta.trend.EMAIndicator(df_1h["close"], window=20).ema_indicator()
+        df_1h["rsi14"] = ta.momentum.RSIIndicator(df_1h["close"], window=14).rsi()
+        last_1h = df_1h.iloc[-1]
+        rsi_1h = round(float(last_1h["rsi14"]), 2)
+        ema20_1h = round(float(last_1h["ema20"]), 4)
+        if ema20_1h > 0:
+            price_vs_ema20_1h = round(((close_price - ema20_1h) / ema20_1h) * 100, 2)
+    except Exception:
+        pass
+
+    # Microstructure: OI Change, Taker Ratio, Funding Rate, Orderbook Imbalance
+    oi_change_24h, taker_ratio, funding_rate, funding_alert = fetch_derivatives_microstructure(symbol)
     ob_imbalance_2pct = fetch_orderbook_imbalance(symbol)
 
     # Classify Intraday Whale Activity
@@ -343,6 +380,11 @@ def compute_technical_indicators(name, symbol):
         "price": round(close_price, 4),
         "rsi14": round(rsi_val, 2),
         "rsi_4h": rsi_4h,
+        "rsi_1h": rsi_1h,
+        "ema20_1h": ema20_1h,
+        "price_vs_ema20_1h": price_vs_ema20_1h,
+        "roc_7": roc_7,
+        "roc_14": roc_14,
         "ema12": round(float(last["ema12"]), 4),
         "ema26": round(float(last["ema26"]), 4),
         "ema50": round(float(last["ema50"]), 4),
@@ -357,6 +399,8 @@ def compute_technical_indicators(name, symbol):
         "vwap": round(float(last["vwap"]), 4),
         "oi_change_24h": oi_change_24h,
         "taker_ratio": taker_ratio,
+        "funding_rate": funding_rate,
+        "funding_alert": funding_alert,
         "ob_imbalance_2pct": ob_imbalance_2pct,
         "whale_alert": whale_alert,
         "suggested_pos_size": suggested_pos_size,
@@ -399,6 +443,7 @@ def fetch_global_market_context():
 def run_research(watchlist_path="state/watchlist.json", output_path="state/latest_research.json"):
     """
     Main function to execute complete technical and macro research.
+    Calculates Relative Strength vs BTC and ranks all assets by RS leadership score.
 
     :param watchlist_path: Path to state/watchlist.json
     :param output_path: Path to save persistent state/latest_research.json
@@ -412,6 +457,30 @@ def run_research(watchlist_path="state/watchlist.json", output_path="state/lates
             ta_results[ticker] = compute_technical_indicators(name, ticker)
         except Exception as e:
             ta_results[ticker] = {"symbol": ticker, "error": str(e)}
+
+    # Compute Relative Strength (RS) vs. BTC
+    btc_ta = ta_results.get("BTCUSDT", {})
+    btc_roc7 = btc_ta.get("roc_7", 0.0)
+    btc_roc14 = btc_ta.get("roc_14", 0.0)
+
+    rs_ranked = []
+    for ticker, data in ta_results.items():
+        if "error" not in data:
+            roc7 = data.get("roc_7", 0.0)
+            roc14 = data.get("roc_14", 0.0)
+            rs7 = round(roc7 - btc_roc7, 2)
+            rs14 = round(roc14 - btc_roc14, 2)
+            rs_score = round(0.6 * rs7 + 0.4 * rs14, 2)
+            data["rs_7"] = rs7
+            data["rs_14"] = rs14
+            data["rs_score"] = rs_score
+            rs_ranked.append((ticker, rs_score))
+
+    # Rank by RS leadership
+    rs_ranked.sort(key=lambda x: x[1], reverse=True)
+    for rank, (ticker, _) in enumerate(rs_ranked, start=1):
+        if ticker in ta_results:
+            ta_results[ticker]["rs_rank"] = rank
 
     market_ctx = fetch_global_market_context()
 

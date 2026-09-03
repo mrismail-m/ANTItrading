@@ -109,7 +109,14 @@ def evaluate_asset_decision(
     ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
     taker_ratio = float(data.get("taker_ratio", 1.0))
     whale_alert = data.get("whale_alert", "NEUTRAL_FLOW")
+    funding_rate = float(data.get("funding_rate", 0.0001))
+    funding_alert = data.get("funding_alert", "NEUTRAL_FUNDING")
+    rsi_1h = float(data.get("rsi_1h", 50.0))
+    price_vs_ema20_1h = float(data.get("price_vs_ema20_1h", 0.0))
+    rs_score = float(data.get("rs_score", 0.0))
+    rs_rank = data.get("rs_rank", "-")
     divergence = data.get("divergence", "none")
+    pct_b = float(data.get("bollinger_pct_b", 0.50))
     suggested_pos_size = float(data.get("suggested_pos_size", 1000.0))
     pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
     is_open = symbol in pos_map
@@ -132,20 +139,37 @@ def evaluate_asset_decision(
         highest_p = max(float(pos.get("highest_price", entry_p)), price)
         trailing_stop = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
         pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+        tp1_hit = pos.get("tp1_hit", False)
 
-        # SELL Triggers:
-        if price < trailing_stop:
+        # TP1 Partial Profit Scaling (+10% gain lock-in)
+        if pnl_pct >= 10.0 and not tp1_hit:
+            action = "TRIM"
+            confidence = 0.92
+            reasoning = (
+                f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash, "
+                f"locking runner trailing stop to breakeven (${entry_p:.4f})."
+            )
+        # Trailing Stop Breach Exit
+        elif price < trailing_stop:
             action = "SELL"
             confidence = 0.92
             reasoning = f"Price ${price:.4f} breached dynamic ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+        # Ranging Regime Mean-Reversion Exit
+        elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 62.0):
+            action = "SELL"
+            confidence = 0.88
+            reasoning = f"Mean-reversion exit in ranging market: Price reached upper Bollinger Band (%B {pct_b:.2f}) with RSI {rsi14:.2f}. Locking in range profit."
+        # Daily Trend Breakdown Exit
         elif trend_1d == "bearish" and pnl_pct < 0:
             action = "SELL"
             confidence = 0.88
             reasoning = f"Daily trend bias flipped to bearish (price < EMA50) with negative position return ({pnl_pct:.2f}%). Closing position."
+        # Extreme Overbought Exhaustion Exit
         elif rsi14 >= 75.0 and divergence == "bearish":
             action = "SELL"
             confidence = 0.90
             reasoning = f"Extreme overbought RSI ({rsi14:.2f}) combined with confirmed bearish RSI divergence. Executing profit take."
+        # Institutional Whale Distribution Exit
         elif whale_alert == "WHALE_DISTRIBUTION":
             action = "SELL"
             confidence = 0.85
@@ -153,8 +177,9 @@ def evaluate_asset_decision(
         else:
             action = "HOLD"
             confidence = 0.85
+            runner_tag = " [RUNNER - ZERO RISK]" if tp1_hit else ""
             if pnl_pct >= 0:
-                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding for continuation."
+                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding."
             else:
                 reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
 
@@ -177,11 +202,34 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Whale flow alert '{whale_alert}' detected. Institutional selling pressure vetoes buy entry."
+        elif funding_alert == "LONG_FLUSH_ALERT":
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = f"Overcrowded long leverage (Funding {funding_rate:.6f} >= +0.03%). Vetoing buy entry to avoid long liquidation flush."
+        # --- RANGING REGIME: ACTIVE MEAN-REVERSION BUY LOGIC ---
+        elif regime == "ranging":
+            if (pct_b <= 0.25 or rsi14 <= 38.0) and ob_imbalance >= 0.52 and adx14 < 25.0:
+                if cash >= suggested_pos_size:
+                    action = "BUY"
+                    amount_usd = suggested_pos_size
+                    confidence = 0.84
+                    reasoning = (
+                        f"MEAN-REVERSION ENTRY: Ranging market oversold bounce play (Bollinger %B {pct_b:.2f} <= 0.25, "
+                        f"RSI {rsi14:.2f} <= 38) with order book bid support ({ob_imbalance:.4f}). Initiating allocation (${suggested_pos_size:.2f})."
+                    )
+                else:
+                    action = "HOLD"
+                    reasoning = f"Mean-reversion setup present but insufficient cash buffer (${cash:.2f})."
+            else:
+                action = "HOLD"
+                confidence = 0.75
+                reasoning = f"Ranging regime active: Awaiting oversold lower Bollinger band touch (%B {pct_b:.2f} > 0.25)."
+        # --- TREND REGIME: TREND-FOLLOWING BUY LOGIC ---
         elif rsi14 > 65.0:
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Daily RSI is overbought ({rsi14:.2f} > 65 cutoff threshold). Standing aside to catch a healthier pullback."
-        elif rsi14 < 45.0 and regime != "ranging":
+        elif rsi14 < 45.0:
             action = "HOLD"
             confidence = 0.75
             reasoning = f"RSI is weak ({rsi14:.2f} < 45) with lack of upward momentum. Awaiting technical recovery."
@@ -205,6 +253,11 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.75
             reasoning = f"Price ${price:.4f} is trading notably below VWAP (${vwap:.4f}). Awaiting reclaim of VWAP."
+        # 1-Hour Intraday Precision Filter
+        elif rsi_1h > 68.0 or price_vs_ema20_1h > 3.5:
+            action = "HOLD"
+            confidence = 0.80
+            reasoning = f"1H timeframe is overextended (1H RSI {rsi_1h:.2f} > 68, +{price_vs_ema20_1h:.2f}% above 1H EMA20). Awaiting intraday pullback for precision entry."
         elif cash < suggested_pos_size:
             action = "HOLD"
             confidence = 0.80
@@ -214,10 +267,13 @@ def evaluate_asset_decision(
             action = "BUY"
             amount_usd = suggested_pos_size
             confidence = 0.88
+            squeeze_tag = f" [SHORT SQUEEZE DETECTED: Funding {funding_rate:.6f} with rising OI!]" if funding_alert == "SHORT_SQUEEZE_ALERT" else ""
+            if funding_alert == "SHORT_SQUEEZE_ALERT":
+                confidence = min(0.95, confidence + 0.07)
             reasoning = (
                 f"BULLISH CONFIRMATION: Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
                 f"healthy RSI ({rsi14:.2f}), strong ADX ({adx14:.2f}), Order Book bid dominance ({ob_imbalance:.4f}), "
-                f"and Taker Ratio ({taker_ratio:.4f}). Initiating allocation (${suggested_pos_size:.2f})."
+                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{squeeze_tag} Initiating allocation (${suggested_pos_size:.2f})."
             )
 
     return {
@@ -231,6 +287,12 @@ def evaluate_asset_decision(
         "reasoning": reasoning,
         "confidence": confidence,
         "rsi14": rsi14,
+        "rsi_4h": float(data.get("rsi_4h", 50.0)),
+        "rsi_1h": rsi_1h,
+        "ema20_1h": float(data.get("ema20_1h", price)),
+        "price_vs_ema20_1h": price_vs_ema20_1h,
+        "rs_score": rs_score,
+        "rs_rank": rs_rank,
         "ema12": float(data.get("ema12", 0.0)),
         "ema26": float(data.get("ema26", 0.0)),
         "ema50": float(data.get("ema50", 0.0)),
@@ -243,7 +305,8 @@ def evaluate_asset_decision(
         "news_sentiment": news_sent,
         "event_risk": event_risk,
         "btc_correlation": 1.0 if symbol == "BTC" else 0.85,
-        "funding_rate": 0.0,
+        "funding_rate": funding_rate,
+        "funding_alert": funding_alert,
         "onchain_signal": "no_signal",
         "social_trend": "normal",
         "adx14": adx14,
@@ -327,13 +390,14 @@ def generate_executive_summary_markdown(
     # 4. Active Portfolio Snapshot
     lines.append("## 4. 📈 Active Portfolio Snapshot (Open Positions)\n")
     if positions:
-        lines.append("| Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Status |")
+        lines.append("| Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Scaling Status |")
         lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
         for idx, p in enumerate(positions, 1):
+            tp1_status = "**RUNNER (TP1 Locked)**" if p.get("tp1_hit", False) else "FULL POSITION"
             lines.append(
                 f"| **TRADE-{idx:03d}** | `{p.get('symbol')}` | {p.get('qty', 0):.4f} | "
                 f"${p.get('entry_price', 0):.4f} | ${p.get('highest_price', 0):.4f} | "
-                f"${p.get('trailing_stop_price', 0):.4f} | ${p.get('cost_basis', 0):.2f} | **ACTIVE** |"
+                f"${p.get('trailing_stop_price', 0):.4f} | ${p.get('cost_basis', 0):.2f} | {tp1_status} |"
             )
     else:
         lines.append("_No open positions currently active. Portfolio is 100% liquid cash._")
@@ -341,27 +405,29 @@ def generate_executive_summary_markdown(
 
     # 5. Trade Actions & Decisions Summary
     buys = [d for d in decisions if d.get("action") == "BUY"]
+    trims = [d for d in decisions if d.get("action") == "TRIM"]
     sells = [d for d in decisions if d.get("action") == "SELL"]
     holds = [d for d in decisions if d.get("action") == "HOLD"]
 
-    lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
-    lines.append("| Asset | Action | Live Price | RSI(14) | ADX(14) | Trend (1D) | Whale Alert | Confidence | Decision Rationale |")
-    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |")
+    lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(trims)} TRIMS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
+    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Funding Alert | Whale Alert | Confidence | Decision Rationale |")
+    lines.append("| :--- | :---: | :--- | :--- | :--- | :--- | :---: | :---: | :--- |")
     for d in decisions:
+        rs_str = f"#{d.get('rs_rank', '-')} ({d.get('rs_score', 0.0):+.2f})"
         lines.append(
             f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
-            f"{d.get('rsi14', 0):.2f} | {d.get('adx14', 0):.2f} | {d.get('trend_bias', 'neutral')} | "
+            f"{d.get('rsi14', 0):.2f} | {rs_str} | `{d.get('funding_alert', 'NEUTRAL')}` | "
             f"`{d.get('whale_alert', 'NEUTRAL_FLOW')}` | {float(d.get('confidence', 0.75)):.2f} | {d.get('reasoning')} |"
         )
     lines.append("\n---\n")
 
     # 6. Persistent Files Confirmation
     lines.append("## 6. 📁 Workspace File Synchronization\n")
-    lines.append("* `state/latest_research.json`: Multi-timeframe TA & microstructure indicators updated.")
+    lines.append("* `state/latest_research.json`: Multi-timeframe TA (1D/4H/1H), RS vs BTC, and funding metrics.")
     lines.append("* `state/latest_sentiment.json`: News headlines & macro sentiment cached.")
     lines.append("* `state/latest_decisions.json`: Standardized decision array persisted.")
     lines.append("* `state/latest_summary.md`: Rendered markdown report saved.")
-    lines.append("* `state/portfolio.json`: Portfolio cash, holdings, and risk metrics synchronized.")
+    lines.append("* `state/portfolio.json`: Portfolio cash, holdings, TP1 status, and risk metrics synchronized.")
     lines.append("* `state/trade_log.csv`: Audit log rows appended.")
     lines.append("* `state/human_open_positions.csv`: Active positions view synchronized.")
     lines.append("* `state/human_decision_log.csv`: Human decision trail synchronized.\n")
@@ -372,6 +438,7 @@ def generate_executive_summary_markdown(
 def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
     """
     Main orchestrator for twice-daily paper-trading pass.
+    Evaluates open positions first, then prioritizes new buys by Relative Strength (RS) leadership ranking.
     """
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     watchlist_path = os.path.join(ROOT_DIR, "state", "watchlist.json")
@@ -397,17 +464,34 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
     # 3. Load Persistent Portfolio
     portfolio = load_portfolio()
 
-    # 4. Decision Engine
+    # 4. Decision Engine (Open Positions first, then RS-Ranked Candidates)
     if not silent:
-        print(f"🧠 [3/5] Evaluating decision rules and risk management...")
+        print(f"🧠 [3/5] Evaluating decision rules, multi-stage TP1 scaling, and RS ranking...")
     watchlist = load_watchlist(watchlist_path)
-    decisions = []
+    pos_symbols = {p["symbol"] for p in portfolio.get("positions", [])}
 
+    # Separate into currently open vs candidate assets
+    open_items = []
+    candidate_items = []
     for name, ticker in watchlist.items():
-        symbol = ticker.replace("USDT", "")
+        sym = ticker.replace("USDT", "")
+        if sym in pos_symbols:
+            open_items.append((sym, ticker))
+        else:
+            candidate_items.append((sym, ticker))
+
+    # Sort candidates by RS score descending (Top Market Leaders first!)
+    candidate_items.sort(
+        key=lambda x: ta_data.get(x[1], {}).get("rs_score", -999.0),
+        reverse=True
+    )
+
+    decisions = []
+    # Evaluate open positions
+    for sym, ticker in open_items:
         asset_ta = ta_data.get(ticker, {})
-        decision = evaluate_asset_decision(
-            symbol=symbol,
+        d = evaluate_asset_decision(
+            symbol=sym,
             ticker=ticker,
             data=asset_ta,
             portfolio=portfolio,
@@ -415,7 +499,24 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
             regime=regime,
             now=now
         )
-        decisions.append(decision)
+        decisions.append(d)
+
+    # Evaluate candidate assets (leaders get priority for available slots)
+    for sym, ticker in candidate_items:
+        asset_ta = ta_data.get(ticker, {})
+        d = evaluate_asset_decision(
+            symbol=sym,
+            ticker=ticker,
+            data=asset_ta,
+            portfolio=portfolio,
+            sentiment=sentiment_data,
+            regime=regime,
+            now=now
+        )
+        decisions.append(d)
+        # If candidate triggered BUY, simulate adding to temp open count so subsequent candidates respect cap
+        if d.get("action") == "BUY":
+            pos_symbols.add(sym)
 
     # Save decisions to fixed state file
     decisions_payload = {
