@@ -225,10 +225,11 @@ def evaluate_asset_decision(
                 confidence = 0.75
                 reasoning = f"Ranging regime active: Awaiting oversold lower Bollinger band touch (%B {pct_b:.2f} > 0.25)."
         # --- TREND REGIME: TREND-FOLLOWING BUY LOGIC ---
-        elif rsi14 > 65.0:
+        elif rsi14 > (68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0):
+            max_rsi = 68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0
             action = "HOLD"
             confidence = 0.85
-            reasoning = f"Daily RSI is overbought ({rsi14:.2f} > 65 cutoff threshold). Standing aside to catch a healthier pullback."
+            reasoning = f"Daily RSI is overbought ({rsi14:.2f} > {max_rsi:.0f} cutoff threshold). Standing aside to catch a healthier pullback."
         elif rsi14 < 45.0:
             action = "HOLD"
             confidence = 0.75
@@ -241,10 +242,10 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.75
             reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
-        elif ob_imbalance < 0.50:
+        elif ob_imbalance < 0.48:
             action = "HOLD"
             confidence = 0.75
-            reasoning = f"Order book depth skewed to asks (imbalance ratio {ob_imbalance:.4f} < 0.50). Lacks sufficient bid support."
+            reasoning = f"Order book depth skewed to asks (imbalance ratio {ob_imbalance:.4f} < 0.48). Lacks sufficient bid support."
         elif taker_ratio < 0.95:
             action = "HOLD"
             confidence = 0.75
@@ -257,7 +258,12 @@ def evaluate_asset_decision(
         elif rsi_1h > 68.0 or price_vs_ema20_1h > 3.5:
             action = "HOLD"
             confidence = 0.80
-            reasoning = f"1H timeframe is overextended (1H RSI {rsi_1h:.2f} > 68, +{price_vs_ema20_1h:.2f}% above 1H EMA20). Awaiting intraday pullback for precision entry."
+            triggers = []
+            if rsi_1h > 68.0:
+                triggers.append(f"1H RSI overbought ({rsi_1h:.2f} > 68)")
+            if price_vs_ema20_1h > 3.5:
+                triggers.append(f"price stretched +{price_vs_ema20_1h:.2f}% above 1H EMA20 (> +3.5%)")
+            reasoning = f"1H timeframe is overextended ({' and '.join(triggers)}). Awaiting intraday pullback for precision entry."
         elif cash < suggested_pos_size:
             action = "HOLD"
             confidence = 0.80

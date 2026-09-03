@@ -1,250 +1,350 @@
 {
   "_macro": {
-    "regime_narrative": "Hawkish Fed rate hike speculation (Sept FOMC) causing short-term liquidity caution amidst structural institutional adoption.",
-    "fed_outlook": "55-60% probability of higher rates or 25bps hike",
-    "etf_flows": "Minor net outflows / consolidation",
-    "overall_sentiment": "cautious_bullish"
+    "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
+    "top_macro_headlines": [
+      "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+      "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
+      "Coldcard hacker swaps stolen Bitcoin for ETH via THORChain"
+    ],
+    "overall_sentiment": "bullish",
+    "macro_event_risk": "hack"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:15:34 +0000",
+        "link": "https://cointelegraph.com/news/standard-chartered-bitcoin-ether-trading-uae?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Coldcard hacker swaps stolen Bitcoin for ETH via THORChain",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 09:31:07 +0000",
+        "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
+        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
-    "news_sentiment": "cautious_bullish",
-    "event_risk": "none",
-    "requires_web_search": true
+    "news_sentiment": "bullish",
+    "event_risk": "hack",
+    "headline_count": 14
   },
   "ETH": {
     "symbol": "ETH",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:15:34 +0000",
+        "link": "https://cointelegraph.com/news/standard-chartered-bitcoin-ether-trading-uae?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Coldcard hacker swaps stolen Bitcoin for ETH via THORChain",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 09:31:07 +0000",
+        "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
+        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
-    "news_sentiment": "cautious_bullish",
-    "event_risk": "none",
-    "requires_web_search": true
+    "news_sentiment": "bullish",
+    "event_risk": "hack",
+    "headline_count": 6
   },
   "SOL": {
     "symbol": "SOL",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "XRP": {
     "symbol": "XRP",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
+        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Japan\u2019s Remixpoint Dumps Ethereum, XRP in Shift to Bitcoin-Only Treasury",
+        "source": "Decrypt",
+        "published_at": "Wed, 02 Sep 2026 21:31:05 +0000",
+        "link": "https://decrypt.co/377228/remixpoint-xrp-ethereum-bitcoin-only"
       }
     ],
-    "news_sentiment": "cautious_bullish",
+    "news_sentiment": "bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 2
   },
   "ADA": {
     "symbol": "ADA",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "AVAX": {
     "symbol": "AVAX",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "LINK": {
     "symbol": "LINK",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Wyoming adds Chainlink reserve verification to state-issued stable token",
+        "source": "CoinTelegraph",
+        "published_at": "Wed, 02 Sep 2026 18:38:18 +0000",
+        "link": "https://cointelegraph.com/news/wyoming-chainlink-onchain-reserves-of-state-issued-stable-token?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 1
   },
   "DOT": {
     "symbol": "DOT",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "MATIC": {
     "symbol": "MATIC",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "LTC": {
     "symbol": "LTC",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "UNI": {
     "symbol": "UNI",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "NEAR": {
     "symbol": "NEAR",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "APT": {
     "symbol": "APT",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "ICP": {
     "symbol": "ICP",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "XLM": {
     "symbol": "XLM",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "SUI": {
     "symbol": "SUI",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Sui DeFi protocol Full Sail to wind down after Switchboard incident",
+        "source": "CoinTelegraph",
+        "published_at": "Wed, 02 Sep 2026 13:40:03 +0000",
+        "link": "https://cointelegraph.com/news/full-sail-sui-wind-down-switchboard-incident?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 1
   },
   "ARB": {
     "symbol": "ARB",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "INJ": {
     "symbol": "INJ",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "BNB": {
     "symbol": "BNB",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "TRX": {
     "symbol": "TRX",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "HNT": {
     "symbol": "HNT",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "Pencil Finance completes $1M onchain lending cycle for 6.6K students in Southeast Asia",
+        "source": "CoinTelegraph",
+        "published_at": "Thu, 03 Sep 2026 10:59:34 +0000",
+        "link": "https://cointelegraph.com/news/pencil-finance-1m-onchain-lending-cycle-students?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 0
   },
   "HYPE": {
     "symbol": "HYPE",
     "headlines": [
       {
-        "warning": "HTTP 403 - API restricted or requires browser search."
+        "title": "HYPE treasury firm Hyperliquid Strategies boosts equity facility to $2.5B",
+        "source": "CoinTelegraph",
+        "published_at": "Wed, 02 Sep 2026 05:48:21 +0000",
+        "link": "https://cointelegraph.com/news/hyperliquid-strategies-equity-facility-2-5-billion?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "requires_web_search": true
+    "headline_count": 1
   }
 }

@@ -71,6 +71,7 @@ def save_portfolio(portfolio, filepath="state/portfolio.json"):
 def compute_portfolio_analytics(portfolio):
     """
     Computes rolling Sharpe Ratio, Sortino Ratio, Maximum Drawdown %, Calmar Ratio, and Benchmark comparison.
+    Samples daily close equity across unique dates to prevent intra-day execution timestamps from distorting annualization.
 
     :param portfolio: Portfolio dictionary
     :return: Updated metrics sub-dictionary
@@ -89,12 +90,26 @@ def compute_portfolio_analytics(portfolio):
             "benchmark_return_pct": 0.0
         }
 
-    values = [h.get("portfolio_value", starting_cash) for h in history]
-    returns = [(values[i] - values[i - 1]) / values[i - 1] for i in range(1, len(values))]
+    # Group equity history by calendar date (taking the latest snapshot of each unique day)
+    daily_equity_map = {}
+    for h in history:
+        ts = h.get("timestamp", "")
+        date_key = ts[:10] if len(ts) >= 10 else ts
+        daily_equity_map[date_key] = h.get("portfolio_value", starting_cash)
 
-    if returns:
+    daily_values = list(daily_equity_map.values())
+
+    # If multiple days of history exist, compute daily returns; otherwise use consecutive snapshots
+    if len(daily_values) >= 2:
+        eval_values = daily_values
+    else:
+        eval_values = [h.get("portfolio_value", starting_cash) for h in history]
+
+    returns = [(eval_values[i] - eval_values[i - 1]) / eval_values[i - 1] for i in range(1, len(eval_values))]
+
+    if returns and len(returns) >= 2:
         mean_ret = sum(returns) / len(returns)
-        variance = sum((r - mean_ret) ** 2 for r in returns) / len(returns) if len(returns) > 1 else 0
+        variance = sum((r - mean_ret) ** 2 for r in returns) / len(returns)
         std_dev = math.sqrt(variance)
         sharpe = round((mean_ret / std_dev) * math.sqrt(365), 2) if std_dev > 0 else 0.0
 
@@ -102,12 +117,18 @@ def compute_portfolio_analytics(portfolio):
         downside_var = sum(r ** 2 for r in downside) / len(returns) if downside else 0
         downside_std = math.sqrt(downside_var)
         sortino = round((mean_ret / downside_std) * math.sqrt(365), 2) if downside_std > 0 else 0.0
+    elif returns and len(returns) == 1:
+        # Initial sample - report stable non-annualized ratio
+        sharpe = round(returns[0] * 100, 2)
+        sortino = sharpe
     else:
         sharpe, sortino = 0.0, 0.0
 
-    peak = values[0]
+    # Max Drawdown across all historical snapshots (high-watermark)
+    all_values = [h.get("portfolio_value", starting_cash) for h in history]
+    peak = all_values[0]
     max_dd = 0.0
-    for v in values:
+    for v in all_values:
         if v > peak:
             peak = v
         dd = (peak - v) / peak if peak > 0 else 0
@@ -115,7 +136,7 @@ def compute_portfolio_analytics(portfolio):
             max_dd = dd
 
     max_dd_pct = round(max_dd * 100, 2)
-    total_ret = (values[-1] - starting_cash) / starting_cash if starting_cash > 0 else 0
+    total_ret = (all_values[-1] - starting_cash) / starting_cash if starting_cash > 0 else 0
     calmar = round(total_ret / max_dd, 2) if max_dd > 0 else 0.0
 
     bench_initial = history[0].get("benchmark_value", starting_cash)
@@ -257,6 +278,7 @@ def execute_trade_pass(payload):
     now = payload.get("timestamp", datetime.datetime.now(datetime.timezone.utc).isoformat())
 
     prices_map = {}
+    atr_map = {}
 
     for d in decisions:
         d["timestamp"] = now
@@ -268,6 +290,8 @@ def execute_trade_pass(payload):
 
         if price > 0:
             prices_map[symbol] = price
+        if atr14 > 0:
+            atr_map[symbol] = atr14
 
         if action == "BUY" and amount_usd > 0 and price > 0:
             if portfolio["cash"] >= amount_usd:
@@ -326,21 +350,23 @@ def execute_trade_pass(payload):
             d["qty"] = 0.0
             d["cost_or_proceeds"] = 0.0
 
-    # Update trailing stops & highest price for remaining open positions
+    # Update trailing stops & highest price for remaining open positions using live ATR(14)
     for pos in portfolio.get("positions", []):
         sym = pos["symbol"]
         if sym in prices_map:
             curr_p = prices_map[sym]
+            asset_atr = atr_map.get(sym, curr_p * 0.03)
             if "highest_price" not in pos:
                 pos["highest_price"] = pos.get("entry_price", curr_p)
             if curr_p > pos["highest_price"]:
                 pos["highest_price"] = curr_p
             if "trailing_stop_price" not in pos:
-                pos["trailing_stop_price"] = round(pos["highest_price"] - (2.0 * curr_p * 0.03), 4)
+                pos["trailing_stop_price"] = round(pos["highest_price"] - (2.0 * asset_atr), 4)
             elif curr_p > pos["entry_price"]:
-                # Adjust trailing stop upwards if higher peak reached
-                atr_est = curr_p * 0.03
-                new_stop = round(pos["highest_price"] - (2.0 * atr_est), 4)
+                # Adjust trailing stop upwards if higher peak reached using true ATR(14)
+                new_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
+                if pos.get("tp1_hit", False):
+                    new_stop = max(new_stop, float(pos.get("entry_price", new_stop)))
                 if new_stop > pos["trailing_stop_price"]:
                     pos["trailing_stop_price"] = new_stop
 

@@ -54,17 +54,35 @@ def load_watchlist(filepath="state/watchlist.json"):
 
 def fetch_binance_klines(symbol, interval="1d", limit=100):
     """
-    Fetches daily OHLCV candles from Binance API for a given symbol.
+    Fetches OHLCV candles from Binance API for a given symbol.
+    Attempts Binance Spot API first; if unlisted or fails (e.g. HYPEUSDT), falls back to Binance Futures API.
 
-    :param symbol: Binance ticker symbol (e.g., BTCUSDT)
+    :param symbol: Binance ticker symbol (e.g., BTCUSDT, HYPEUSDT)
     :param interval: Candle timeframe (default "1d")
     :param limit: Number of candles (default 100)
     :return: pandas.DataFrame containing open, high, low, close, volume as floats
     """
-    url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
-    raw_data = response.json()
+    raw_data = None
+    # 1. Try Binance Spot API
+    try:
+        url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            raw_data = response.json()
+    except Exception:
+        pass
+
+    # 2. Fall back to Binance Futures API if Spot API failed or is unavailable
+    if not raw_data:
+        try:
+            fapi_url = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval={interval}&limit={limit}"
+            f_resp = requests.get(fapi_url, timeout=10)
+            if f_resp.status_code == 200:
+                raw_data = f_resp.json()
+            else:
+                f_resp.raise_for_status()
+        except Exception as err:
+            raise RuntimeError(f"Failed to fetch klines from Spot & Futures for {symbol}: {err}")
 
     columns = [
         "open_time", "open", "high", "low", "close", "volume",
@@ -135,6 +153,7 @@ def detect_rsi_divergence(df, order=3, lookback=40):
 def fetch_orderbook_imbalance(symbol):
     """
     Fetches Binance order book depth (100 levels) and calculates bid-ask volume imbalance ratio within +/- 2% of mid-price.
+    Falls back to Futures depth API if Spot depth is unavailable.
 
     :param symbol: Binance symbol (e.g. BTCUSDT)
     :return: Float imbalance ratio between 0.0 and 1.0 (> 0.50 = bid dominance/support)
@@ -142,6 +161,9 @@ def fetch_orderbook_imbalance(symbol):
     try:
         url = f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100"
         res = requests.get(url, timeout=5)
+        if res.status_code != 200:
+            res = requests.get(f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100", timeout=5)
+
         if res.status_code == 200:
             data = res.json()
             bids = data.get("bids", [])
@@ -296,10 +318,12 @@ def compute_technical_indicators(name, symbol):
     rsi_val = float(last["rsi14"])
     atr_val = float(last["atr14"])
 
-    # Determine Trend Bias (1D)
-    if close_price > ema50_val and macd_val > macd_sig and rsi_val > 50:
+    # Determine Trend Bias (1D) with EMA stack confirmation
+    ema12_val = float(last["ema12"])
+    ema26_val = float(last["ema26"])
+    if close_price > ema50_val and rsi_val > 50 and (macd_val > macd_sig or (ema12_val > ema26_val > ema50_val and rsi_val > 52)):
         trend_bias = "bullish"
-    elif close_price < ema50_val and macd_val < macd_sig and rsi_val < 50:
+    elif close_price < ema50_val and rsi_val < 50 and (macd_val < macd_sig or (ema12_val < ema26_val < ema50_val and rsi_val < 48)):
         trend_bias = "bearish"
     else:
         trend_bias = "neutral"
@@ -309,6 +333,8 @@ def compute_technical_indicators(name, symbol):
     rsi_4h = 50.0
     try:
         df_4h = fetch_binance_klines(symbol, interval="4h", limit=50)
+        df_4h["ema12"] = ta.trend.EMAIndicator(df_4h["close"], window=12).ema_indicator()
+        df_4h["ema26"] = ta.trend.EMAIndicator(df_4h["close"], window=26).ema_indicator()
         df_4h["ema50"] = ta.trend.EMAIndicator(df_4h["close"], window=50).ema_indicator()
         df_4h["rsi14"] = ta.momentum.RSIIndicator(df_4h["close"], window=14).rsi()
         macd_4h = ta.trend.MACD(df_4h["close"], window_slow=26, window_fast=12, window_sign=9)
@@ -317,14 +343,16 @@ def compute_technical_indicators(name, symbol):
 
         last_4h = df_4h.iloc[-1]
         c_4h = float(last_4h["close"])
+        ema12_4h = float(last_4h["ema12"])
+        ema26_4h = float(last_4h["ema26"])
         ema50_4h = float(last_4h["ema50"])
         macd_val_4h = float(last_4h["macd"])
         macd_sig_4h = float(last_4h["macd_signal"])
         rsi_4h = round(float(last_4h["rsi14"]), 2)
 
-        if c_4h > ema50_4h and macd_val_4h > macd_sig_4h and rsi_4h > 50:
+        if c_4h > ema50_4h and rsi_4h > 50 and (macd_val_4h > macd_sig_4h or (ema12_4h > ema26_4h and c_4h > ema50_4h * 1.005)):
             trend_bias_4h = "bullish"
-        elif c_4h < ema50_4h and macd_val_4h < macd_sig_4h and rsi_4h < 50:
+        elif c_4h < ema50_4h and rsi_4h < 50 and (macd_val_4h < macd_sig_4h or (ema12_4h < ema26_4h and c_4h < ema50_4h * 0.995)):
             trend_bias_4h = "bearish"
         else:
             trend_bias_4h = "neutral"
@@ -353,14 +381,14 @@ def compute_technical_indicators(name, symbol):
     oi_change_24h, taker_ratio, funding_rate, funding_alert = fetch_derivatives_microstructure(symbol)
     ob_imbalance_2pct = fetch_orderbook_imbalance(symbol)
 
-    # Classify Intraday Whale Activity
+    # Classify Intraday Whale Activity (requiring confluence to avoid single-tick top-100 book noise)
     if taker_ratio >= 1.10 and oi_change_24h > 3.0 and ob_imbalance_2pct >= 0.52:
         whale_alert = "WHALE_ACCUMULATION"
     elif taker_ratio <= 0.90 and oi_change_24h > 3.0 and ob_imbalance_2pct <= 0.48:
         whale_alert = "WHALE_DISTRIBUTION"
-    elif taker_ratio >= 1.20 or ob_imbalance_2pct >= 0.65:
+    elif taker_ratio >= 1.15 and ob_imbalance_2pct >= 0.60:
         whale_alert = "BULLISH_WHALE_WALL"
-    elif taker_ratio <= 0.80 or ob_imbalance_2pct <= 0.35:
+    elif taker_ratio <= 0.85 and ob_imbalance_2pct <= 0.38:
         whale_alert = "BEARISH_WHALE_WALL"
     else:
         whale_alert = "NEUTRAL_FLOW"
