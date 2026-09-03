@@ -2,9 +2,9 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
+      "Bybit Pay integrates with Mesh to expand crypto payments",
       "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
-      "Kraken parent Payward partners with SoFi on stablecoin, 24/7 settlement",
-      "Recovery specialists crack $1B crypto wallet... but find just $10"
+      "Kraken parent Payward partners with SoFi on stablecoin, 24/7 settlement"
     ],
     "overall_sentiment": "bullish",
     "macro_event_risk": "hack"
@@ -33,7 +33,7 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 13
+    "headline_count": 12
   },
   "ETH": {
     "symbol": "ETH",
@@ -65,10 +65,10 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -99,10 +99,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -113,10 +113,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -141,10 +141,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -155,10 +155,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -169,10 +169,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -183,10 +183,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -197,10 +197,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -211,10 +211,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -225,10 +225,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -239,10 +239,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -267,10 +267,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -281,10 +281,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -295,10 +295,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -309,10 +309,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -323,10 +323,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -337,10 +337,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "BitMEX co-founder contributed 75% of Reform UK\u2019s donations in Q2 2026",
+        "title": "Bybit Pay integrates with Mesh to expand crypto payments",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 17:06:28 +0000",
-        "link": "https://cointelegraph.com/news/bitmex-cofounder-ben-delo-reform-uk-donations?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Thu, 03 Sep 2026 17:13:04 +0000",
+        "link": "https://cointelegraph.com/news/bybit-pay-integrates-with-mesh-to-expand-crypto-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

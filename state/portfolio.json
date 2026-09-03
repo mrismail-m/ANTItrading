@@ -1,5 +1,5 @@
 {
-  "cash": 4510.421447776628,
+  "cash": 3055.7814477766283,
   "starting_cash": 10000.0,
   "positions": [
     {
@@ -8,8 +8,8 @@
       "entry_price": 1.892,
       "cost_basis": 1000.0,
       "opened_at": "2026-08-30T08:26:43.910366+00:00",
-      "highest_price": 1.997,
-      "trailing_stop_price": 1.955
+      "highest_price": 1.9975,
+      "trailing_stop_price": 1.9553
     },
     {
       "symbol": "DOT",
@@ -25,8 +25,8 @@
       "qty": 10.0080064051241,
       "entry_price": 99.92,
       "cost_basis": 1000.0,
-      "highest_price": 104.6,
-      "trailing_stop_price": 102.728,
+      "highest_price": 105.16,
+      "trailing_stop_price": 103.064,
       "opened_at": "2026-09-02T04:24:05.439461+00:00"
     },
     {
@@ -34,7 +34,7 @@
       "qty": 356.13672496025436,
       "entry_price": 2.516,
       "cost_basis": 896.04,
-      "highest_price": 2.535,
+      "highest_price": 2.538,
       "trailing_stop_price": 2.3707,
       "opened_at": "2026-09-02T12:33:36.802693+00:00"
     },
@@ -52,12 +52,30 @@
       "qty": 19.72386587771203,
       "entry_price": 50.7,
       "cost_basis": 1000.0,
-      "highest_price": 51.37,
-      "trailing_stop_price": 47.5188,
+      "highest_price": 51.39,
+      "trailing_stop_price": 47.5722,
       "opened_at": "2026-09-03T11:39:00.120688+00:00"
+    },
+    {
+      "symbol": "ADA",
+      "qty": 3571.4093959731545,
+      "entry_price": 0.2235,
+      "cost_basis": 798.21,
+      "highest_price": 0.2235,
+      "trailing_stop_price": 0.1955,
+      "opened_at": "2026-09-03T17:49:55.183837+00:00"
+    },
+    {
+      "symbol": "AVAX",
+      "qty": 87.2564136647614,
+      "entry_price": 7.523,
+      "cost_basis": 656.43,
+      "highest_price": 7.523,
+      "trailing_stop_price": 6.8296,
+      "opened_at": "2026-09-03T17:49:55.183837+00:00"
     }
   ],
-  "trade_counter": 7,
+  "trade_counter": 9,
   "equity_history": [
     {
       "timestamp": "2026-09-02T04:24:05.439461+00:00",
@@ -128,13 +146,18 @@
       "timestamp": "2026-09-03T17:12:44.754709+00:00",
       "portfolio_value": 10343.88,
       "benchmark_value": 10266.13
+    },
+    {
+      "timestamp": "2026-09-03T17:49:55.183837+00:00",
+      "portfolio_value": 10355.3,
+      "benchmark_value": 10288.04
     }
   ],
   "metrics": {
-    "sharpe_ratio": 1.94,
-    "sortino_ratio": 1.94,
+    "sharpe_ratio": 2.05,
+    "sortino_ratio": 2.05,
     "max_drawdown_pct": 0.7,
-    "calmar_ratio": 4.9,
-    "benchmark_return_pct": 2.66
+    "calmar_ratio": 5.07,
+    "benchmark_return_pct": 2.88
   }
 }
