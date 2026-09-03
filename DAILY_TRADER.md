@@ -98,4 +98,4 @@ The runner automatically renders and saves the report to `state/latest_summary.m
 
 ---
 
-*Last Updated: September 3, 2026 — Architecture: Deterministic Twice-Daily Runner (`scripts/run_trader.py`).*
+*Last Updated: September 3, 2026 — Architecture: Deterministic Autonomous Hourly Runner (`scripts/run_trader.py`).*

@@ -1,9 +1,9 @@
-name: 🚀 Autonomous 4H Paper-Trading Agent
+name: 🚀 Autonomous Hourly Paper-Trading Agent
 
 on:
   schedule:
-    # Runs every 4 hours (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
-    - cron: '0 */4 * * *'
+    # Runs every hour at minute 15 (24 passes per day)
+    - cron: '15 * * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions UI
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   trade:
-    name: ⚡ Execute 4H Trading Pass & Alert
+    name: ⚡ Execute Hourly Trading Pass & Alert
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -48,6 +48,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No state updates to commit."
           else
-            git commit -m "chore(trader): 4h automated pass update [skip ci]"
+            git commit -m "chore(trader): hourly automated pass update [skip ci]"
             git push
           fi

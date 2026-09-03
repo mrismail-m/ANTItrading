@@ -513,7 +513,7 @@ def generate_executive_summary_markdown(
     lines = []
     lines.append("# 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report\n")
     lines.append(f"**Execution Timestamp:** `{now}`  ")
-    lines.append("**Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  ")
+    lines.append("**Operational Status:** Autonomous Hourly Paper-Trading Pass Completed  ")
     lines.append(f"**Tracked Assets Universe:** {len(decisions)} Pre-Screened Shariah-Compliant Assets  \n")
     lines.append("---\n")
 
