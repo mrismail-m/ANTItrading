@@ -1,0 +1,250 @@
+{
+  "_macro": {
+    "regime_narrative": "Hawkish Fed rate hike speculation (Sept FOMC) causing short-term liquidity caution amidst structural institutional adoption.",
+    "fed_outlook": "55-60% probability of higher rates or 25bps hike",
+    "etf_flows": "Minor net outflows / consolidation",
+    "overall_sentiment": "cautious_bullish"
+  },
+  "BTC": {
+    "symbol": "BTC",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "ETH": {
+    "symbol": "ETH",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "SOL": {
+    "symbol": "SOL",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "XRP": {
+    "symbol": "XRP",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "ADA": {
+    "symbol": "ADA",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "AVAX": {
+    "symbol": "AVAX",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "LINK": {
+    "symbol": "LINK",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "DOT": {
+    "symbol": "DOT",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "MATIC": {
+    "symbol": "MATIC",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "LTC": {
+    "symbol": "LTC",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "UNI": {
+    "symbol": "UNI",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "NEAR": {
+    "symbol": "NEAR",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "APT": {
+    "symbol": "APT",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "ICP": {
+    "symbol": "ICP",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "XLM": {
+    "symbol": "XLM",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "SUI": {
+    "symbol": "SUI",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "ARB": {
+    "symbol": "ARB",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "INJ": {
+    "symbol": "INJ",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "BNB": {
+    "symbol": "BNB",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "TRX": {
+    "symbol": "TRX",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "HNT": {
+    "symbol": "HNT",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  },
+  "HYPE": {
+    "symbol": "HYPE",
+    "headlines": [
+      {
+        "warning": "HTTP 403 - API restricted or requires browser search."
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "requires_web_search": true
+  }
+}

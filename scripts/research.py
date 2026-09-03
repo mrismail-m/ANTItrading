@@ -275,13 +275,42 @@ def compute_technical_indicators(name, symbol):
     rsi_val = float(last["rsi14"])
     atr_val = float(last["atr14"])
 
-    # Determine Trend Bias
+    # Determine Trend Bias (1D)
     if close_price > ema50_val and macd_val > macd_sig and rsi_val > 50:
         trend_bias = "bullish"
     elif close_price < ema50_val and macd_val < macd_sig and rsi_val < 50:
         trend_bias = "bearish"
     else:
         trend_bias = "neutral"
+
+    # 4H Multi-Timeframe Research
+    trend_bias_4h = "neutral"
+    rsi_4h = 50.0
+    try:
+        df_4h = fetch_binance_klines(symbol, interval="4h", limit=50)
+        df_4h["ema50"] = ta.trend.EMAIndicator(df_4h["close"], window=50).ema_indicator()
+        df_4h["rsi14"] = ta.momentum.RSIIndicator(df_4h["close"], window=14).rsi()
+        macd_4h = ta.trend.MACD(df_4h["close"], window_slow=26, window_fast=12, window_sign=9)
+        df_4h["macd"] = macd_4h.macd()
+        df_4h["macd_signal"] = macd_4h.macd_signal()
+
+        last_4h = df_4h.iloc[-1]
+        c_4h = float(last_4h["close"])
+        ema50_4h = float(last_4h["ema50"])
+        macd_val_4h = float(last_4h["macd"])
+        macd_sig_4h = float(last_4h["macd_signal"])
+        rsi_4h = round(float(last_4h["rsi14"]), 2)
+
+        if c_4h > ema50_4h and macd_val_4h > macd_sig_4h and rsi_4h > 50:
+            trend_bias_4h = "bullish"
+        elif c_4h < ema50_4h and macd_val_4h < macd_sig_4h and rsi_4h < 50:
+            trend_bias_4h = "bearish"
+        else:
+            trend_bias_4h = "neutral"
+    except Exception:
+        pass
+
+    trend_alignment = "aligned" if trend_bias == trend_bias_4h else "diverging"
 
     # Microstructure: OI Change, Taker Ratio, Orderbook Imbalance
     oi_change_24h, taker_ratio = fetch_derivatives_microstructure(symbol)
@@ -313,6 +342,7 @@ def compute_technical_indicators(name, symbol):
         "ticker": symbol,
         "price": round(close_price, 4),
         "rsi14": round(rsi_val, 2),
+        "rsi_4h": rsi_4h,
         "ema12": round(float(last["ema12"]), 4),
         "ema26": round(float(last["ema26"]), 4),
         "ema50": round(float(last["ema50"]), 4),
@@ -331,7 +361,10 @@ def compute_technical_indicators(name, symbol):
         "whale_alert": whale_alert,
         "suggested_pos_size": suggested_pos_size,
         "divergence": divergence,
-        "trend_bias": trend_bias
+        "trend_bias": trend_bias,
+        "trend_bias_1d": trend_bias,
+        "trend_bias_4h": trend_bias_4h,
+        "trend_alignment": trend_alignment
     }
 
 
@@ -363,11 +396,12 @@ def fetch_global_market_context():
     }
 
 
-def run_research(watchlist_path="state/watchlist.json"):
+def run_research(watchlist_path="state/watchlist.json", output_path="state/latest_research.json"):
     """
     Main function to execute complete technical and macro research.
 
     :param watchlist_path: Path to state/watchlist.json
+    :param output_path: Path to save persistent state/latest_research.json
     :return: Dictionary containing market context and asset TA breakdowns
     """
     watchlist = load_watchlist(watchlist_path)
@@ -395,10 +429,17 @@ def run_research(watchlist_path="state/watchlist.json"):
     regime = classify_market_regime(btc_p, btc_ema50, btc_adx, fg_val)
     market_ctx["market_regime"] = regime
 
-    return {
+    results = {
         "market_context": market_ctx,
         "technical_analysis": ta_results
     }
+
+    if output_path:
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        with open(output_path, "w") as f:
+            json.dump(results, f, indent=2)
+
+    return results
 
 
 if __name__ == "__main__":

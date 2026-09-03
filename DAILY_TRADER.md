@@ -62,26 +62,32 @@ Apply the core risk management rules:
   - `BUY` trigger: Both 1D and 4H trend biases are aligned **bullish**, ADX(14) > 20 (confirming trend presence), Order Book Imbalance `ob_imbalance_2pct` > 0.50 (bid dominance), Taker Buy/Sell ratio > 0.95, Whale Alert is `WHALE_ACCUMULATION` or `NEUTRAL_FLOW`, price trading near/above VWAP, daily RSI is in healthy buying territory (45–65), volume ratio is expanding (> 0.50x), conviction score $\ge 0.80$, and position cap is not reached.
   - `HOLD / SKIP` trigger: RSI is overbought (> 65), ADX < 15 (choppy range-bound), orderbook bid ratio < 0.45 (heavy ask pressure), Whale Alert is `WHALE_DISTRIBUTION`, 4H trend is diverging, trend is bearish/neutral, or conviction is insufficient.
 
-### STEP 5: Execute Trades & Update Persistent State
-Construct a structured decision JSON containing all decision records for all watchlist assets, then execute:
+### STEP 5: Autonomous Execution & Persistent State Synchronization
+Run the unified master runner script:
 ```bash
-python3 scripts/execute_trade.py --input-json /tmp/decisions_today.json
+python3 scripts/run_trader.py
 ```
-Verify that the execution script has updated:
-- `state/portfolio.json` (Includes rolling Sharpe Ratio, Sortino Ratio, Max Drawdown %, Calmar Ratio, and 50/50 BTC/ETH Benchmark Return %)
-- `state/trade_log.csv` (Appended master decision rows with `ob_imbalance_2pct`, `market_regime`, `adx14`, `vwap`, etc.)
-- `state/human_open_positions.csv`
-- `state/human_decision_log.csv`
+*(Optionally use `--dry-run` to evaluate decisions without committing state changes, or `--silent` for background execution).*
+
+The runner orchestrates the entire sequence deterministically and updates the exact same persistent files every run:
+- `state/latest_research.json` (Live 1D & 4H multi-timeframe TA, VWAP, ADX, and microstructure indicators).
+- `state/latest_sentiment.json` (News headlines and macro sentiment cache).
+- `state/latest_decisions.json` (Today's standardized decisions payload).
+- `state/latest_summary.md` (Rendered executive summary markdown report).
+- `state/portfolio.json` (Holdings, cash, trailing stops, equity history, and institutional metrics).
+- `state/trade_log.csv` (Permanent append-only trade and decision audit log).
+- `state/human_open_positions.csv` (Synced human-friendly active positions table).
+- `state/human_decision_log.csv` (Synced human-friendly decision log).
 
 ### STEP 6: Executive Summary Report
-Output a clean, professional GitHub-style markdown report containing:
+The runner automatically renders and saves the report to `state/latest_summary.md` and outputs a clean, professional GitHub-style markdown report containing:
 1. **Executive Portfolio Header:** Current date, portfolio value, total P&L (USD & %), cash balance, open position count.
 2. **Institutional Risk Metrics:** Rolling Sharpe Ratio, Sortino Ratio, Max Drawdown %, Calmar Ratio, Benchmark return vs Portfolio.
 3. **Market Regime & Context:** Macro Market Regime (`bullish_trend` / `ranging` / `volatility_crash`), Fear & Greed Index, BTC Dominance, BTC Price.
-4. **Trade Actions Summary:** Table detailing BUYS, SELLS, and HOLDS executed today with entry/exit prices, trailing stops, and rationale.
+4. **Trade Actions Summary:** Table detailing BUYS, SELLS, and HOLDS executed with entry/exit prices, trailing stops, and rationale.
 5. **Active Portfolio Snapshot:** Detailed table of open positions (symbol, qty, entry price, current price, highest price reached, trailing stop level, cost basis, current value, unrealized P&L $, return %).
 6. **Workspace File Confirmation:** List of state files modified and synchronized.
 
 ---
 
-*Last Updated: September 1, 2026 — Tracked Assets: 22 Shariah-Compliant Crypto Assets.*
+*Last Updated: September 3, 2026 — Architecture: Deterministic Twice-Daily Runner (`scripts/run_trader.py`).*

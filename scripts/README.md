@@ -36,5 +36,14 @@ This directory contains persistent, well-documented Python modules created for t
 - **Purpose:** Updates portfolio holdings (`state/portfolio.json`), appends decision logs (`state/trade_log.csv`), and synchronizes human-readable CSV views (`state/human_open_positions.csv`, `state/human_decision_log.csv`).
 - **Execution Command:**
   ```bash
-  python3 scripts/execute_trade.py --input-json decisions.json
+  python3 scripts/execute_trade.py --input-json state/latest_decisions.json
+  ```
+
+---
+
+## 4. `scripts/run_trader.py`
+- **Purpose:** Master unified runner for twice-daily autonomous paper trading. Integrates multi-timeframe research (1D & 4H), sentiment, risk filters, trade execution, and summary reporting into a single command without temporary or scratch files.
+- **Execution Command:**
+  ```bash
+  python3 scripts/run_trader.py [--dry-run] [--silent]
   ```

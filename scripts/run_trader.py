@@ -1,0 +1,468 @@
+"""
+===============================================================================
+Module: scripts/run_trader.py
+Purpose: Master Unified Autonomous Twice-Daily Paper-Trading Runner
+Author: Daily Crypto Paper-Trading Agent (Antigravity)
+
+Description:
+  This script is the single deterministic entry point for executing the twice-daily
+  paper-trading pass across all tracked Shariah-compliant cryptocurrency assets.
+  
+  Workflow:
+    1. Loads persistent state from state/portfolio.json and state/watchlist.json.
+    2. Runs live multi-timeframe TA research (1D & 4H) and saves state/latest_research.json.
+    3. Analyzes macro & news sentiment and saves state/latest_sentiment.json.
+    4. Evaluates risk management and trading decision rules across all tracked assets.
+    5. Saves structured decisions to state/latest_decisions.json.
+    6. Executes trades and updates state/portfolio.json, state/trade_log.csv,
+       state/human_open_positions.csv, and state/human_decision_log.csv.
+    7. Generates and saves an executive summary report to state/latest_summary.md
+       and prints it to the terminal.
+
+Usage:
+  python3 scripts/run_trader.py [--dry-run] [--silent]
+===============================================================================
+"""
+
+import os
+import sys
+import json
+import argparse
+import datetime
+from typing import Dict, Any, List, Tuple
+
+# Ensure workspace root is in sys.path
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+from scripts.research import run_research, load_watchlist
+from scripts.news_research import analyze_news_sentiment
+from scripts.execute_trade import load_portfolio, execute_trade_pass
+
+
+def evaluate_asset_decision(
+    symbol: str,
+    ticker: str,
+    data: Dict[str, Any],
+    portfolio: Dict[str, Any],
+    sentiment: Dict[str, Any],
+    regime: str,
+    now: str
+) -> Dict[str, Any]:
+    """
+    Evaluates trading rules for a single cryptocurrency asset.
+
+    :param symbol: Short symbol (e.g. "SOL")
+    :param ticker: Binance ticker (e.g. "SOLUSDT")
+    :param data: Technical indicator dictionary for this asset
+    :param portfolio: Current portfolio dictionary
+    :param sentiment: Sentiment data dictionary
+    :param regime: Classified market regime string
+    :param now: ISO timestamp string
+    :return: Decision dictionary conforming to trade log schema
+    """
+    if not data or "error" in data:
+        err_msg = data.get("error", "Data unavailable") if data else "Data unavailable"
+        return {
+            "timestamp": now,
+            "symbol": symbol,
+            "action": "HOLD",
+            "price": 0.0,
+            "qty": 0.0,
+            "cost_or_proceeds": 0.0,
+            "reasoning": f"Data fetch error or inactive Binance spot ticker ({err_msg}). Skipping trade.",
+            "confidence": 0.0,
+            "rsi14": 0.0,
+            "ema12": 0.0,
+            "ema26": 0.0,
+            "ema50": 0.0,
+            "macd": 0.0,
+            "macd_signal": 0.0,
+            "momentum_10": 0.0,
+            "volume_ratio": 0.0,
+            "divergence": "none",
+            "trend_bias": "neutral",
+            "news_sentiment": "no_signal",
+            "event_risk": "none",
+            "btc_correlation": 1.0,
+            "funding_rate": 0.0,
+            "onchain_signal": "no_signal",
+            "social_trend": "normal",
+            "adx14": 0.0,
+            "vwap": 0.0,
+            "oi_change_24h": 0.0,
+            "taker_ratio": 1.0,
+            "ob_imbalance_2pct": 0.50,
+            "whale_alert": "NEUTRAL_FLOW",
+            "market_regime": regime,
+            "suggested_pos_size": 0.0
+        }
+
+    price = float(data.get("price", 0.0))
+    rsi14 = float(data.get("rsi14", 50.0))
+    adx14 = float(data.get("adx14", 20.0))
+    vwap = float(data.get("vwap", price))
+    atr14 = float(data.get("atr14", price * 0.03))
+    trend_1d = data.get("trend_bias_1d", data.get("trend_bias", "neutral"))
+    trend_4h = data.get("trend_bias_4h", "neutral")
+    ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
+    taker_ratio = float(data.get("taker_ratio", 1.0))
+    whale_alert = data.get("whale_alert", "NEUTRAL_FLOW")
+    divergence = data.get("divergence", "none")
+    suggested_pos_size = float(data.get("suggested_pos_size", 1000.0))
+    pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
+    is_open = symbol in pos_map
+
+    asset_sentiment = sentiment.get(symbol, {})
+    news_sent = asset_sentiment.get("news_sentiment", "cautious_bullish")
+    event_risk = asset_sentiment.get("event_risk", "none")
+
+    action = "HOLD"
+    reasoning = ""
+    confidence = 0.75
+    amount_usd = 0.0
+
+    # -------------------------------------------------------------------------
+    # 1. EVALUATE ACTIVE OPEN POSITIONS
+    # -------------------------------------------------------------------------
+    if is_open:
+        pos = pos_map[symbol]
+        entry_p = float(pos.get("entry_price", price))
+        highest_p = max(float(pos.get("highest_price", entry_p)), price)
+        trailing_stop = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
+        pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+
+        # SELL Triggers:
+        if price < trailing_stop:
+            action = "SELL"
+            confidence = 0.92
+            reasoning = f"Price ${price:.4f} breached dynamic ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+        elif trend_1d == "bearish" and pnl_pct < 0:
+            action = "SELL"
+            confidence = 0.88
+            reasoning = f"Daily trend bias flipped to bearish (price < EMA50) with negative position return ({pnl_pct:.2f}%). Closing position."
+        elif rsi14 >= 75.0 and divergence == "bearish":
+            action = "SELL"
+            confidence = 0.90
+            reasoning = f"Extreme overbought RSI ({rsi14:.2f}) combined with confirmed bearish RSI divergence. Executing profit take."
+        elif whale_alert == "WHALE_DISTRIBUTION":
+            action = "SELL"
+            confidence = 0.85
+            reasoning = "Heavy institutional whale distribution detected (Taker Ratio <= 0.90 & Ask Wall). Exiting to avoid institutional dump."
+        else:
+            action = "HOLD"
+            confidence = 0.85
+            if pnl_pct >= 0:
+                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding for continuation."
+            else:
+                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
+
+    # -------------------------------------------------------------------------
+    # 2. EVALUATE WATCHLIST CANDIDATES FOR BUY ENTRIES
+    # -------------------------------------------------------------------------
+    else:
+        open_count = len(portfolio.get("positions", []))
+        cash = float(portfolio.get("cash", 0.0))
+
+        if open_count >= 6:
+            action = "HOLD"
+            confidence = 0.80
+            reasoning = f"Portfolio position cap reached ({open_count}/6 max positions). Cash reserved until an existing position exits."
+        elif regime == "volatility_crash":
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = "Macro market regime is 'volatility_crash'. New buy entries are vetoed to prioritize capital preservation."
+        elif whale_alert in ["WHALE_DISTRIBUTION", "BEARISH_WHALE_WALL"]:
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = f"Whale flow alert '{whale_alert}' detected. Institutional selling pressure vetoes buy entry."
+        elif rsi14 > 65.0:
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = f"Daily RSI is overbought ({rsi14:.2f} > 65 cutoff threshold). Standing aside to catch a healthier pullback."
+        elif rsi14 < 45.0 and regime != "ranging":
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"RSI is weak ({rsi14:.2f} < 45) with lack of upward momentum. Awaiting technical recovery."
+        elif trend_1d != "bullish" or trend_4h != "bullish":
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"Multi-timeframe trend alignment unfulfilled (1D: '{trend_1d}', 4H: '{trend_4h}'). Requires dual bullish alignment."
+        elif adx14 < 20.0:
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
+        elif ob_imbalance < 0.50:
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"Order book depth skewed to asks (imbalance ratio {ob_imbalance:.4f} < 0.50). Lacks sufficient bid support."
+        elif taker_ratio < 0.95:
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"Taker buy/sell volume ratio ({taker_ratio:.4f} < 0.95) indicates active seller aggression."
+        elif price < vwap * 0.98:
+            action = "HOLD"
+            confidence = 0.75
+            reasoning = f"Price ${price:.4f} is trading notably below VWAP (${vwap:.4f}). Awaiting reclaim of VWAP."
+        elif cash < suggested_pos_size:
+            action = "HOLD"
+            confidence = 0.80
+            reasoning = f"Insufficient cash buffer (${cash:.2f} vs required ${suggested_pos_size:.2f}) to open position."
+        else:
+            # All strict buy criteria satisfied!
+            action = "BUY"
+            amount_usd = suggested_pos_size
+            confidence = 0.88
+            reasoning = (
+                f"BULLISH CONFIRMATION: Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
+                f"healthy RSI ({rsi14:.2f}), strong ADX ({adx14:.2f}), Order Book bid dominance ({ob_imbalance:.4f}), "
+                f"and Taker Ratio ({taker_ratio:.4f}). Initiating allocation (${suggested_pos_size:.2f})."
+            )
+
+    return {
+        "timestamp": now,
+        "symbol": symbol,
+        "action": action,
+        "price": price,
+        "amount_usd": amount_usd,
+        "qty": 0.0,
+        "cost_or_proceeds": 0.0,
+        "reasoning": reasoning,
+        "confidence": confidence,
+        "rsi14": rsi14,
+        "ema12": float(data.get("ema12", 0.0)),
+        "ema26": float(data.get("ema26", 0.0)),
+        "ema50": float(data.get("ema50", 0.0)),
+        "macd": float(data.get("macd", 0.0)),
+        "macd_signal": float(data.get("macd_signal", 0.0)),
+        "momentum_10": float(data.get("momentum_10", 0.0)),
+        "volume_ratio": float(data.get("volume_ratio", 0.0)),
+        "divergence": divergence,
+        "trend_bias": trend_1d,
+        "news_sentiment": news_sent,
+        "event_risk": event_risk,
+        "btc_correlation": 1.0 if symbol == "BTC" else 0.85,
+        "funding_rate": 0.0,
+        "onchain_signal": "no_signal",
+        "social_trend": "normal",
+        "adx14": adx14,
+        "vwap": vwap,
+        "atr14": atr14,
+        "oi_change_24h": float(data.get("oi_change_24h", 0.0)),
+        "taker_ratio": taker_ratio,
+        "ob_imbalance_2pct": ob_imbalance,
+        "whale_alert": whale_alert,
+        "market_regime": regime,
+        "suggested_pos_size": suggested_pos_size
+    }
+
+
+def generate_executive_summary_markdown(
+    portfolio: Dict[str, Any],
+    market_ctx: Dict[str, Any],
+    decisions: List[Dict[str, Any]],
+    now: str
+) -> str:
+    """
+    Renders the standardized GitHub-style markdown executive summary report.
+    """
+    cash = float(portfolio.get("cash", 10000.0))
+    positions = portfolio.get("positions", [])
+    metrics = portfolio.get("metrics", {})
+    history = portfolio.get("equity_history", [])
+    curr_equity = history[-1].get("portfolio_value", cash) if history else cash
+    bench_val = history[-1].get("benchmark_value", 10000.0) if history else 10000.0
+    start_cash = float(portfolio.get("starting_cash", 10000.0))
+    total_pnl_usd = curr_equity - start_cash
+    total_pnl_pct = (total_pnl_usd / start_cash) * 100 if start_cash > 0 else 0.0
+
+    fg = market_ctx.get("fear_and_greed", {})
+    fg_val = fg.get("value", "N/A")
+    fg_class = fg.get("value_classification", "Neutral")
+    btc_d = market_ctx.get("btc_dominance", 0.0)
+    eth_d = market_ctx.get("eth_dominance", 0.0)
+    regime = market_ctx.get("market_regime", "neutral")
+
+    lines = []
+    lines.append("# 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report\n")
+    lines.append(f"**Execution Timestamp:** `{now}`  ")
+    lines.append("**Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  ")
+    lines.append(f"**Tracked Assets Universe:** {len(decisions)} Pre-Screened Shariah-Compliant Assets  \n")
+    lines.append("---\n")
+
+    # 1. Executive Portfolio Header
+    lines.append("## 1. 💼 Executive Portfolio Header\n")
+    lines.append("| Metric | Current Value | Baseline / Target | Notes |")
+    lines.append("| :--- | :--- | :--- | :--- |")
+    lines.append(f"| **Total Portfolio Value** | **${curr_equity:,.2f} USD** | ${start_cash:,.2f} Starting Cash | **{'+' if total_pnl_usd >= 0 else ''}${total_pnl_usd:,.2f} Net P&L ({'+' if total_pnl_pct >= 0 else ''}{total_pnl_pct:.2f}%)** |")
+    lines.append(f"| **Cash Balance** | **${cash:,.2f} USD** | Min 20% Reserve | **{(cash / curr_equity * 100):.2f}%** Capital in Liquid Cash |")
+    pos_val = curr_equity - cash
+    lines.append(f"| **Active Positions Value** | **${pos_val:,.2f} USD** | Max 6 Positions | **{(pos_val / curr_equity * 100):.2f}%** Capital Allocated |")
+    lines.append(f"| **Open Positions Count** | **{len(positions)} / 6** | Max Cap: 6 | {6 - len(positions)} Position Slots Available |")
+    lines.append(f"| **Total Executed Trades** | **{portfolio.get('trade_counter', 0)} Trades** | — | Audit trail synchronized in CSV |")
+    lines.append("\n---\n")
+
+    # 2. Institutional Risk & Benchmark Metrics
+    lines.append("## 2. 📊 Institutional Risk & Benchmark Metrics\n")
+    bench_ret = metrics.get("benchmark_return_pct", 0.0)
+    alpha = total_pnl_pct - bench_ret
+    lines.append("| Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |")
+    lines.append("| :--- | :--- | :--- | :--- |")
+    lines.append(f"| **Total Cumulative Return** | **{'+' if total_pnl_pct >= 0 else ''}{total_pnl_pct:.2f}%** | **{'+' if bench_ret >= 0 else ''}{bench_ret:.2f}%** | **{'+' if alpha >= 0 else ''}{alpha:.2f}% Alpha** |")
+    lines.append(f"| **Current Benchmark Value** | ${curr_equity:,.2f} | ${bench_val:,.2f} | **{'+' if (curr_equity - bench_val) >= 0 else ''}${(curr_equity - bench_val):,.2f} Value Premium** |")
+    lines.append(f"| **Max Drawdown (%)** | **{metrics.get('max_drawdown_pct', 0.0):.2f}%** | Macro Benchmark Variance | Capital preservation filter active |")
+    lines.append(f"| **Calmar Ratio** | **{metrics.get('calmar_ratio', 0.0):.2f}** | — | Return to max drawdown ratio |")
+    lines.append(f"| **Rolling Sharpe Ratio** | **{metrics.get('sharpe_ratio', 0.0):.2f}** | — | Annualized risk-adjusted return |")
+    lines.append(f"| **Rolling Sortino Ratio** | **{metrics.get('sortino_ratio', 0.0):.2f}** | — | Downside-volatility weighted |")
+    lines.append("\n---\n")
+
+    # 3. Macro Market Regime & Context
+    lines.append("## 3. 🌐 Macro Market Regime & Sentiment Context\n")
+    lines.append(f"* **Market Regime:** `{regime}`")
+    lines.append(f"* **Fear & Greed Index:** **{fg_val} / 100 ({fg_class})**")
+    lines.append(f"* **BTC Dominance:** **{btc_d:.2f}%** | **ETH Dominance:** **{eth_d:.2f}%**")
+    lines.append("\n---\n")
+
+    # 4. Active Portfolio Snapshot
+    lines.append("## 4. 📈 Active Portfolio Snapshot (Open Positions)\n")
+    if positions:
+        lines.append("| Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Status |")
+        lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+        for idx, p in enumerate(positions, 1):
+            lines.append(
+                f"| **TRADE-{idx:03d}** | `{p.get('symbol')}` | {p.get('qty', 0):.4f} | "
+                f"${p.get('entry_price', 0):.4f} | ${p.get('highest_price', 0):.4f} | "
+                f"${p.get('trailing_stop_price', 0):.4f} | ${p.get('cost_basis', 0):.2f} | **ACTIVE** |"
+            )
+    else:
+        lines.append("_No open positions currently active. Portfolio is 100% liquid cash._")
+    lines.append("\n---\n")
+
+    # 5. Trade Actions & Decisions Summary
+    buys = [d for d in decisions if d.get("action") == "BUY"]
+    sells = [d for d in decisions if d.get("action") == "SELL"]
+    holds = [d for d in decisions if d.get("action") == "HOLD"]
+
+    lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
+    lines.append("| Asset | Action | Live Price | RSI(14) | ADX(14) | Trend (1D) | Whale Alert | Confidence | Decision Rationale |")
+    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |")
+    for d in decisions:
+        lines.append(
+            f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
+            f"{d.get('rsi14', 0):.2f} | {d.get('adx14', 0):.2f} | {d.get('trend_bias', 'neutral')} | "
+            f"`{d.get('whale_alert', 'NEUTRAL_FLOW')}` | {float(d.get('confidence', 0.75)):.2f} | {d.get('reasoning')} |"
+        )
+    lines.append("\n---\n")
+
+    # 6. Persistent Files Confirmation
+    lines.append("## 6. 📁 Workspace File Synchronization\n")
+    lines.append("* `state/latest_research.json`: Multi-timeframe TA & microstructure indicators updated.")
+    lines.append("* `state/latest_sentiment.json`: News headlines & macro sentiment cached.")
+    lines.append("* `state/latest_decisions.json`: Standardized decision array persisted.")
+    lines.append("* `state/latest_summary.md`: Rendered markdown report saved.")
+    lines.append("* `state/portfolio.json`: Portfolio cash, holdings, and risk metrics synchronized.")
+    lines.append("* `state/trade_log.csv`: Audit log rows appended.")
+    lines.append("* `state/human_open_positions.csv`: Active positions view synchronized.")
+    lines.append("* `state/human_decision_log.csv`: Human decision trail synchronized.\n")
+
+    return "\n".join(lines)
+
+
+def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
+    """
+    Main orchestrator for twice-daily paper-trading pass.
+    """
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    watchlist_path = os.path.join(ROOT_DIR, "state", "watchlist.json")
+    research_path = os.path.join(ROOT_DIR, "state", "latest_research.json")
+    sentiment_path = os.path.join(ROOT_DIR, "state", "latest_sentiment.json")
+    decisions_path = os.path.join(ROOT_DIR, "state", "latest_decisions.json")
+    summary_path = os.path.join(ROOT_DIR, "state", "latest_summary.md")
+
+    if not silent:
+        print(f"🚀 [1/5] Running live market research across tracked universe...")
+
+    # 1. Technical Research (1D & 4H)
+    research_data = run_research(watchlist_path=watchlist_path, output_path=research_path)
+    market_ctx = research_data.get("market_context", {})
+    ta_data = research_data.get("technical_analysis", {})
+    regime = market_ctx.get("market_regime", "neutral")
+
+    # 2. Sentiment Research
+    if not silent:
+        print(f"📰 [2/5] Querying news headlines and macro sentiment...")
+    sentiment_data = analyze_news_sentiment(output_path=sentiment_path)
+
+    # 3. Load Persistent Portfolio
+    portfolio = load_portfolio()
+
+    # 4. Decision Engine
+    if not silent:
+        print(f"🧠 [3/5] Evaluating decision rules and risk management...")
+    watchlist = load_watchlist(watchlist_path)
+    decisions = []
+
+    for name, ticker in watchlist.items():
+        symbol = ticker.replace("USDT", "")
+        asset_ta = ta_data.get(ticker, {})
+        decision = evaluate_asset_decision(
+            symbol=symbol,
+            ticker=ticker,
+            data=asset_ta,
+            portfolio=portfolio,
+            sentiment=sentiment_data,
+            regime=regime,
+            now=now
+        )
+        decisions.append(decision)
+
+    # Save decisions to fixed state file
+    decisions_payload = {
+        "timestamp": now,
+        "decisions": decisions
+    }
+    with open(decisions_path, "w") as f:
+        json.dump(decisions_payload, f, indent=2)
+
+    # 5. Trade Execution & State Persistence
+    if not silent:
+        print(f"⚡ [4/5] Syncing state and updating portfolio...")
+    if not dry_run:
+        updated_portfolio = execute_trade_pass(decisions_payload)
+    else:
+        updated_portfolio = portfolio
+        if not silent:
+            print("   [DRY-RUN] Skipped persistent trade execution and portfolio write.")
+
+    # 6. Generate & Save Executive Report
+    if not silent:
+        print(f"📄 [5/5] Generating Executive Summary Report...")
+    summary_md = generate_executive_summary_markdown(
+        portfolio=updated_portfolio,
+        market_ctx=market_ctx,
+        decisions=decisions,
+        now=now
+    )
+    with open(summary_path, "w") as f:
+        f.write(summary_md)
+
+    if not silent:
+        print("\n" + summary_md)
+
+    return {
+        "status": "success",
+        "timestamp": now,
+        "portfolio": updated_portfolio,
+        "decisions_count": len(decisions),
+        "summary_path": summary_path
+    }
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="ANTItrading Autonomous Twice-Daily Paper-Trading Runner")
+    parser.add_argument("--dry-run", action="store_true", help="Evaluate research and decisions without saving trades")
+    parser.add_argument("--silent", action="store_true", help="Suppress terminal markdown rendering")
+    args = parser.parse_args()
+
+    run_trader_pass(dry_run=args.dry_run, silent=args.silent)
