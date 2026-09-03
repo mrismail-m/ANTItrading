@@ -174,7 +174,7 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
     with open(filepath, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         if not file_exists:
             writer.writeheader()
 

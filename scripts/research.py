@@ -307,6 +307,10 @@ def compute_technical_indicators(name, symbol):
     vwap_ind = ta.volume.VolumeWeightedAveragePrice(df["high"], df["low"], df["close"], df["volume"], window=14)
     df["vwap"] = vwap_ind.volume_weighted_average_price()
 
+    # 20-day Price Channel (Donchian High & Low)
+    df["donchian_high_20"] = df["high"].rolling(window=20).max()
+    df["donchian_low_20"] = df["low"].rolling(window=20).min()
+
     # Divergence
     divergence = detect_rsi_divergence(df)
 
@@ -317,6 +321,12 @@ def compute_technical_indicators(name, symbol):
     macd_sig = float(last["macd_signal"])
     rsi_val = float(last["rsi14"])
     atr_val = float(last["atr14"])
+
+    # Detect Volume Expansion & 20-Day Range Breakout
+    vol_ratio = float(last["volume_ratio"]) if pd.notna(last["volume_ratio"]) else 1.0
+    donchian_h20 = float(last["donchian_high_20"]) if pd.notna(last["donchian_high_20"]) else close_price
+    donchian_l20 = float(last["donchian_low_20"]) if pd.notna(last["donchian_low_20"]) else close_price
+    volume_breakout = bool((vol_ratio >= 1.8) and (close_price >= donchian_h20 * 0.99))
 
     # Determine Trend Bias (1D) with EMA stack confirmation
     ema12_val = float(last["ema12"])
@@ -432,6 +442,9 @@ def compute_technical_indicators(name, symbol):
         "ob_imbalance_2pct": ob_imbalance_2pct,
         "whale_alert": whale_alert,
         "suggested_pos_size": suggested_pos_size,
+        "donchian_high_20": round(donchian_h20, 4),
+        "donchian_low_20": round(donchian_l20, 4),
+        "volume_breakout": volume_breakout,
         "divergence": divergence,
         "trend_bias": trend_bias,
         "trend_bias_1d": trend_bias,

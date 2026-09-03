@@ -52,8 +52,8 @@
       "qty": 19.72386587771203,
       "entry_price": 50.7,
       "cost_basis": 1000.0,
-      "highest_price": 50.7,
-      "trailing_stop_price": 46.9102,
+      "highest_price": 50.89,
+      "trailing_stop_price": 47.1002,
       "opened_at": "2026-09-03T11:39:00.120688+00:00"
     }
   ],
@@ -88,13 +88,18 @@
       "timestamp": "2026-09-03T11:39:00.120688+00:00",
       "portfolio_value": 10223.08,
       "benchmark_value": 9880.25
+    },
+    {
+      "timestamp": "2026-09-03T11:50:37.322000+00:00",
+      "portfolio_value": 10218.6,
+      "benchmark_value": 9885.44
     }
   ],
   "metrics": {
-    "sharpe_ratio": 0.75,
-    "sortino_ratio": 0.75,
+    "sharpe_ratio": 0.71,
+    "sortino_ratio": 0.71,
     "max_drawdown_pct": 0.65,
-    "calmar_ratio": 3.41,
-    "benchmark_return_pct": -1.2
+    "calmar_ratio": 3.34,
+    "benchmark_return_pct": -1.15
   }
 }

@@ -1,6 +1,6 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-03T11:39:00.120688+00:00`  
+**Execution Timestamp:** `2026-09-03T11:50:37.322000+00:00`  
 **Operational Status:** Autonomous Twice-Daily Paper-Trading Pass Completed  
 **Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
 
@@ -10,9 +10,9 @@
 
 | Metric | Current Value | Baseline / Target | Notes |
 | :--- | :--- | :--- | :--- |
-| **Total Portfolio Value** | **$10,223.08 USD** | $10,000.00 Starting Cash | **+$223.08 Net P&L (+2.23%)** |
-| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **44.12%** Capital in Liquid Cash |
-| **Active Positions Value** | **$5,712.66 USD** | Max 6 Positions | **55.88%** Capital Allocated |
+| **Total Portfolio Value** | **$10,218.60 USD** | $10,000.00 Starting Cash | **+$218.60 Net P&L (+2.19%)** |
+| **Cash Balance** | **$4,510.42 USD** | Min 20% Reserve | **44.14%** Capital in Liquid Cash |
+| **Active Positions Value** | **$5,708.18 USD** | Max 6 Positions | **55.86%** Capital Allocated |
 | **Open Positions Count** | **6 / 6** | Max Cap: 6 | 0 Position Slots Available |
 | **Total Executed Trades** | **7 Trades** | — | Audit trail synchronized in CSV |
 
@@ -22,12 +22,12 @@
 
 | Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |
 | :--- | :--- | :--- | :--- |
-| **Total Cumulative Return** | **+2.23%** | **-1.20%** | **+3.43% Alpha** |
-| **Current Benchmark Value** | $10,223.08 | $9,880.25 | **+$342.83 Value Premium** |
+| **Total Cumulative Return** | **+2.19%** | **-1.15%** | **+3.34% Alpha** |
+| **Current Benchmark Value** | $10,218.60 | $9,885.44 | **+$333.16 Value Premium** |
 | **Max Drawdown (%)** | **0.65%** | Macro Benchmark Variance | Capital preservation filter active |
-| **Calmar Ratio** | **3.41** | — | Return to max drawdown ratio |
-| **Rolling Sharpe Ratio** | **0.75** | — | Annualized risk-adjusted return |
-| **Rolling Sortino Ratio** | **0.75** | — | Downside-volatility weighted |
+| **Calmar Ratio** | **3.34** | — | Return to max drawdown ratio |
+| **Rolling Sharpe Ratio** | **0.71** | — | Annualized risk-adjusted return |
+| **Rolling Sortino Ratio** | **0.71** | — | Downside-volatility weighted |
 
 ---
 
@@ -35,7 +35,7 @@
 
 * **Market Regime:** `bullish_trend`
 * **Fear & Greed Index:** **65 / 100 (Greed)**
-* **BTC Dominance:** **59.53%** | **ETH Dominance:** **11.17%**
+* **BTC Dominance:** **59.52%** | **ETH Dominance:** **11.18%**
 
 ---
 
@@ -48,36 +48,36 @@
 | **TRADE-003** | `SOL` | 10.0080 | $99.9200 | $101.3300 | $95.2904 | $1000.00 | FULL POSITION |
 | **TRADE-004** | `ICP` | 356.1367 | $2.5160 | $2.5220 | $2.3707 | $896.04 | FULL POSITION |
 | **TRADE-005** | `APT` | 1257.0915 | $0.6120 | $0.6120 | $0.5324 | $769.34 | FULL POSITION |
-| **TRADE-006** | `LTC` | 19.7239 | $50.7000 | $50.7000 | $46.9102 | $1000.00 | FULL POSITION |
+| **TRADE-006** | `LTC` | 19.7239 | $50.7000 | $50.8900 | $47.1002 | $1000.00 | FULL POSITION |
 
 ---
 
-## 5. 🎯 Trade Actions Summary (2 BUYS, 0 TRIMS, 0 SELLS, 20 HOLDS)
+## 5. 🎯 Trade Actions Summary (0 BUYS, 0 TRIMS, 0 SELLS, 22 HOLDS)
 
-| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Funding Alert | Whale Alert | Confidence | Decision Rationale |
-| :--- | :---: | :--- | :--- | :--- | :--- | :---: | :---: | :--- |
-| **SOL** | **HOLD** | $100.8200 | 64.03 | #9 (+0.50) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+0.90% from $99.9200 entry). Price $100.8200 comfortably above trailing stop ($95.2904); holding. |
-| **DOT** | **HOLD** | $0.8780 | 56.26 | #10 (+0.28) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+4.40% from $0.8410 entry). Price $0.8780 comfortably above trailing stop ($0.8318); holding. |
-| **NEAR** | **HOLD** | $1.8960 | 55.18 | #8 (+1.01) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position in profit (+0.21% from $1.8920 entry). Price $1.8960 comfortably above trailing stop ($1.7911); holding. |
-| **ICP** | **HOLD** | $2.4940 | 58.84 | #6 (+1.67) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Active position intact (-0.87% from $2.5160 entry). Price $2.4940 is well above trailing stop ($2.3707); trend structure intact. |
-| **ARB** | **HOLD** | $0.1350 | 80.07 | #1 (+46.61) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (80.07 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **UNI** | **HOLD** | $6.1820 | 80.85 | #2 (+43.97) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (80.85 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **APT** | **BUY** | $0.6120 | 57.74 | #3 (+5.65) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.88 | BULLISH CONFIRMATION: Dual 1D/4H bullish trend alignment (Price $0.6120 > EMA50), healthy RSI (57.74), strong ADX (21.64), Order Book bid dominance (0.9194), and Taker Ratio (0.9548). RS Rank: #3 (Score: +5.65). Initiating allocation ($769.34). |
-| **LTC** | **BUY** | $50.7000 | 61.24 | #4 (+2.41) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.88 | BULLISH CONFIRMATION: Dual 1D/4H bullish trend alignment (Price $50.7000 > EMA50), healthy RSI (61.24), strong ADX (28.67), Order Book bid dominance (0.5039), and Taker Ratio (0.9734). RS Rank: #4 (Score: +2.41). Initiating allocation ($1000.00). |
-| **BNB** | **HOLD** | $710.6500 | 69.82 | #5 (+2.38) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (69.82 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **HYPE** | **HOLD** | $81.9810 | 64.33 | #7 (+1.65) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'bearish'). Requires dual bullish alignment. |
-| **SUI** | **HOLD** | $0.7677 | 55.26 | #11 (+0.01) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Order book depth skewed to asks (imbalance ratio 0.4141 < 0.48). Lacks sufficient bid support. |
-| **BTC** | **HOLD** | $77915.7900 | 66.68 | #12 (+0.00) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.85 | Daily RSI is overbought (66.68 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **ADA** | **HOLD** | $0.2072 | 56.37 | #13 (-1.14) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Order book depth skewed to asks (imbalance ratio 0.4086 < 0.48). Lacks sufficient bid support. |
-| **XRP** | **HOLD** | $1.3691 | 60.42 | #14 (-1.23) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'neutral'). Requires dual bullish alignment. |
-| **LINK** | **HOLD** | $11.2940 | 61.97 | #15 (-1.83) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'neutral'). Requires dual bullish alignment. |
-| **ETH** | **HOLD** | $2405.1000 | 62.14 | #16 (-2.12) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'bearish'). Requires dual bullish alignment. |
-| **AVAX** | **HOLD** | $7.2870 | 56.46 | #17 (-2.87) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Price $7.2870 is trading notably below VWAP ($7.4526). Awaiting reclaim of VWAP. |
-| **TRX** | **HOLD** | $0.3278 | 42.34 | #18 (-3.84) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (42.34 < 45) with lack of upward momentum. Awaiting technical recovery. |
-| **XLM** | **HOLD** | $0.1777 | 50.36 | #19 (-4.89) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
-| **INJ** | **HOLD** | $4.8940 | 49.16 | #20 (-6.47) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'bearish'). Requires dual bullish alignment. |
-| **HNT** | **HOLD** | $4.6700 | 46.94 | #21 (-8.16) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
-| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-11.16) | `NEUTRAL_FUNDING` | `NEUTRAL_FLOW` | 0.75 | RSI is weak (38.00 < 45) with lack of upward momentum. Awaiting technical recovery. |
+| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Conviction Tier | Whale / Breakout | Confidence | Decision Rationale |
+| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **SOL** | **HOLD** | $100.8700 | 64.08 | #9 (+0.54) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.50 | Active position in profit (+0.95% from $99.9200 entry). Price $100.8700 comfortably above trailing stop ($95.2904); holding. |
+| **DOT** | **HOLD** | $0.8790 | 56.41 | #10 (+0.39) | `SOLID` | `NEUTRAL_FLOW` | 0.65 | Active position in profit (+4.52% from $0.8410 entry). Price $0.8790 comfortably above trailing stop ($0.8318); holding. |
+| **LTC** | **HOLD** | $50.8900 | 61.89 | #5 (+2.79) | `SOLID` | `NEUTRAL_FLOW` | 0.65 | Active position in profit (+0.37% from $50.7000 entry). Price $50.8900 comfortably above trailing stop ($46.9102); holding. |
+| **NEAR** | **HOLD** | $1.8990 | 55.36 | #8 (+1.17) | `SOLID` | `NEUTRAL_FLOW` | 0.65 | Active position in profit (+0.37% from $1.8920 entry). Price $1.8990 comfortably above trailing stop ($1.7911); holding. |
+| **APT** | **HOLD** | $0.6020 | 56.13 | #3 (+3.90) | `SOLID` | `NEUTRAL_FLOW` | 0.75 | Active position intact (-1.63% from $0.6120 entry). Price $0.6020 is well above trailing stop ($0.5324); trend structure intact. |
+| **ICP** | **HOLD** | $2.4970 | 58.98 | #7 (+1.78) | `SOLID` | `NEUTRAL_FLOW` | 0.65 | Active position intact (-0.76% from $2.5160 entry). Price $2.4970 is well above trailing stop ($2.3707); trend structure intact. |
+| **ARB** | **HOLD** | $0.1356 | 80.24 | #1 (+47.26) | `A+` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **UNI** | **HOLD** | $6.2450 | 81.26 | #2 (+45.44) | `A+` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **BNB** | **HOLD** | $715.1300 | 70.81 | #4 (+3.02) | `SOLID` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **HYPE** | **HOLD** | $82.1090 | 64.48 | #6 (+1.81) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **BTC** | **HOLD** | $77919.9600 | 66.69 | #11 (+0.00) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **SUI** | **HOLD** | $0.7675 | 55.23 | #12 (-0.01) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **XRP** | **HOLD** | $1.3713 | 60.61 | #13 (-1.07) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **ADA** | **HOLD** | $0.2070 | 56.25 | #14 (-1.24) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **LINK** | **HOLD** | $11.2780 | 61.79 | #15 (-1.98) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **ETH** | **HOLD** | $2407.5200 | 62.29 | #16 (-2.02) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **AVAX** | **HOLD** | $7.2860 | 56.44 | #17 (-2.89) | `SOLID` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **TRX** | **HOLD** | $0.3279 | 42.48 | #18 (-3.82) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **XLM** | **HOLD** | $0.1777 | 50.36 | #19 (-4.90) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **INJ** | **HOLD** | $4.9220 | 49.86 | #20 (-5.94) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **HNT** | **HOLD** | $4.6700 | 46.94 | #21 (-8.16) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
+| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-11.17) | `CAUTIOUS` | `NEUTRAL_FLOW` | 0.80 | Portfolio position cap reached (6/6 max positions). Cash reserved until an existing position exits. |
 
 ---
 

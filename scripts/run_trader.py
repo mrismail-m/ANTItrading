@@ -117,7 +117,10 @@ def evaluate_asset_decision(
     rs_rank = data.get("rs_rank", "-")
     divergence = data.get("divergence", "none")
     pct_b = float(data.get("bollinger_pct_b", 0.50))
-    suggested_pos_size = float(data.get("suggested_pos_size", 1000.0))
+    vol_ratio = float(data.get("volume_ratio", 1.0))
+    volume_breakout = bool(data.get("volume_breakout", False))
+    donchian_h20 = float(data.get("donchian_high_20", price))
+    donchian_l20 = float(data.get("donchian_low_20", price))
     pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
     is_open = symbol in pos_map
 
@@ -125,9 +128,76 @@ def evaluate_asset_decision(
     news_sent = asset_sentiment.get("news_sentiment", "cautious_bullish")
     event_risk = asset_sentiment.get("event_risk", "none")
 
+    # -------------------------------------------------------------------------
+    # CALCULATE MULTI-FACTOR CONFLUENCE CONVICTION SCORE (0.0 to 1.0)
+    # -------------------------------------------------------------------------
+    conv_score = 0.20  # baseline
+    if trend_1d == "bullish" and trend_4h == "bullish":
+        conv_score += 0.25
+    elif trend_1d == "bullish" or trend_4h == "bullish":
+        conv_score += 0.10
+
+    try:
+        rank_num = int(rs_rank)
+    except Exception:
+        rank_num = 99
+
+    if rank_num in [1, 2, 3] or rs_score >= 5.0:
+        conv_score += 0.25
+    elif rank_num in [4, 5, 6] or rs_score > 0:
+        conv_score += 0.15
+
+    if volume_breakout:
+        conv_score += 0.20
+    elif vol_ratio >= 1.5:
+        conv_score += 0.10
+
+    if whale_alert in ["WHALE_ACCUMULATION", "BULLISH_WHALE_WALL"] or ob_imbalance >= 0.58:
+        conv_score += 0.15
+    elif taker_ratio >= 1.05:
+        conv_score += 0.08
+
+    if funding_alert == "SHORT_SQUEEZE_ALERT":
+        conv_score += 0.15
+
+    if news_sent == "bullish" and event_risk == "none":
+        conv_score += 0.10
+    elif news_sent == "cautious_bullish" and event_risk == "none":
+        conv_score += 0.05
+
+    final_conviction = min(0.98, max(0.50, round(conv_score, 2)))
+
+    # -------------------------------------------------------------------------
+    # CONVICTION-WEIGHTED DYNAMIC POSITION SIZING (Feature 4)
+    # -------------------------------------------------------------------------
+    portfolio_cash = float(portfolio.get("cash", 10000.0))
+    positions_val = sum(p.get("qty", 0.0) * float(p.get("entry_price", 0.0)) for p in portfolio.get("positions", []))
+    curr_equity = portfolio_cash + positions_val
+    if curr_equity <= 0:
+        curr_equity = float(portfolio.get("starting_cash", 10000.0))
+
+    base_alloc = round(curr_equity * 0.10, 2)  # 10% compounding base
+
+    if final_conviction >= 0.85:
+        conviction_tier = "A+"
+        target_size = min(1200.0, max(800.0, round(base_alloc * 1.20, 2)))
+    elif final_conviction >= 0.65:
+        conviction_tier = "SOLID"
+        target_size = min(1000.0, max(600.0, round(base_alloc * 1.00, 2)))
+    else:
+        conviction_tier = "CAUTIOUS"
+        target_size = min(800.0, max(400.0, round(base_alloc * 0.70, 2)))
+
+    if atr14 > 0:
+        atr_risk_units = 100.0 / (2.0 * atr14)
+        atr_size_cap = round(atr_risk_units * price, 2)
+        suggested_pos_size = min(target_size, max(250.0, atr_size_cap))
+    else:
+        suggested_pos_size = target_size
+
     action = "HOLD"
     reasoning = ""
-    confidence = 0.75
+    confidence = final_conviction
     amount_usd = 0.0
 
     # -------------------------------------------------------------------------
@@ -176,7 +246,7 @@ def evaluate_asset_decision(
             reasoning = "Heavy institutional whale distribution detected (Taker Ratio <= 0.90 & Ask Wall). Exiting to avoid institutional dump."
         else:
             action = "HOLD"
-            confidence = 0.85
+            confidence = final_conviction
             runner_tag = " [RUNNER - ZERO RISK]" if tp1_hit else ""
             if pnl_pct >= 0:
                 reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding."
@@ -214,7 +284,7 @@ def evaluate_asset_decision(
                     amount_usd = suggested_pos_size
                     confidence = 0.84
                     reasoning = (
-                        f"MEAN-REVERSION ENTRY: Ranging market oversold bounce play (Bollinger %B {pct_b:.2f} <= 0.25, "
+                        f"MEAN-REVERSION ENTRY ({conviction_tier} TIER): Ranging market oversold bounce play (Bollinger %B {pct_b:.2f} <= 0.25, "
                         f"RSI {rsi14:.2f} <= 38) with order book bid support ({ob_imbalance:.4f}). Initiating allocation (${suggested_pos_size:.2f})."
                     )
                 else:
@@ -224,7 +294,7 @@ def evaluate_asset_decision(
                 action = "HOLD"
                 confidence = 0.75
                 reasoning = f"Ranging regime active: Awaiting oversold lower Bollinger band touch (%B {pct_b:.2f} > 0.25)."
-        # --- TREND REGIME: TREND-FOLLOWING BUY LOGIC ---
+        # --- TREND REGIME: TREND-FOLLOWING & BREAKOUT BUY LOGIC ---
         elif rsi14 > (68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0):
             max_rsi = 68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0
             action = "HOLD"
@@ -238,7 +308,7 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.75
             reasoning = f"Multi-timeframe trend alignment unfulfilled (1D: '{trend_1d}', 4H: '{trend_4h}'). Requires dual bullish alignment."
-        elif adx14 < 20.0:
+        elif adx14 < 20.0 and not volume_breakout:
             action = "HOLD"
             confidence = 0.75
             reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
@@ -272,14 +342,13 @@ def evaluate_asset_decision(
             # All strict buy criteria satisfied!
             action = "BUY"
             amount_usd = suggested_pos_size
-            confidence = 0.88
+            confidence = final_conviction
             squeeze_tag = f" [SHORT SQUEEZE DETECTED: Funding {funding_rate:.6f} with rising OI!]" if funding_alert == "SHORT_SQUEEZE_ALERT" else ""
-            if funding_alert == "SHORT_SQUEEZE_ALERT":
-                confidence = min(0.95, confidence + 0.07)
+            breakout_tag = f" [🚀 VOLUME BREAKOUT: 24h Vol {vol_ratio:.1f}x expanding into 20D High ${donchian_h20:.4f}!]" if volume_breakout else ""
             reasoning = (
-                f"BULLISH CONFIRMATION: Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
+                f"BULLISH CONFIRMATION ({conviction_tier} TIER, Score: {final_conviction:.2f}): Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
                 f"healthy RSI ({rsi14:.2f}), strong ADX ({adx14:.2f}), Order Book bid dominance ({ob_imbalance:.4f}), "
-                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{squeeze_tag} Initiating allocation (${suggested_pos_size:.2f})."
+                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{breakout_tag}{squeeze_tag} Initiating {conviction_tier} allocation (${suggested_pos_size:.2f})."
             )
 
     return {
@@ -292,6 +361,11 @@ def evaluate_asset_decision(
         "cost_or_proceeds": 0.0,
         "reasoning": reasoning,
         "confidence": confidence,
+        "conviction_score": final_conviction,
+        "conviction_tier": conviction_tier,
+        "volume_breakout": volume_breakout,
+        "donchian_high_20": donchian_h20,
+        "donchian_low_20": donchian_l20,
         "rsi14": rsi14,
         "rsi_4h": float(data.get("rsi_4h", 50.0)),
         "rsi_1h": rsi_1h,
@@ -305,7 +379,7 @@ def evaluate_asset_decision(
         "macd": float(data.get("macd", 0.0)),
         "macd_signal": float(data.get("macd_signal", 0.0)),
         "momentum_10": float(data.get("momentum_10", 0.0)),
-        "volume_ratio": float(data.get("volume_ratio", 0.0)),
+        "volume_ratio": vol_ratio,
         "divergence": divergence,
         "trend_bias": trend_1d,
         "news_sentiment": news_sent,
@@ -416,14 +490,16 @@ def generate_executive_summary_markdown(
     holds = [d for d in decisions if d.get("action") == "HOLD"]
 
     lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(trims)} TRIMS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
-    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Funding Alert | Whale Alert | Confidence | Decision Rationale |")
-    lines.append("| :--- | :---: | :--- | :--- | :--- | :--- | :---: | :---: | :--- |")
+    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank (Score) | Conviction Tier | Whale / Breakout | Confidence | Decision Rationale |")
+    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |")
     for d in decisions:
         rs_str = f"#{d.get('rs_rank', '-')} ({d.get('rs_score', 0.0):+.2f})"
+        tier_str = f"`{d.get('conviction_tier', 'SOLID')}`"
+        flow_tag = "🚀 **BREAKOUT**" if d.get("volume_breakout") else f"`{d.get('whale_alert', 'NEUTRAL_FLOW')}`"
         lines.append(
             f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
-            f"{d.get('rsi14', 0):.2f} | {rs_str} | `{d.get('funding_alert', 'NEUTRAL')}` | "
-            f"`{d.get('whale_alert', 'NEUTRAL_FLOW')}` | {float(d.get('confidence', 0.75)):.2f} | {d.get('reasoning')} |"
+            f"{d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | "
+            f"{flow_tag} | {float(d.get('confidence', 0.75)):.2f} | {d.get('reasoning')} |"
         )
     lines.append("\n---\n")
 
