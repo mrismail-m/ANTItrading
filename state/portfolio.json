@@ -9,7 +9,7 @@
       "cost_basis": 1000.0,
       "opened_at": "2026-08-30T08:26:43.910366+00:00",
       "highest_price": 1.905,
-      "trailing_stop_price": 1.7907
+      "trailing_stop_price": 1.7911
     },
     {
       "symbol": "DOT",
@@ -26,7 +26,7 @@
       "entry_price": 99.92,
       "cost_basis": 1000.0,
       "highest_price": 101.33,
-      "trailing_stop_price": 95.2502,
+      "trailing_stop_price": 95.2904,
       "opened_at": "2026-09-02T04:24:05.439461+00:00"
     },
     {
@@ -60,13 +60,18 @@
       "timestamp": "2026-09-03T07:13:23.191128+00:00",
       "portfolio_value": 10247.67,
       "benchmark_value": 9911.91
+    },
+    {
+      "timestamp": "2026-09-03T11:24:55.796456+00:00",
+      "portfolio_value": 10219.26,
+      "benchmark_value": 9875.15
     }
   ],
   "metrics": {
-    "sharpe_ratio": 3.86,
-    "sortino_ratio": 5.68,
+    "sharpe_ratio": 0.56,
+    "sortino_ratio": 0.8,
     "max_drawdown_pct": 0.65,
-    "calmar_ratio": 3.79,
-    "benchmark_return_pct": -0.88
+    "calmar_ratio": 3.35,
+    "benchmark_return_pct": -1.25
   }
 }
