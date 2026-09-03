@@ -310,11 +310,18 @@ def execute_trade_pass(payload):
         sym = pos["symbol"]
         if sym in prices_map:
             curr_p = prices_map[sym]
-            if curr_p > pos.get("highest_price", pos["entry_price"]):
+            if "highest_price" not in pos:
+                pos["highest_price"] = pos.get("entry_price", curr_p)
+            if curr_p > pos["highest_price"]:
                 pos["highest_price"] = curr_p
-                # Adjust trailing stop upwards
+            if "trailing_stop_price" not in pos:
+                pos["trailing_stop_price"] = round(pos["highest_price"] - (2.0 * curr_p * 0.03), 4)
+            elif curr_p > pos["entry_price"]:
+                # Adjust trailing stop upwards if higher peak reached
                 atr_est = curr_p * 0.03
-                pos["trailing_stop_price"] = round(curr_p - (2.0 * atr_est), 4)
+                new_stop = round(pos["highest_price"] - (2.0 * atr_est), 4)
+                if new_stop > pos["trailing_stop_price"]:
+                    pos["trailing_stop_price"] = new_stop
 
     # Calculate current total portfolio value
     positions_value = sum(p["qty"] * prices_map.get(p["symbol"], p["entry_price"]) for p in portfolio.get("positions", []))
@@ -324,15 +331,12 @@ def execute_trade_pass(payload):
     if "equity_history" not in portfolio:
         portfolio["equity_history"] = []
 
-    # Benchmark calculation (50/50 BTC/ETH starting from $10,000)
-    btc_p = prices_map.get("BTC", prices_map.get("BTCUSDT", 70000.0))
-    eth_p = prices_map.get("ETH", prices_map.get("ETHUSDT", 2500.0))
-    benchmark_value = total_portfolio_value
-    if portfolio["equity_history"]:
-        prev_bench = portfolio["equity_history"][-1].get("benchmark_value", portfolio.get("starting_cash", 10000.0))
-        benchmark_value = prev_bench
-    else:
-        benchmark_value = portfolio.get("starting_cash", 10000.0)
+    # Dynamic Benchmark calculation (50/50 BTC/ETH starting from $10,000 at inception Aug 30: BTC $78,146, ETH $2,456.70)
+    btc_p = prices_map.get("BTC", prices_map.get("BTCUSDT", 77304.16))
+    eth_p = prices_map.get("ETH", prices_map.get("ETHUSDT", 2385.88))
+    bench_btc_qty = 5000.0 / 78146.00
+    bench_eth_qty = 5000.0 / 2456.70
+    benchmark_value = (bench_btc_qty * btc_p) + (bench_eth_qty * eth_p)
 
     portfolio["equity_history"].append({
         "timestamp": now,

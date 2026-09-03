@@ -7,7 +7,9 @@
       "qty": 528.541226,
       "entry_price": 1.892,
       "cost_basis": 1000.0,
-      "opened_at": "2026-08-30T08:26:43.910366+00:00"
+      "opened_at": "2026-08-30T08:26:43.910366+00:00",
+      "highest_price": 1.892,
+      "trailing_stop_price": 1.7802
     },
     {
       "symbol": "DOT",
@@ -16,15 +18,15 @@
       "cost_basis": 1000.0,
       "opened_at": "2026-08-30T13:45:00+00:00",
       "highest_price": 0.884,
-      "trailing_stop_price": 0.831
+      "trailing_stop_price": 0.8318
     },
     {
       "symbol": "SOL",
       "qty": 10.0080064051241,
       "entry_price": 99.92,
       "cost_basis": 1000.0,
-      "highest_price": 99.92,
-      "trailing_stop_price": 89.9292,
+      "highest_price": 100.14,
+      "trailing_stop_price": 94.1316,
       "opened_at": "2026-09-02T04:24:05.439461+00:00"
     },
     {
@@ -48,13 +50,18 @@
       "timestamp": "2026-09-02T12:33:36.802693+00:00",
       "portfolio_value": 10146.94,
       "benchmark_value": 10000.0
+    },
+    {
+      "timestamp": "2026-09-03T02:05:54.261947+00:00",
+      "portfolio_value": 10182.02,
+      "benchmark_value": 9802.0
     }
   ],
   "metrics": {
-    "sharpe_ratio": 0.0,
-    "sortino_ratio": -19.1,
+    "sharpe_ratio": -5.89,
+    "sortino_ratio": -6.37,
     "max_drawdown_pct": 0.65,
-    "calmar_ratio": 2.25,
-    "benchmark_return_pct": 0.0
+    "calmar_ratio": 2.78,
+    "benchmark_return_pct": -1.98
   }
 }
