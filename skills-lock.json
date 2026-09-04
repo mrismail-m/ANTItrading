@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "appwrite-cli": {
+      "source": "appwrite/skills",
+      "sourceType": "github",
+      "skillPath": "skills/appwrite-cli/SKILL.md",
+      "computedHash": "43ec313fcb0e99ee6d90d3a543964dcf015f12ebdcad5c4f6e2735ca999fa227"
+    }
+  }
+}
