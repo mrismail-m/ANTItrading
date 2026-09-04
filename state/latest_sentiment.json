@@ -2,12 +2,12 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
+      "US, UK launch joint alliance targeting crypto scam centers",
       "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
-      "CFTC files to dismiss CME lawsuit over crypto perpetual futures",
-      "Here\u2019s what happened in crypto today"
+      "CFTC files to dismiss CME lawsuit over crypto perpetual futures"
     ],
-    "overall_sentiment": "mixed",
-    "macro_event_risk": "lawsuit"
+    "overall_sentiment": "bullish",
+    "macro_event_risk": "scam"
   },
   "BTC": {
     "symbol": "BTC",
@@ -33,7 +33,7 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 12
+    "headline_count": 11
   },
   "ETH": {
     "symbol": "ETH",
@@ -65,10 +65,10 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -105,10 +105,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -119,10 +119,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -147,10 +147,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -161,10 +161,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -175,10 +175,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -189,10 +189,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -203,10 +203,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -217,10 +217,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -231,10 +231,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -245,10 +245,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -259,10 +259,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -273,10 +273,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -287,10 +287,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -301,10 +301,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -315,10 +315,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -329,10 +329,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -343,10 +343,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
+        "title": "US, UK launch joint alliance targeting crypto scam centers",
         "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 23:40:09 +0000",
-        "link": "https://cointelegraph.com/magazine/tether-sued-over-frozen-pig-butcher-coins-6600-students-get-crypto-loans-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
+        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

@@ -1,16 +1,7 @@
 {
-  "cash": 3290.971045664228,
+  "cash": 1818.0447436428253,
   "starting_cash": 10000.0,
   "positions": [
-    {
-      "symbol": "DOT",
-      "qty": 1189.0606420927468,
-      "entry_price": 0.841,
-      "cost_basis": 1000.0,
-      "opened_at": "2026-08-30T13:45:00+00:00",
-      "highest_price": 0.8959,
-      "trailing_stop_price": 0.8739
-    },
     {
       "symbol": "SOL",
       "qty": 10.0080064051241,
@@ -73,9 +64,36 @@
       "highest_price": 0.7809,
       "trailing_stop_price": 0.6829,
       "opened_at": "2026-09-03T23:18:42.950419+00:00"
+    },
+    {
+      "symbol": "HYPE",
+      "qty": 10.532290674165136,
+      "entry_price": 86.062,
+      "cost_basis": 906.43,
+      "highest_price": 86.062,
+      "trailing_stop_price": 76.5674,
+      "opened_at": "2026-09-04T06:00:48.148572+00:00"
+    },
+    {
+      "symbol": "NEAR",
+      "qty": 338.4095634095634,
+      "entry_price": 1.924,
+      "cost_basis": 651.1,
+      "highest_price": 1.924,
+      "trailing_stop_price": 1.6734,
+      "opened_at": "2026-09-04T06:00:48.148572+00:00"
+    },
+    {
+      "symbol": "DOT",
+      "qty": 1091.7031070195628,
+      "entry_price": 0.869,
+      "cost_basis": 948.69,
+      "highest_price": 0.869,
+      "trailing_stop_price": 0.7774,
+      "opened_at": "2026-09-04T06:02:44.191742+00:00"
     }
   ],
-  "trade_counter": 10,
+  "trade_counter": 13,
   "equity_history": [
     {
       "timestamp": "2026-09-02T04:24:05.439461+00:00",
@@ -171,13 +189,23 @@
       "timestamp": "2026-09-04T04:38:57.169490+00:00",
       "portfolio_value": 10307.53,
       "benchmark_value": 10312.28
+    },
+    {
+      "timestamp": "2026-09-04T06:00:48.148572+00:00",
+      "portfolio_value": 10232.61,
+      "benchmark_value": 10283.93
+    },
+    {
+      "timestamp": "2026-09-04T06:02:44.191742+00:00",
+      "portfolio_value": 10227.29,
+      "benchmark_value": 10282.42
     }
   ],
   "metrics": {
-    "sharpe_ratio": 23.26,
-    "sortino_ratio": 0.0,
-    "max_drawdown_pct": 0.7,
-    "calmar_ratio": 4.38,
-    "benchmark_return_pct": 3.12
+    "sharpe_ratio": 7.37,
+    "sortino_ratio": 16.95,
+    "max_drawdown_pct": 1.26,
+    "calmar_ratio": 1.81,
+    "benchmark_return_pct": 2.82
   }
 }

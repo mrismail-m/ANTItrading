@@ -506,8 +506,10 @@ def generate_executive_summary_markdown(
     fg = market_ctx.get("fear_and_greed", {})
     fg_val = fg.get("value", "N/A")
     fg_class = fg.get("value_classification", "Neutral")
-    btc_d = market_ctx.get("btc_dominance", 0.0)
-    eth_d = market_ctx.get("eth_dominance", 0.0)
+    btc_d = market_ctx.get("btc_dominance")
+    eth_d = market_ctx.get("eth_dominance")
+    btc_d_str = f"{btc_d:.2f}%" if isinstance(btc_d, (int, float)) else "N/A"
+    eth_d_str = f"{eth_d:.2f}%" if isinstance(eth_d, (int, float)) else "N/A"
     regime = market_ctx.get("market_regime", "neutral")
 
     lines = []
@@ -531,23 +533,23 @@ def generate_executive_summary_markdown(
 
     # 2. Institutional Risk & Benchmark Metrics
     lines.append("## 2. 📊 Institutional Risk & Benchmark Metrics\n")
-    bench_ret = metrics.get("benchmark_return_pct", 0.0)
+    bench_ret = float(metrics.get("benchmark_return_pct") or 0.0)
     alpha = total_pnl_pct - bench_ret
     lines.append("| Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |")
     lines.append("| :--- | :--- | :--- | :--- |")
     lines.append(f"| **Total Cumulative Return** | **{'+' if total_pnl_pct >= 0 else ''}{total_pnl_pct:.2f}%** | **{'+' if bench_ret >= 0 else ''}{bench_ret:.2f}%** | **{'+' if alpha >= 0 else ''}{alpha:.2f}% Alpha** |")
     lines.append(f"| **Current Benchmark Value** | ${curr_equity:,.2f} | ${bench_val:,.2f} | **{'+' if (curr_equity - bench_val) >= 0 else ''}${(curr_equity - bench_val):,.2f} Value Premium** |")
-    lines.append(f"| **Max Drawdown (%)** | **{metrics.get('max_drawdown_pct', 0.0):.2f}%** | Macro Benchmark Variance | Capital preservation filter active |")
-    lines.append(f"| **Calmar Ratio** | **{metrics.get('calmar_ratio', 0.0):.2f}** | — | Return to max drawdown ratio |")
-    lines.append(f"| **Rolling Sharpe Ratio** | **{metrics.get('sharpe_ratio', 0.0):.2f}** | — | Annualized risk-adjusted return |")
-    lines.append(f"| **Rolling Sortino Ratio** | **{metrics.get('sortino_ratio', 0.0):.2f}** | — | Downside-volatility weighted |")
+    lines.append(f"| **Max Drawdown (%)** | **{float(metrics.get('max_drawdown_pct') or 0.0):.2f}%** | Macro Benchmark Variance | Capital preservation filter active |")
+    lines.append(f"| **Calmar Ratio** | **{float(metrics.get('calmar_ratio') or 0.0):.2f}** | — | Return to max drawdown ratio |")
+    lines.append(f"| **Rolling Sharpe Ratio** | **{float(metrics.get('sharpe_ratio') or 0.0):.2f}** | — | Annualized risk-adjusted return |")
+    lines.append(f"| **Rolling Sortino Ratio** | **{float(metrics.get('sortino_ratio') or 0.0):.2f}** | — | Downside-volatility weighted |")
     lines.append("\n---\n")
 
     # 3. Macro Market Regime & Context
     lines.append("## 3. 🌐 Macro Market Regime & Sentiment Context\n")
     lines.append(f"* **Market Regime:** `{regime}`")
     lines.append(f"* **Fear & Greed Index:** **{fg_val} / 100 ({fg_class})**")
-    lines.append(f"* **BTC Dominance:** **{btc_d:.2f}%** | **ETH Dominance:** **{eth_d:.2f}%**")
+    lines.append(f"* **BTC Dominance:** **{btc_d_str}** | **ETH Dominance:** **{eth_d_str}**")
     lines.append("\n---\n")
 
     # 4. Active Portfolio Snapshot
