@@ -55,7 +55,9 @@ def evaluate_asset_decision(
     sentiment: Dict[str, Any],
     regime: str,
     now: str,
-    active_open_count: int = None
+    active_open_count: int = None,
+    btc_flush_alert: bool = False,
+    macro_flush_reason: str = ""
 ) -> Dict[str, Any]:
     """
     Evaluates trading rules for a single cryptocurrency asset.
@@ -249,11 +251,13 @@ def evaluate_asset_decision(
         pos = pos_map[symbol]
         entry_p = float(pos.get("entry_price", price))
         highest_p = max(float(pos.get("highest_price", entry_p)), price)
+        pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+
         # Position-level Chandelier Exit hangs from trade's highest price peak
         trade_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else round(entry_p * 0.93, 4)
         std_trail = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
         trailing_stop = max(std_trail, trade_chandelier_stop)
-        if pos.get("tp1_hit", False):
+        if pos.get("tp1_hit", False) or (btc_flush_alert and symbol != "BTC" and pnl_pct > 0):
             trailing_stop = max(trailing_stop, entry_p)
 
         # Dynamic Progressive Profit-Lock Trailing Stop:
@@ -265,7 +269,6 @@ def evaluate_asset_decision(
             dynamic_profit_stop = round(entry_p * (1.0 + (profit_lock_pct / 100.0)), 4)
             trailing_stop = max(trailing_stop, dynamic_profit_stop)
 
-        pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
         tp1_hit = pos.get("tp1_hit", False)
 
         # TP1 Partial Profit Scaling (+10% gain lock-in)
@@ -288,6 +291,15 @@ def evaluate_asset_decision(
                 )
             else:
                 reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+        # BTC Macro Flush Defense: Exit underwater altcoins (<= -2.5%) during a macro BTC dump
+        elif btc_flush_alert and symbol != "BTC" and pnl_pct <= -2.5:
+            action = "SELL"
+            confidence = 0.90
+            reasoning = (
+                f"🚨 BTC Macro Flush Circuit Breaker Triggered: {macro_flush_reason}. "
+                f"Altcoin position is underwater ({pnl_pct:.2f}% from ${entry_p:.4f} entry). "
+                f"Executing defensive SELL to prevent altcoin beta cascade."
+            )
         # Ranging Regime Mean-Reversion Exit
         elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 62.0):
             action = "SELL"
@@ -334,6 +346,10 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.80
             reasoning = f"Portfolio position cap reached ({open_count}/{MAX_POSITIONS} max positions). Cash reserved until an existing position exits."
+        elif btc_flush_alert and symbol != "BTC":
+            action = "HOLD"
+            confidence = 0.90
+            reasoning = f"🚨 BTC Macro Flush Alert Active ({macro_flush_reason}). Vetoing all new altcoin buy entries to preserve liquid cash."
         elif regime == "volatility_crash":
             action = "HOLD"
             confidence = 0.85
@@ -546,8 +562,13 @@ def generate_executive_summary_markdown(
     lines.append("\n---\n")
 
     # 3. Macro Market Regime & Context
+    btc_flush_alert = market_ctx.get("btc_flush_alert", False)
+    macro_flush_reason = market_ctx.get("macro_flush_reason", "BTC technical structure healthy")
+    cb_status = f"🚨 **MACRO FLUSH ACTIVE** ({macro_flush_reason})" if btc_flush_alert else "🟢 **NORMAL (Healthy)**"
+
     lines.append("## 3. 🌐 Macro Market Regime & Sentiment Context\n")
     lines.append(f"* **Market Regime:** `{regime}`")
+    lines.append(f"* **BTC Macro Circuit Breaker:** {cb_status}")
     lines.append(f"* **Fear & Greed Index:** **{fg_val} / 100 ({fg_class})**")
     lines.append(f"* **BTC Dominance:** **{btc_d_str}** | **ETH Dominance:** **{eth_d_str}**")
     lines.append("\n---\n")
@@ -656,6 +677,9 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
         reverse=True
     )
 
+    btc_flush_alert = market_ctx.get("btc_flush_alert", False)
+    macro_flush_reason = market_ctx.get("macro_flush_reason", "")
+
     decisions = []
     # Evaluate open positions
     for sym, ticker in open_items:
@@ -667,7 +691,9 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
             portfolio=portfolio,
             sentiment=sentiment_data,
             regime=regime,
-            now=now
+            now=now,
+            btc_flush_alert=btc_flush_alert,
+            macro_flush_reason=macro_flush_reason
         )
         decisions.append(d)
 
@@ -687,7 +713,9 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
             sentiment=sentiment_data,
             regime=regime,
             now=now,
-            active_open_count=current_open_count
+            active_open_count=current_open_count,
+            btc_flush_alert=btc_flush_alert,
+            macro_flush_reason=macro_flush_reason
         )
         decisions.append(d)
         # If candidate triggered BUY, simulate adding to temp open count so subsequent candidates respect cap

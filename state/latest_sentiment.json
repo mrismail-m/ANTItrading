@@ -59,7 +59,7 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 4
+    "headline_count": 3
   },
   "SOL": {
     "symbol": "SOL",
@@ -83,17 +83,11 @@
         "source": "Decrypt",
         "published_at": "Thu, 03 Sep 2026 18:15:07 +0000",
         "link": "https://decrypt.co/377284/bitcoin-etfs-rebound-ethereum-xrp-end-streaks"
-      },
-      {
-        "title": "Japan\u2019s Remixpoint Dumps Ethereum, XRP in Shift to Bitcoin-Only Treasury",
-        "source": "Decrypt",
-        "published_at": "Wed, 02 Sep 2026 21:31:05 +0000",
-        "link": "https://decrypt.co/377228/remixpoint-xrp-ethereum-bitcoin-only"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 2
+    "headline_count": 1
   },
   "ADA": {
     "symbol": "ADA",

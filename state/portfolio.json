@@ -1,16 +1,7 @@
 {
-  "cash": 4364.823927305029,
+  "cash": 6613.940284184472,
   "starting_cash": 10000.0,
   "positions": [
-    {
-      "symbol": "APT",
-      "qty": 1257.0915032679738,
-      "entry_price": 0.612,
-      "cost_basis": 769.34,
-      "highest_price": 0.612,
-      "trailing_stop_price": 0.5324,
-      "opened_at": "2026-09-03T11:39:00.120688+00:00"
-    },
     {
       "symbol": "LTC",
       "qty": 19.72386587771203,
@@ -21,15 +12,6 @@
       "opened_at": "2026-09-03T11:39:00.120688+00:00"
     },
     {
-      "symbol": "ADA",
-      "qty": 3571.4093959731545,
-      "entry_price": 0.2235,
-      "cost_basis": 798.21,
-      "highest_price": 0.2258,
-      "trailing_stop_price": 0.1984,
-      "opened_at": "2026-09-03T17:49:55.183837+00:00"
-    },
-    {
       "symbol": "AVAX",
       "qty": 87.2564136647614,
       "entry_price": 7.523,
@@ -37,15 +19,6 @@
       "highest_price": 7.523,
       "trailing_stop_price": 6.8296,
       "opened_at": "2026-09-03T17:49:55.183837+00:00"
-    },
-    {
-      "symbol": "SUI",
-      "qty": 1020.4123447304393,
-      "entry_price": 0.7809,
-      "cost_basis": 796.84,
-      "highest_price": 0.7809,
-      "trailing_stop_price": 0.6829,
-      "opened_at": "2026-09-03T23:18:42.950419+00:00"
     },
     {
       "symbol": "HYPE",
@@ -182,13 +155,23 @@
       "timestamp": "2026-09-04T14:23:57.341824+00:00",
       "portfolio_value": 10083.25,
       "benchmark_value": 10070.12
+    },
+    {
+      "timestamp": "2026-09-04T15:42:37.632025+00:00",
+      "portfolio_value": 10075.69,
+      "benchmark_value": 10085.75
+    },
+    {
+      "timestamp": "2026-09-04T16:02:46.897046+00:00",
+      "portfolio_value": 10070.27,
+      "benchmark_value": 10073.41
     }
   ],
   "metrics": {
-    "sharpe_ratio": -3.29,
-    "sortino_ratio": -3.97,
-    "max_drawdown_pct": 2.65,
-    "calmar_ratio": 0.31,
-    "benchmark_return_pct": 0.7
+    "sharpe_ratio": -3.84,
+    "sortino_ratio": -4.52,
+    "max_drawdown_pct": 2.77,
+    "calmar_ratio": 0.25,
+    "benchmark_return_pct": 0.73
   }
 }

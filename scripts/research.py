@@ -614,11 +614,16 @@ def run_research(watchlist_path="state/watchlist.json", output_path="state/lates
 
     market_ctx = fetch_global_market_context()
 
-    # Determine Market Regime
+    # Determine Market Regime & BTC Macro Flush Circuit Breaker
     btc = ta_results.get("BTCUSDT", {})
     btc_p = btc.get("price", 0)
     btc_ema50 = btc.get("ema50", 0)
     btc_adx = btc.get("adx14", 0)
+    btc_trend_4h = btc.get("trend_bias_4h", "neutral")
+    btc_trend_1d = btc.get("trend_bias_1d", "neutral")
+    btc_rsi_1h = btc.get("rsi_1h", 50.0)
+    btc_vs_ema20_1h = btc.get("price_vs_ema20_1h", 0.0)
+
     fg_val = market_ctx.get("fear_and_greed", {}).get("value", 50)
     try:
         fg_val = int(fg_val)
@@ -627,6 +632,23 @@ def run_research(watchlist_path="state/watchlist.json", output_path="state/lates
 
     regime = classify_market_regime(btc_p, btc_ema50, btc_adx, fg_val)
     market_ctx["market_regime"] = regime
+
+    # BTC Macro Flush Detection
+    btc_flush_alert = False
+    macro_flush_reason = "BTC technical structure healthy"
+
+    if btc_trend_1d == "bearish":
+        btc_flush_alert = True
+        macro_flush_reason = f"BTC 1D Trend Bias is Bearish (Price ${btc_p:,.0f} below 1D EMA50 ${btc_ema50:,.0f})"
+    elif btc_trend_4h == "bearish":
+        btc_flush_alert = True
+        macro_flush_reason = "BTC 4H Trend Bias is Bearish (Breakdown below 4H EMA50 / Bearish 4H MACD)"
+    elif btc_vs_ema20_1h <= -0.8 and btc_rsi_1h < 45.0:
+        btc_flush_alert = True
+        macro_flush_reason = f"BTC Fast Intraday Flush: Price stretched {btc_vs_ema20_1h:.2f}% below 1H EMA20 with RSI1H at {btc_rsi_1h:.1f}"
+
+    market_ctx["btc_flush_alert"] = btc_flush_alert
+    market_ctx["macro_flush_reason"] = macro_flush_reason
 
     results = {
         "market_context": market_ctx,
