@@ -2,9 +2,9 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "US, UK launch joint alliance targeting crypto scam centers",
-      "Tether sued over frozen \u2018pig butcher\u2019 coins, 6,600 students get crypto loans: Asia Express",
-      "CFTC files to dismiss CME lawsuit over crypto perpetual futures"
+      "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+      "Here\u2019s what happened in crypto today",
+      "El Salvador\u2019s post-review Bitcoin accumulation used no public funds: IMF"
     ],
     "overall_sentiment": "bullish",
     "macro_event_risk": "scam"
@@ -13,27 +13,27 @@
     "symbol": "BTC",
     "headlines": [
       {
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "source": "CoinTelegraph",
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "El Salvador\u2019s post-review Bitcoin accumulation used no public funds: IMF",
+        "source": "CoinTelegraph",
+        "published_at": "Fri, 04 Sep 2026 06:16:35 +0000",
+        "link": "https://cointelegraph.com/news/el-salvador-bitcoin-private-donations-imf?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
         "title": "Bitcoin reclaims $80K as DXY falls amid continuing suspected yen intervention",
         "source": "CoinTelegraph",
         "published_at": "Thu, 03 Sep 2026 18:44:22 +0000",
         "link": "https://cointelegraph.com/markets/bitcoin-reclaims-810-dxy-falls-amid-continuing-suspected-yen-intervention?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 10:15:34 +0000",
-        "link": "https://cointelegraph.com/news/standard-chartered-bitcoin-ether-trading-uae?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Coldcard hacker swaps stolen Bitcoin for ETH via THORChain",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 09:31:07 +0000",
-        "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 11
+    "headline_count": 13
   },
   "ETH": {
     "symbol": "ETH",
@@ -65,10 +65,10 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -105,10 +105,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -119,10 +119,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -133,24 +133,24 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "Wyoming adds Chainlink reserve verification to state-issued stable token",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Wed, 02 Sep 2026 18:38:18 +0000",
-        "link": "https://cointelegraph.com/news/wyoming-chainlink-onchain-reserves-of-state-issued-stable-token?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "headline_count": 1
+    "headline_count": 0
   },
   "DOT": {
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -161,10 +161,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -175,10 +175,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -189,10 +189,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -203,10 +203,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -217,10 +217,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -231,10 +231,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -245,10 +245,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -259,10 +259,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -273,10 +273,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -287,10 +287,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -301,10 +301,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -315,10 +315,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -329,10 +329,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -343,10 +343,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "US, UK launch joint alliance targeting crypto scam centers",
+        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 04:33:55 +0000",
-        "link": "https://cointelegraph.com/news/us-uk-joint-alliance-crypto-scam-centers?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

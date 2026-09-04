@@ -16,8 +16,8 @@
       "qty": 356.13672496025436,
       "entry_price": 2.516,
       "cost_basis": 896.04,
-      "highest_price": 2.566,
-      "trailing_stop_price": 2.3707,
+      "highest_price": 2.584,
+      "trailing_stop_price": 2.5568,
       "opened_at": "2026-09-02T12:33:36.802693+00:00"
     },
     {
@@ -70,8 +70,8 @@
       "qty": 10.532290674165136,
       "entry_price": 86.062,
       "cost_basis": 906.43,
-      "highest_price": 86.062,
-      "trailing_stop_price": 76.5674,
+      "highest_price": 86.87,
+      "trailing_stop_price": 77.5298,
       "opened_at": "2026-09-04T06:00:48.148572+00:00"
     },
     {
@@ -79,8 +79,8 @@
       "qty": 338.4095634095634,
       "entry_price": 1.924,
       "cost_basis": 651.1,
-      "highest_price": 1.924,
-      "trailing_stop_price": 1.6734,
+      "highest_price": 2.0203,
+      "trailing_stop_price": 1.9818,
       "opened_at": "2026-09-04T06:00:48.148572+00:00"
     },
     {
@@ -88,8 +88,8 @@
       "qty": 1091.7031070195628,
       "entry_price": 0.869,
       "cost_basis": 948.69,
-      "highest_price": 0.869,
-      "trailing_stop_price": 0.7774,
+      "highest_price": 0.8768,
+      "trailing_stop_price": 0.7864,
       "opened_at": "2026-09-04T06:02:44.191742+00:00"
     }
   ],
@@ -199,13 +199,18 @@
       "timestamp": "2026-09-04T06:02:44.191742+00:00",
       "portfolio_value": 10227.29,
       "benchmark_value": 10282.42
+    },
+    {
+      "timestamp": "2026-09-04T09:42:19.409005+00:00",
+      "portfolio_value": 10349.8,
+      "benchmark_value": 10340.46
     }
   ],
   "metrics": {
-    "sharpe_ratio": 7.37,
-    "sortino_ratio": 16.95,
+    "sharpe_ratio": 42.86,
+    "sortino_ratio": 0.0,
     "max_drawdown_pct": 1.26,
-    "calmar_ratio": 1.81,
-    "benchmark_return_pct": 2.82
+    "calmar_ratio": 2.78,
+    "benchmark_return_pct": 3.4
   }
 }
