@@ -1,0 +1,15 @@
+{
+  "projectId": "",
+  "projectName": "ANTItrading",
+  "functions": [
+    {
+      "$id": "antitrader",
+      "name": "ANTItrading Paper-Trader",
+      "runtime": "python-3.11",
+      "path": ".",
+      "entrypoint": "main.py",
+      "schedule": "15 * * * *",
+      "timeout": 900
+    }
+  ]
+}
