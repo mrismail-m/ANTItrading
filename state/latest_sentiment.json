@@ -2,9 +2,9 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
-      "Here\u2019s what happened in crypto today",
-      "El Salvador\u2019s post-review Bitcoin accumulation used no public funds: IMF"
+      "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+      "Token buybacks are booming. But are they good for crypto projects?",
+      "Here\u2019s what happened in crypto today"
     ],
     "overall_sentiment": "bullish",
     "macro_event_risk": "scam"
@@ -33,7 +33,7 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 13
+    "headline_count": 10
   },
   "ETH": {
     "symbol": "ETH",
@@ -51,24 +51,24 @@
         "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       },
       {
-        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
-        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
+        "source": "Decrypt",
+        "published_at": "Thu, 03 Sep 2026 18:15:07 +0000",
+        "link": "https://decrypt.co/377284/bitcoin-etfs-rebound-ethereum-xrp-end-streaks"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "hack",
-    "headline_count": 5
+    "headline_count": 4
   },
   "SOL": {
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -78,12 +78,6 @@
   "XRP": {
     "symbol": "XRP",
     "headlines": [
-      {
-        "title": "Ether, XRP ETF inflow streaks end as Bitcoin funds rebound",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 07:22:00 +0000",
-        "link": "https://cointelegraph.com/markets/eth-xrp-etf-inflow-streaks-end-bitcoin-funds-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
       {
         "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
         "source": "Decrypt",
@@ -99,16 +93,16 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 3
+    "headline_count": 2
   },
   "ADA": {
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -119,10 +113,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -133,10 +127,10 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -147,10 +141,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -161,10 +155,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -175,10 +169,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -189,10 +183,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -203,10 +197,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -217,10 +211,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -231,10 +225,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -245,10 +239,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -259,10 +253,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -273,10 +267,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -287,10 +281,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -301,10 +295,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -315,10 +309,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -329,10 +323,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -343,10 +337,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
+        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
+        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

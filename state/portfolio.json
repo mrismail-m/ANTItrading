@@ -1,25 +1,7 @@
 {
-  "cash": 1818.0447436428253,
+  "cash": 4364.823927305029,
   "starting_cash": 10000.0,
   "positions": [
-    {
-      "symbol": "SOL",
-      "qty": 10.0080064051241,
-      "entry_price": 99.92,
-      "cost_basis": 1000.0,
-      "highest_price": 105.16,
-      "trailing_stop_price": 103.064,
-      "opened_at": "2026-09-02T04:24:05.439461+00:00"
-    },
-    {
-      "symbol": "ICP",
-      "qty": 356.13672496025436,
-      "entry_price": 2.516,
-      "cost_basis": 896.04,
-      "highest_price": 2.584,
-      "trailing_stop_price": 2.5568,
-      "opened_at": "2026-09-02T12:33:36.802693+00:00"
-    },
     {
       "symbol": "APT",
       "qty": 1257.0915032679738,
@@ -72,15 +54,6 @@
       "cost_basis": 906.43,
       "highest_price": 86.87,
       "trailing_stop_price": 77.5298,
-      "opened_at": "2026-09-04T06:00:48.148572+00:00"
-    },
-    {
-      "symbol": "NEAR",
-      "qty": 338.4095634095634,
-      "entry_price": 1.924,
-      "cost_basis": 651.1,
-      "highest_price": 2.0203,
-      "trailing_stop_price": 1.9818,
       "opened_at": "2026-09-04T06:00:48.148572+00:00"
     },
     {
@@ -204,13 +177,18 @@
       "timestamp": "2026-09-04T09:42:19.409005+00:00",
       "portfolio_value": 10349.8,
       "benchmark_value": 10340.46
+    },
+    {
+      "timestamp": "2026-09-04T14:23:57.341824+00:00",
+      "portfolio_value": 10083.25,
+      "benchmark_value": 10070.12
     }
   ],
   "metrics": {
-    "sharpe_ratio": 42.86,
-    "sortino_ratio": 0.0,
-    "max_drawdown_pct": 1.26,
-    "calmar_ratio": 2.78,
-    "benchmark_return_pct": 3.4
+    "sharpe_ratio": -3.29,
+    "sortino_ratio": -3.97,
+    "max_drawdown_pct": 2.65,
+    "calmar_ratio": 0.31,
+    "benchmark_return_pct": 0.7
   }
 }
