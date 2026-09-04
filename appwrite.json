@@ -10,7 +10,7 @@
             "path": ".",
             "entrypoint": "main.py",
             "commands": "pip install --no-cache-dir -r requirements.txt",
-            "schedule": "15 * * * *",
+            "schedule": "*/30 * * * *",
             "timeout": 900
         }
     ]

@@ -2,54 +2,42 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
-      "Token buybacks are booming. But are they good for crypto projects?",
-      "Here\u2019s what happened in crypto today"
+      "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+      "QuFi launches post-quantum verification platform with Bitcoin testnet proof",
+      "US law enforcement group moves to \u2018neutral\u2019 position on CLARITY Act"
     ],
     "overall_sentiment": "bullish",
-    "macro_event_risk": "scam"
+    "macro_event_risk": "sec"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
       {
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "source": "CoinTelegraph",
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "QuFi launches post-quantum verification platform with Bitcoin testnet proof",
+        "source": "CoinTelegraph",
+        "published_at": "Fri, 04 Sep 2026 17:09:25 +0000",
+        "link": "https://cointelegraph.com/news/qufi-launches-post-quantum-verification-platform-with-bitcoin-testnet-proof?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
         "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
         "source": "CoinTelegraph",
         "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
         "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "El Salvador\u2019s post-review Bitcoin accumulation used no public funds: IMF",
-        "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 06:16:35 +0000",
-        "link": "https://cointelegraph.com/news/el-salvador-bitcoin-private-donations-imf?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Bitcoin reclaims $80K as DXY falls amid continuing suspected yen intervention",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 18:44:22 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-reclaims-810-dxy-falls-amid-continuing-suspected-yen-intervention?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
-    "event_risk": "hack",
+    "event_risk": "none",
     "headline_count": 10
   },
   "ETH": {
     "symbol": "ETH",
     "headlines": [
-      {
-        "title": "Standard Chartered launches spot Bitcoin and Ether trading in UAE",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 10:15:34 +0000",
-        "link": "https://cointelegraph.com/news/standard-chartered-bitcoin-ether-trading-uae?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Coldcard hacker swaps stolen Bitcoin for ETH via THORChain",
-        "source": "CoinTelegraph",
-        "published_at": "Thu, 03 Sep 2026 09:31:07 +0000",
-        "link": "https://cointelegraph.com/news/coldcard-hacker-swaps-stolen-bitcoin-eth-thorchain?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
       {
         "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
         "source": "Decrypt",
@@ -58,17 +46,17 @@
       }
     ],
     "news_sentiment": "bullish",
-    "event_risk": "hack",
-    "headline_count": 3
+    "event_risk": "none",
+    "headline_count": 1
   },
   "SOL": {
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -93,10 +81,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -107,10 +95,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -121,10 +109,10 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -135,10 +123,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -149,10 +137,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -163,10 +151,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -177,10 +165,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -191,10 +179,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -205,10 +193,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -219,10 +207,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -233,10 +221,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -247,10 +235,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -261,10 +249,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -275,10 +263,10 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -289,10 +277,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -303,10 +291,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -317,10 +305,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -331,10 +319,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Revolut, OpenReserve get preliminary US bank approval with crypto plans",
+        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 13:34:30 +0000",
-        "link": "https://cointelegraph.com/news/revolut-openreserve-occ-approval-national-bank-crypto-plan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
+        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

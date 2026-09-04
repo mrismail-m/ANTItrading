@@ -128,7 +128,7 @@ def record_trade_to_db(trade: Dict[str, Any]) -> bool:
         "data": {
             "symbol": str(trade.get("symbol", "")),
             "action": str(trade.get("action", "")),
-            "price": float(trade.get("price", 0.0)),
+            "price": float(trade.get("fill_price", trade.get("price", 0.0))),
             "qty": float(trade.get("qty", 0.0)),
             "cost_basis": float(trade.get("cost_basis", 0.0)) if trade.get("cost_basis") is not None else 0.0,
             "pnl_pct": float(trade.get("pnl_pct", 0.0)) if trade.get("pnl_pct") is not None else 0.0,

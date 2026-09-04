@@ -209,10 +209,16 @@ def evaluate_asset_decision(
     elif news_sent == "cautious_bullish" and event_risk == "none":
         conv_score += 0.04
 
+    # 8. Derivatives Microstructure (Short Squeeze vs Long Flush)
+    if funding_alert == "SHORT_SQUEEZE_ALERT":
+        conv_score += 0.10  # Potential violent short covering surge
+    elif funding_alert == "LONG_FLUSH_ALERT":
+        conv_score -= 0.15  # Excessive leverage long flush risk
+
     final_conviction = min(0.98, max(0.50, round(conv_score, 2)))
 
     # -------------------------------------------------------------------------
-    # CONVICTION-WEIGHTED DYNAMIC POSITION SIZING (Feature 4)
+    # VOLATILITY-ADJUSTED RISK-PARITY POSITION SIZING
     # -------------------------------------------------------------------------
     portfolio_cash = float(portfolio.get("cash", 10000.0))
     positions_val = sum(p.get("qty", 0.0) * float(p.get("entry_price", 0.0)) for p in portfolio.get("positions", []))
@@ -220,24 +226,25 @@ def evaluate_asset_decision(
     if curr_equity <= 0:
         curr_equity = float(portfolio.get("starting_cash", 10000.0))
 
-    base_alloc = round(curr_equity * 0.10, 2)  # 10% compounding base
+    # Base target dollar risk is 1.0% of portfolio equity ($100 on $10,000)
+    dollar_risk = max(50.0, round(curr_equity * 0.010, 2))
+    stop_distance_per_unit = (2.0 * atr14) if atr14 > 0 else (price * 0.05)
+    stop_distance_pct = stop_distance_per_unit / price if price > 0 else 0.05
+    raw_risk_parity_size = dollar_risk / stop_distance_pct if stop_distance_pct > 0 else 800.0
 
     if final_conviction >= 0.85:
         conviction_tier = "A+"
-        target_size = min(1200.0, max(800.0, round(base_alloc * 1.20, 2)))
+        conviction_mult = 1.15
     elif final_conviction >= 0.65:
         conviction_tier = "SOLID"
-        target_size = min(1000.0, max(600.0, round(base_alloc * 1.00, 2)))
+        conviction_mult = 1.00
     else:
         conviction_tier = "CAUTIOUS"
-        target_size = min(800.0, max(400.0, round(base_alloc * 0.70, 2)))
+        conviction_mult = 0.75
 
-    if atr14 > 0:
-        atr_risk_units = 100.0 / (2.0 * atr14)
-        atr_size_cap = round(atr_risk_units * price, 2)
-        suggested_pos_size = min(target_size, max(250.0, atr_size_cap))
-    else:
-        suggested_pos_size = target_size
+    target_size = round(raw_risk_parity_size * conviction_mult, 2)
+    # Clamp allocation between $250 floor and $1,200 ceiling
+    suggested_pos_size = min(1200.0, max(250.0, target_size))
 
     action = "HOLD"
     reasoning = ""
@@ -402,6 +409,10 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.75
             reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
+        elif chop14 > 61.8 and not (volume_breakout or squeeze_fired or funding_alert == "SHORT_SQUEEZE_ALERT"):
+            action = "HOLD"
+            confidence = 0.80
+            reasoning = f"Choppiness Index is high ({chop14:.2f} > 61.8), confirming choppy consolidation where trend breakouts typically fail."
         elif ob_imbalance < 0.48:
             action = "HOLD"
             confidence = 0.75
