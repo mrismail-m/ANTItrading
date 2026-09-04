@@ -52,20 +52,46 @@ import csv
 import sys
 import datetime
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_PORTFOLIO_PATH = os.path.join(ROOT_DIR, "state", "portfolio.json")
 
-def load_portfolio(filepath="state/portfolio.json"):
-    """Loads current portfolio state from state/portfolio.json."""
-    if not os.path.exists(filepath):
+
+def load_portfolio(filepath=None):
+    """
+    Loads current portfolio state from Appwrite Database (with fallback to local state/portfolio.json).
+    Ensures continuous tracking across serverless cold starts.
+    """
+    target_path = filepath or DEFAULT_PORTFOLIO_PATH
+
+    # 1. Attempt sync from Appwrite Database
+    try:
+        from scripts.appwrite_db import sync_portfolio_from_db
+        db_portfolio = sync_portfolio_from_db(target_path)
+        if db_portfolio is not None:
+            return db_portfolio
+    except Exception as err:
+        sys.stderr.write(f"[execute_trade] DB fetch fallback to disk: {err}\n")
+
+    # 2. Local disk fallback
+    if not os.path.exists(target_path):
         return {"cash": 10000.0, "starting_cash": 10000.0, "positions": [], "trade_counter": 0}
-    with open(filepath, "r") as f:
+    with open(target_path, "r") as f:
         return json.load(f)
 
 
-def save_portfolio(portfolio, filepath="state/portfolio.json"):
-    """Saves updated portfolio dictionary to state/portfolio.json."""
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, "w") as f:
+def save_portfolio(portfolio, filepath=None):
+    """Saves updated portfolio dictionary to state/portfolio.json and Appwrite Database."""
+    target_path = filepath or DEFAULT_PORTFOLIO_PATH
+    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    with open(target_path, "w") as f:
         json.dump(portfolio, f, indent=2)
+
+    # Persist to Appwrite Database
+    try:
+        from scripts.appwrite_db import sync_portfolio_to_db
+        sync_portfolio_to_db(portfolio, target_path)
+    except Exception as err:
+        sys.stderr.write(f"[execute_trade] DB save fallback warning: {err}\n")
 
 
 def compute_portfolio_analytics(portfolio):
@@ -152,7 +178,7 @@ def compute_portfolio_analytics(portfolio):
     }
 
 
-def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
+def append_trade_log(decisions, cash_after, filepath=None):
     """
     Appends decision records to state/trade_log.csv.
 
@@ -160,6 +186,7 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
     :param cash_after: Updated portfolio cash after decisions
     :param filepath: Path to trade_log.csv
     """
+    target_path = filepath or os.path.join(ROOT_DIR, "state", "trade_log.csv")
     fieldnames = [
         "timestamp", "symbol", "action", "price", "qty", "cost_or_proceeds",
         "reasoning", "confidence", "cash_after", "rsi14", "ema12", "ema26",
@@ -170,10 +197,10 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
         "whale_alert", "market_regime", "suggested_pos_size"
     ]
 
-    file_exists = os.path.exists(filepath)
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    file_exists = os.path.exists(target_path)
+    os.makedirs(os.path.dirname(target_path), exist_ok=True)
 
-    with open(filepath, "a", newline="") as f:
+    with open(target_path, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         if not file_exists:
             writer.writeheader()
@@ -217,15 +244,21 @@ def append_trade_log(decisions, cash_after, filepath="state/trade_log.csv"):
             writer.writerow(row)
 
 
-def sync_human_views(portfolio, decisions, open_pos_path="state/human_open_positions.csv", decision_log_path="state/human_decision_log.csv"):
+def sync_human_views(portfolio, decisions, open_pos_path=None, decision_log_path=None):
     """
     Updates human-readable CSV views for Open Positions and Decision Log.
 
     :param portfolio: Current portfolio dictionary
     :param decisions: List of today's decision dictionaries
     """
+    pos_path = open_pos_path or os.path.join(ROOT_DIR, "state", "human_open_positions.csv")
+    dec_path = decision_log_path or os.path.join(ROOT_DIR, "state", "human_decision_log.csv")
+
+    os.makedirs(os.path.dirname(pos_path), exist_ok=True)
+    os.makedirs(os.path.dirname(dec_path), exist_ok=True)
+
     # 1. Update Open Positions CSV
-    with open(open_pos_path, "w", newline="") as f:
+    with open(pos_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["trade_id", "symbol", "entry_price", "qty", "cost_basis", "date_opened", "status"])
         for idx, pos in enumerate(portfolio.get("positions", []), start=1):
@@ -244,8 +277,8 @@ def sync_human_views(portfolio, decisions, open_pos_path="state/human_open_posit
         "timestamp", "symbol", "action", "price", "rsi14", "trend_bias",
         "divergence", "news_sentiment", "event_risk", "reasoning", "confidence"
     ]
-    file_exists = os.path.exists(decision_log_path)
-    with open(decision_log_path, "a", newline="") as f:
+    file_exists = os.path.exists(dec_path)
+    with open(dec_path, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=human_fields)
         if not file_exists:
             writer.writeheader()
@@ -353,6 +386,13 @@ def execute_trade_pass(payload):
         else:
             d["qty"] = 0.0
             d["cost_or_proceeds"] = 0.0
+
+        if action in ("BUY", "TRIM", "SELL"):
+            try:
+                from scripts.appwrite_db import record_trade_to_db
+                record_trade_to_db(d)
+            except Exception as err:
+                sys.stderr.write(f"[execute_trade] Trade DB record warning: {err}\n")
 
     # Update trailing stops & highest price for remaining open positions using live ATR(14) and Chandelier Exit
     for pos in portfolio.get("positions", []):

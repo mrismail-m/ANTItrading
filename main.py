@@ -20,8 +20,17 @@ if ROOT_DIR not in sys.path:
 def main(context=None):
     """Appwrite Functions entrypoint."""
     if context is not None:
-        from deploy.appwrite_function import main as appwrite_handler
-        return appwrite_handler(context)
+        try:
+            from deploy.appwrite_function import main as appwrite_handler
+            return appwrite_handler(context)
+        except Exception as err:
+            import traceback
+            tb = traceback.format_exc()
+            if hasattr(context, "error"):
+                context.error(f"Root entrypoint exception: {err}\n{tb}")
+            if hasattr(context, "res") and hasattr(context.res, "json"):
+                return context.res.json({"status": "error", "error": str(err), "traceback": tb}, 500)
+            raise err
 
     # CLI fallback execution
     from scripts.run_trader import run_trader_pass

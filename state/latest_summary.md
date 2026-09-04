@@ -1,6 +1,6 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-04T16:02:46.897046+00:00`  
+**Execution Timestamp:** `2026-09-04T16:54:40.793754+00:00`  
 **Operational Status:** Autonomous Hourly Paper-Trading Pass Completed  
 **Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
 
@@ -34,9 +34,9 @@
 ## 3. 🌐 Macro Market Regime & Sentiment Context
 
 * **Market Regime:** `bullish_trend`
-* **BTC Macro Circuit Breaker:** 🚨 **MACRO FLUSH ACTIVE** (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1)
+* **BTC Macro Circuit Breaker:** 🟢 **NORMAL (Healthy)**
 * **Fear & Greed Index:** **74 / 100 (Greed)**
-* **BTC Dominance:** **59.17%** | **ETH Dominance:** **11.10%**
+* **BTC Dominance:** **59.19%** | **ETH Dominance:** **11.09%**
 
 ---
 
@@ -51,32 +51,32 @@
 
 ---
 
-## 5. 🎯 Trade Actions Summary (0 BUYS, 0 TRIMS, 3 SELLS, 19 HOLDS)
+## 5. 🎯 Trade Actions Summary (1 BUYS, 0 TRIMS, 0 SELLS, 21 HOLDS)
 
 | Asset | Action | Live Price | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |
 | :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **ADA** | **SELL** | $0.2128 | 57.40 | #10 (-1.77) | `SOLID` | `+0.132` | `NORMAL` | $0.2225 | 🚨 BTC Macro Flush Circuit Breaker Triggered: BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1. Altcoin position is underwater (-4.79% from $0.2235 entry). Executing defensive SELL to prevent altcoin beta cascade. |
-| **AVAX** | **HOLD** | $7.3610 | 56.68 | #15 (-3.79) | `SOLID` | `+0.269` | `NORMAL` | $7.4431 | Active position intact (-2.15% from $7.5230 entry). Price $7.3610 is well above trailing stop ($6.8296); trend structure intact. |
-| **DOT** | **HOLD** | $0.8540 | 51.32 | #16 (-5.10) | `CAUTIOUS` | `+0.121` | `NORMAL` | $0.9133 | Active position intact (-1.73% from $0.8690 entry). Price $0.8540 is well above trailing stop ($0.7864); trend structure intact. |
-| **LTC** | **HOLD** | $50.2500 | 57.39 | #14 (-2.87) | `CAUTIOUS` | `+0.101` | `NORMAL` | $50.5850 | Active position intact (-0.89% from $50.7000 entry). Price $50.2500 is well above trailing stop ($47.8846); trend structure intact. |
-| **APT** | **SELL** | $0.5770 | 50.89 | #11 (-1.95) | `CAUTIOUS` | `+0.092` | `NORMAL` | $0.6151 | 🚨 BTC Macro Flush Circuit Breaker Triggered: BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1. Altcoin position is underwater (-5.72% from $0.6120 entry). Executing defensive SELL to prevent altcoin beta cascade. |
-| **SUI** | **SELL** | $0.7485 | 51.48 | #18 (-5.93) | `CAUTIOUS` | `+0.083` | `NORMAL` | $0.8303 | 🚨 BTC Macro Flush Circuit Breaker Triggered: BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1. Altcoin position is underwater (-4.15% from $0.7809 entry). Executing defensive SELL to prevent altcoin beta cascade. |
-| **HYPE** | **HOLD** | $84.5590 | 64.19 | #3 (+5.67) | `A+` | `+0.240` | `NORMAL` | $75.9141 | Active position intact (-1.75% from $86.0620 entry). Price $84.5590 is well above trailing stop ($77.5298); trend structure intact. |
-| **ARB** | **HOLD** | $0.1352 | 75.51 | #1 (+45.67) | `A+` | `+0.246` | `NORMAL` | $0.1203 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **UNI** | **HOLD** | $6.2620 | 79.91 | #2 (+43.46) | `A+` | `+0.268` | `NORMAL` | $5.3986 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **BNB** | **HOLD** | $716.6200 | 68.49 | #4 (+2.11) | `SOLID` | `+0.230` | `NORMAL` | $678.2174 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **NEAR** | **HOLD** | $1.9430 | 57.57 | #5 (+1.61) | `CAUTIOUS` | `+0.041` | `NORMAL` | $1.8192 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **BTC** | **HOLD** | $79445.3400 | 65.70 | #6 (+0.00) | `SOLID` | `+0.307` | `NORMAL` | $75991.5050 | Daily RSI is overbought (65.70 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
-| **SOL** | **HOLD** | $101.4900 | 62.53 | #7 (-0.01) | `SOLID` | `+0.263` | `NORMAL` | $97.7301 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **ICP** | **HOLD** | $2.4560 | 55.79 | #8 (-1.23) | `CAUTIOUS` | `+0.081` | `NORMAL` | $2.3541 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **LINK** | **HOLD** | $11.6670 | 64.27 | #9 (-1.64) | `CAUTIOUS` | `+0.214` | `NORMAL` | $11.1104 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **ETH** | **HOLD** | $2451.9200 | 62.34 | #12 (-2.60) | `CAUTIOUS` | `+0.196` | `NORMAL` | $2314.4532 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **XRP** | **HOLD** | $1.3992 | 60.19 | #13 (-2.65) | `CAUTIOUS` | `+0.107` | `NORMAL` | $1.4914 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **TRX** | **HOLD** | $0.3302 | 45.71 | #17 (-5.28) | `CAUTIOUS` | `+0.082` | `NORMAL` | $0.3373 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **XLM** | **HOLD** | $0.1789 | 50.83 | #19 (-6.53) | `CAUTIOUS` | `+0.014` | `NORMAL` | $0.1978 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **HNT** | **HOLD** | $4.6700 | 46.94 | #20 (-9.02) | `CAUTIOUS` | `+0.043` | `NORMAL` | $4.6346 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **INJ** | **HOLD** | $4.7360 | 45.52 | #21 (-9.17) | `CAUTIOUS` | `+0.017` | `NORMAL` | $5.1630 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
-| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-12.02) | `CAUTIOUS` | `-0.116` | `NORMAL` | $0.5173 | 🚨 BTC Macro Flush Alert Active (BTC Fast Intraday Flush: Price stretched -0.92% below 1H EMA20 with RSI1H at 41.1). Vetoing all new altcoin buy entries to preserve liquid cash. |
+| **AVAX** | **HOLD** | $7.3830 | 57.27 | #15 (-3.90) | `SOLID` | `+0.275` | `NORMAL` | $7.4431 | Active position intact (-1.86% from $7.5230 entry). Price $7.3830 is well above trailing stop ($6.8296); trend structure intact. |
+| **DOT** | **HOLD** | $0.8600 | 52.34 | #16 (-4.81) | `CAUTIOUS` | `+0.130` | `NORMAL` | $0.9133 | Active position intact (-1.04% from $0.8690 entry). Price $0.8600 is well above trailing stop ($0.7864); trend structure intact. |
+| **LTC** | **HOLD** | $50.5800 | 58.97 | #13 (-2.62) | `CAUTIOUS` | `+0.111` | `NORMAL` | $50.5850 | Active position intact (-0.24% from $50.7000 entry). Price $50.5800 is well above trailing stop ($47.8846); trend structure intact. |
+| **HYPE** | **HOLD** | $85.2780 | 65.47 | #3 (+6.18) | `A+` | `+0.250` | `NORMAL` | $75.9141 | Active position intact (-0.91% from $86.0620 entry). Price $85.2780 is well above trailing stop ($77.5298); trend structure intact. |
+| **ARB** | **HOLD** | $0.1338 | 74.17 | #1 (+43.74) | `A+` | `+0.232` | `NORMAL` | $0.1203 | Daily RSI is overbought (74.17 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **UNI** | **HOLD** | $6.2540 | 79.69 | #2 (+42.88) | `A+` | `+0.265` | `NORMAL` | $5.3986 | Daily RSI is overbought (79.69 > 68 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **NEAR** | **HOLD** | $1.9750 | 59.60 | #4 (+2.92) | `CAUTIOUS` | `+0.067` | `NORMAL` | $1.8192 | Order book depth skewed to asks (imbalance ratio 0.4215 < 0.48). Lacks sufficient bid support. |
+| **BNB** | **HOLD** | $720.2000 | 70.23 | #5 (+2.23) | `SOLID` | `+0.243` | `NORMAL` | $678.2174 | Daily RSI is overbought (70.23 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **SOL** | **HOLD** | $101.9000 | 63.27 | #6 (+0.01) | `SOLID` | `+0.268` | `NORMAL` | $97.7301 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'bearish'). Requires dual bullish alignment. |
+| **BTC** | **HOLD** | $79750.0100 | 66.81 | #7 (+0.00) | `CAUTIOUS` | `+0.315` | `NORMAL` | $75991.5050 | Daily RSI is overbought (66.81 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **ICP** | **HOLD** | $2.4790 | 57.31 | #8 (-0.69) | `CAUTIOUS` | `+0.093` | `NORMAL` | $2.3541 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **LINK** | **HOLD** | $11.7170 | 65.12 | #9 (-1.61) | `CAUTIOUS` | `+0.219` | `NORMAL` | $11.1104 | Daily RSI is overbought (65.12 > 65 cutoff threshold). Standing aside to catch a healthier pullback. |
+| **ADA** | **BUY** | $0.2139 | 58.09 | #10 (-1.65) | `SOLID` | `+0.138` | `NORMAL` | $0.2225 | BULLISH CONFIRMATION (SOLID TIER, Score: 0.69): Dual 1D/4H bullish trend alignment (Price $0.2139 > EMA50), healthy RSI (58.09), strong ADX (30.21), Order Book bid dominance (0.5237), and Taker Ratio (1.0203). RS Rank: #10 (Score: -1.65). [💵 CMF: +0.1376] Initiating SOLID allocation ($742.71). |
+| **APT** | **HOLD** | $0.5810 | 51.66 | #11 (-1.65) | `CAUTIOUS` | `+0.098` | `NORMAL` | $0.6151 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'bullish'). Requires dual bullish alignment. |
+| **ETH** | **HOLD** | $2461.0000 | 63.14 | #12 (-2.62) | `CAUTIOUS` | `+0.203` | `NORMAL` | $2314.4532 | Multi-timeframe trend alignment unfulfilled (1D: 'bullish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **XRP** | **HOLD** | $1.4046 | 60.79 | #14 (-2.66) | `CAUTIOUS` | `+0.112` | `NORMAL` | $1.4914 | Price $1.4046 is trading notably below VWAP ($1.4494). Awaiting reclaim of VWAP. |
+| **TRX** | **HOLD** | $0.3307 | 46.29 | #17 (-5.54) | `CAUTIOUS` | `+0.094` | `NORMAL` | $0.3373 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **SUI** | **HOLD** | $0.7546 | 52.43 | #18 (-5.55) | `SOLID` | `+0.091` | `NORMAL` | $0.8303 | Price $0.7546 is trading notably below VWAP ($0.7796). Awaiting reclaim of VWAP. |
+| **XLM** | **HOLD** | $0.1796 | 51.38 | #19 (-6.55) | `CAUTIOUS` | `+0.019` | `NORMAL` | $0.1978 | Multi-timeframe trend alignment unfulfilled (1D: 'neutral', 4H: 'neutral'). Requires dual bullish alignment. |
+| **INJ** | **HOLD** | $4.7640 | 46.11 | #20 (-9.03) | `SOLID` | `+0.022` | `NORMAL` | $5.1630 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'bearish'). Requires dual bullish alignment. |
+| **HNT** | **HOLD** | $4.6700 | 46.94 | #21 (-9.41) | `CAUTIOUS` | `+0.043` | `NORMAL` | $4.6346 | Multi-timeframe trend alignment unfulfilled (1D: 'bearish', 4H: 'neutral'). Requires dual bullish alignment. |
+| **MATIC** | **HOLD** | $0.3794 | 38.00 | #22 (-12.42) | `CAUTIOUS` | `-0.116` | `NORMAL` | $0.5173 | Institutional money flow is negative (CMF -0.1162 <= -0.10). Smart money distribution vetoes buy entry. |
 
 ---
 

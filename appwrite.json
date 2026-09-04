@@ -1,15 +1,17 @@
 {
-  "projectId": "",
-  "projectName": "ANTItrading",
-  "functions": [
-    {
-      "$id": "antitrader",
-      "name": "ANTItrading Paper-Trader",
-      "runtime": "python-3.11",
-      "path": ".",
-      "entrypoint": "main.py",
-      "schedule": "15 * * * *",
-      "timeout": 900
-    }
-  ]
+    "projectId": "6a9af04c003d0566314d",
+    "projectName": "trading_agent",
+    "endpoint": "https://nyc.cloud.appwrite.io/v1",
+    "functions": [
+        {
+            "$id": "antitrader",
+            "name": "ANTItrading Paper-Trader",
+            "runtime": "python-ml-3.11",
+            "path": ".",
+            "entrypoint": "main.py",
+            "commands": "pip install --no-cache-dir -r requirements.txt",
+            "schedule": "15 * * * *",
+            "timeout": 900
+        }
+    ]
 }

@@ -38,15 +38,23 @@ import numpy as np
 import pandas as pd
 import ta
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_WATCHLIST_PATH = os.path.join(ROOT_DIR, "state", "watchlist.json")
+DEFAULT_RESEARCH_PATH = os.path.join(ROOT_DIR, "state", "latest_research.json")
+
 
 def compute_choppiness_index(df, window=14):
     """
     Computes 14-period Choppiness Index (CHOP).
     CHOP < 38.2 = Strong directional trend
-    CHOP > 61.8 = Consolidation / Choppy market
+    CHOP > 61.8 = Choppy, sideways market
     """
     try:
-        tr1 = ta.volatility.AverageTrueRange(df["high"], df["low"], df["close"], window=1).average_true_range()
+        tr1 = pd.concat([
+            df["high"] - df["low"],
+            (df["high"] - df["close"].shift(1)).abs(),
+            (df["low"] - df["close"].shift(1)).abs()
+        ], axis=1).max(axis=1)
         sum_tr = tr1.rolling(window=window).sum()
         max_hi = df["high"].rolling(window=window).max()
         min_lo = df["low"].rolling(window=window).min()
@@ -57,17 +65,18 @@ def compute_choppiness_index(df, window=14):
         return pd.Series(50.0, index=df.index)
 
 
-def load_watchlist(filepath="state/watchlist.json"):
+def load_watchlist(filepath=None):
     """
     Loads the asset watchlist from a JSON file.
 
-    :param filepath: Path to watchlist.json file
+    :param filepath: Path to watchlist.json file (defaults to state/watchlist.json)
     :return: Dictionary mapping asset names to Binance ticker symbols (e.g. {"bitcoin": "BTCUSDT"})
     """
-    if not os.path.exists(filepath):
-        print(f"Error: Watchlist file '{filepath}' not found.", file=sys.stderr)
+    target_path = filepath or DEFAULT_WATCHLIST_PATH
+    if not os.path.exists(target_path):
+        print(f"Error: Watchlist file '{target_path}' not found.", file=sys.stderr)
         return {}
-    with open(filepath, "r") as f:
+    with open(target_path, "r") as f:
         return json.load(f)
 
 
@@ -570,7 +579,7 @@ def fetch_global_market_context():
     }
 
 
-def run_research(watchlist_path="state/watchlist.json", output_path="state/latest_research.json"):
+def run_research(watchlist_path=None, output_path=None):
     """
     Main function to execute complete technical and macro research.
     Calculates Relative Strength vs BTC and ranks all assets by RS leadership score.
@@ -579,7 +588,9 @@ def run_research(watchlist_path="state/watchlist.json", output_path="state/lates
     :param output_path: Path to save persistent state/latest_research.json
     :return: Dictionary containing market context and asset TA breakdowns
     """
-    watchlist = load_watchlist(watchlist_path)
+    target_watchlist = watchlist_path or DEFAULT_WATCHLIST_PATH
+    target_output = output_path or DEFAULT_RESEARCH_PATH
+    watchlist = load_watchlist(target_watchlist)
     ta_results = {}
 
     for name, ticker in watchlist.items():
@@ -655,9 +666,9 @@ def run_research(watchlist_path="state/watchlist.json", output_path="state/lates
         "technical_analysis": ta_results
     }
 
-    if output_path:
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        with open(output_path, "w") as f:
+    if target_output:
+        os.makedirs(os.path.dirname(target_output), exist_ok=True)
+        with open(target_output, "w") as f:
             json.dump(results, f, indent=2)
 
     return results
