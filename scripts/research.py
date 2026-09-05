@@ -33,10 +33,12 @@ Output:
 import json
 import os
 import sys
+import time
 import requests
 import numpy as np
 import pandas as pd
 import ta
+from concurrent.futures import ThreadPoolExecutor
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_WATCHLIST_PATH = os.path.join(ROOT_DIR, "state", "watchlist.json")
@@ -80,11 +82,26 @@ def load_watchlist(filepath=None):
         return json.load(f)
 
 
+def is_fresh_candles(data):
+    """Verifies that kline data is not from a dead or delisted market (within last 48 hours)."""
+    if not data or not isinstance(data, list) or len(data) == 0:
+        return False
+    try:
+        last_row = data[-1]
+        close_time_ms = float(last_row[6] if len(last_row) > 6 else last_row[0])
+        if close_time_ms < 1e11:
+            close_time_ms *= 1000
+        age_hours = (time.time() * 1000 - close_time_ms) / (1000 * 3600)
+        return age_hours <= 48.0
+    except Exception:
+        return True
+
+
 def fetch_binance_klines(symbol, interval="1d", limit=100):
     """
     Fetches OHLCV candles with multi-exchange global failover:
-    1. Binance Spot API
-    2. Binance Futures API
+    1. Binance Spot API (verified fresh)
+    2. Binance Futures API (verified fresh)
     3. MEXC Global Spot API (unrestricted globally / US cloud runners)
     4. Bybit Global Spot API
 
@@ -100,7 +117,9 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
         url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
         response = requests.get(url, timeout=5)
         if response.status_code == 200:
-            raw_data = response.json()
+            cand = response.json()
+            if is_fresh_candles(cand):
+                raw_data = cand
     except Exception:
         pass
 
@@ -110,7 +129,9 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
             fapi_url = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval={interval}&limit={limit}"
             f_resp = requests.get(fapi_url, timeout=5)
             if f_resp.status_code == 200:
-                raw_data = f_resp.json()
+                cand = f_resp.json()
+                if is_fresh_candles(cand):
+                    raw_data = cand
         except Exception:
             pass
 
@@ -120,7 +141,9 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
             mexc_url = f"https://api.mexc.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
             m_resp = requests.get(mexc_url, timeout=6)
             if m_resp.status_code == 200:
-                raw_data = m_resp.json()
+                cand = m_resp.json()
+                if is_fresh_candles(cand):
+                    raw_data = cand
         except Exception:
             pass
 
@@ -135,10 +158,12 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
                 b_data = b_resp.json().get("result", {}).get("list", [])
                 if b_data:
                     b_data = list(reversed(b_data))
-                    raw_data = [
+                    cand = [
                         [int(row[0]), float(row[1]), float(row[2]), float(row[3]), float(row[4]), float(row[5])]
                         for row in b_data
                     ]
+                    if is_fresh_candles(cand):
+                        raw_data = cand
         except Exception:
             pass
 
@@ -668,6 +693,108 @@ def run_research(watchlist_path=None, output_path=None):
 
     if target_output:
         os.makedirs(os.path.dirname(target_output), exist_ok=True)
+        with open(target_output, "w") as f:
+            json.dump(results, f, indent=2)
+
+    return results
+
+
+def run_fast_risk_research(open_symbols=None, output_path=None):
+    """
+    Fast Risk Guardian research scan.
+    Runs every 5 minutes in ~2-4 seconds.
+    Fetches technical data concurrently ONLY for BTCUSDT (for the Macro Flush Circuit Breaker)
+    and open position symbols (to calculate current price, ATR14, and trailing profit-locks).
+
+    :param open_symbols: List of active open symbols (e.g. ['LTC', 'SUI', 'AVAX'])
+    :param output_path: Path to save persistent state/latest_research.json
+    :return: Dictionary containing market context and targeted asset TA breakdowns
+    """
+    target_output = output_path or DEFAULT_RESEARCH_PATH
+    open_symbols = open_symbols or []
+
+    # Target tickers: always BTCUSDT + open positions
+    target_tickers = ["BTCUSDT"]
+    for s in open_symbols:
+        t = s if s.endswith("USDT") else f"{s}USDT"
+        if t not in target_tickers:
+            target_tickers.append(t)
+
+    ta_results = {}
+    with ThreadPoolExecutor(max_workers=min(len(target_tickers), 6)) as executor:
+        futures = {
+            executor.submit(compute_technical_indicators, ticker.replace("USDT", ""), ticker): ticker
+            for ticker in target_tickers
+        }
+        for future in futures:
+            ticker = futures[future]
+            try:
+                ta_results[ticker] = future.result()
+            except Exception as e:
+                ta_results[ticker] = {"symbol": ticker, "error": str(e)}
+
+    # Reuse cached market context if available to skip slow external APIs
+    market_ctx = {}
+    if os.path.exists(target_output):
+        try:
+            with open(target_output, "r") as f:
+                cached = json.load(f)
+                market_ctx = cached.get("market_context", {})
+        except Exception:
+            pass
+
+    # Update BTC Macro Flush Detection with live BTC data
+    btc = ta_results.get("BTCUSDT", {})
+    btc_p = btc.get("price", 0)
+    btc_ema50 = btc.get("ema50", 0)
+    btc_adx = btc.get("adx14", 0)
+    btc_trend_4h = btc.get("trend_bias_4h", "neutral")
+    btc_trend_1d = btc.get("trend_bias_1d", "neutral")
+    btc_rsi_1h = btc.get("rsi_1h", 50.0)
+    btc_vs_ema20_1h = btc.get("price_vs_ema20_1h", 0.0)
+
+    fg_val = market_ctx.get("fear_and_greed", {}).get("value", 50)
+    try:
+        fg_val = int(fg_val)
+    except Exception:
+        fg_val = 50
+
+    regime = classify_market_regime(btc_p, btc_ema50, btc_adx, fg_val)
+    market_ctx["market_regime"] = regime
+
+    btc_flush_alert = False
+    macro_flush_reason = "BTC technical structure healthy"
+
+    if btc_trend_1d == "bearish":
+        btc_flush_alert = True
+        macro_flush_reason = f"BTC 1D Trend Bias is Bearish (Price ${btc_p:,.0f} below 1D EMA50 ${btc_ema50:,.0f})"
+    elif btc_trend_4h == "bearish":
+        btc_flush_alert = True
+        macro_flush_reason = "BTC 4H Trend Bias is Bearish (Breakdown below 4H EMA50 / Bearish 4H MACD)"
+    elif btc_vs_ema20_1h <= -0.8 and btc_rsi_1h < 45.0:
+        btc_flush_alert = True
+        macro_flush_reason = f"BTC Fast Intraday Flush: Price stretched {btc_vs_ema20_1h:.2f}% below 1H EMA20 with RSI1H at {btc_rsi_1h:.1f}"
+
+    market_ctx["btc_flush_alert"] = btc_flush_alert
+    market_ctx["macro_flush_reason"] = macro_flush_reason
+
+    results = {
+        "market_context": market_ctx,
+        "technical_analysis": ta_results
+    }
+
+    if target_output:
+        os.makedirs(os.path.dirname(target_output), exist_ok=True)
+        # Merge with existing TA data if present so full universe cache is preserved
+        if os.path.exists(target_output):
+            try:
+                with open(target_output, "r") as f:
+                    cached_data = json.load(f)
+                    merged_ta = cached_data.get("technical_analysis", {})
+                    merged_ta.update(ta_results)
+                    results["technical_analysis"] = merged_ta
+            except Exception:
+                pass
         with open(target_output, "w") as f:
             json.dump(results, f, indent=2)
 

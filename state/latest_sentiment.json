@@ -2,38 +2,38 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "Crypto Biz: AI took a back seat when Bitcoin started climbing",
-      "QuFi launches post-quantum verification platform with Bitcoin testnet proof",
-      "US law enforcement group moves to \u2018neutral\u2019 position on CLARITY Act"
+      "Here\u2019s what happened in crypto today",
+      "Poland upholds crypto bill veto as Zondacrypto scandal widens",
+      "Bitcoin ETF inflows hit $3.8B in strongest three-week stretch of 2026"
     ],
     "overall_sentiment": "bullish",
-    "macro_event_risk": "sec"
+    "macro_event_risk": "scam"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
       {
+        "title": "Bitcoin ETF inflows hit $3.8B in strongest three-week stretch of 2026",
+        "source": "CoinTelegraph",
+        "published_at": "Sat, 05 Sep 2026 08:03:06 +0000",
+        "link": "https://cointelegraph.com/markets/bitcoin-etf-inflows-3-8-billion-strongest-three-week-run-2026?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
+        "title": "Surprise nonfarm payrolls print sends Bitcoin back below 80K",
+        "source": "CoinTelegraph",
+        "published_at": "Fri, 04 Sep 2026 20:30:47 +0000",
+        "link": "https://cointelegraph.com/markets/surprise-labor-market-print-sends-bitcoin-back-below-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
+      {
         "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
         "source": "CoinTelegraph",
         "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
         "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "QuFi launches post-quantum verification platform with Bitcoin testnet proof",
-        "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:09:25 +0000",
-        "link": "https://cointelegraph.com/news/qufi-launches-post-quantum-verification-platform-with-bitcoin-testnet-proof?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Bitcoin ETF inflows hit $731M, highest since January as BTC reclaims $80K",
-        "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 07:37:13 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-draw-731-million-highest-january-btc-80k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 10
+    "headline_count": 12
   },
   "ETH": {
     "symbol": "ETH",
@@ -53,10 +53,10 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -81,10 +81,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -95,10 +95,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -109,10 +109,10 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -123,10 +123,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -137,10 +137,10 @@
     "symbol": "MATIC",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -151,10 +151,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -165,10 +165,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -179,10 +179,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -193,10 +193,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -207,10 +207,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -221,10 +221,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -235,10 +235,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -249,10 +249,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -263,24 +263,24 @@
     "symbol": "INJ",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Pineapple Financial puts $1B in mortgage records on Injective",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Fri, 04 Sep 2026 19:31:38 +0000",
+        "link": "https://cointelegraph.com/news/pineapple-financial-puts-1b-in-mortgage-records-on-injective?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
-    "news_sentiment": "cautious_bullish",
+    "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 0
+    "headline_count": 1
   },
   "BNB": {
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -291,10 +291,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -305,10 +305,10 @@
     "symbol": "HNT",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -319,10 +319,10 @@
     "symbol": "HYPE",
     "headlines": [
       {
-        "title": "Crypto Biz: AI took a back seat when Bitcoin started climbing",
+        "title": "Here\u2019s what happened in crypto today",
         "source": "CoinTelegraph",
-        "published_at": "Fri, 04 Sep 2026 17:22:58 +0000",
-        "link": "https://cointelegraph.com/news/crypto-biz-bitcoin-miners-strategy-strive-bitmine-stablecoins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

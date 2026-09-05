@@ -47,10 +47,21 @@ def main(context: Any) -> Any:
         elif hasattr(context, "log"):
             context.log("ℹ️ No remote database state found; proceeding with bundled state.")
 
-        # 2. Execute live trading pass
+        # 2. Determine mode and execute live trading pass
+        mode = "AUTO"
+        if hasattr(context, "req") and context.req:
+            try:
+                body = getattr(context.req, "bodyJson", None) or getattr(context.req, "body", None)
+                if isinstance(body, dict) and "mode" in body:
+                    mode = str(body["mode"]).upper()
+            except Exception:
+                pass
+
         if hasattr(context, "log"):
-            context.log("🧠 Executing autonomous trading pass...")
-        result = run_trader_pass(dry_run=False, silent=True)
+            context.log(f"🧠 Executing autonomous trading pass (Requested Mode: {mode})...")
+        result = run_trader_pass(mode=mode, dry_run=False, silent=True)
+        actual_mode = result.get("mode", "UNKNOWN")
+        executed_count = result.get("executed_count", 0)
 
         portfolio = result.get("portfolio", {})
         cash = portfolio.get("cash", 0.0)
@@ -63,20 +74,22 @@ def main(context: Any) -> Any:
             context.log("💾 Persisting post-pass portfolio to Appwrite Database...")
         sync_portfolio_to_db(portfolio)
 
-        msg = f"✅ Pass completed! Equity: ${curr_val:,.2f} USD | Cash: ${cash:,.2f} USD | Open: {len(positions)}"
+        msg = f"✅ [{actual_mode}] Pass completed! Equity: ${curr_val:,.2f} USD | Cash: ${cash:,.2f} USD | Open: {len(positions)} | Orders: {executed_count}"
         if hasattr(context, "log"):
             context.log(msg)
 
         if hasattr(context, "res") and hasattr(context.res, "json"):
             return context.res.json({
                 "status": "success",
+                "mode": actual_mode,
                 "timestamp": now,
                 "portfolio_value": curr_val,
                 "cash_balance": cash,
                 "open_positions": len(positions),
+                "executed_orders": executed_count,
                 "message": msg
             })
-        return {"status": "success", "portfolio_value": curr_val}
+        return {"status": "success", "mode": actual_mode, "portfolio_value": curr_val}
 
     except Exception as err:
         err_msg = f"❌ Execution failed: {err}"

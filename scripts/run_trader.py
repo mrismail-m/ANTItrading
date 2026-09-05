@@ -36,7 +36,7 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from scripts.research import run_research, load_watchlist
+from scripts.research import run_research, run_fast_risk_research, load_watchlist
 from scripts.news_research import analyze_news_sentiment
 from scripts.execute_trade import load_portfolio, execute_trade_pass
 from scripts.discord_notifier import send_discord_notification
@@ -661,10 +661,14 @@ def generate_executive_summary_markdown(
     return "\n".join(lines)
 
 
-def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
+def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
     """
-    Main orchestrator for twice-daily paper-trading pass.
-    Evaluates open positions first, then prioritizes new buys by Relative Strength (RS) leadership ranking.
+    Main orchestrator for paper-trading pass with Dual-Cadence Architecture:
+    - FAST_GUARDIAN (Every 5 mins): Fast risk check for BTC + open positions only.
+      Ratchets dynamic profit-locks, executes stop/TP1 exits, and cuts on BTC macro flush.
+      Completely silent on Discord unless an order executes.
+    - FULL (Hourly on :00): Full universe scan across 22 assets, evaluates new BUY entries,
+      refreshes macro news sentiment, and dispatches comprehensive Discord portfolio embed.
     """
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     watchlist_path = os.path.join(ROOT_DIR, "state", "watchlist.json")
@@ -673,10 +677,110 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
     decisions_path = os.path.join(ROOT_DIR, "state", "latest_decisions.json")
     summary_path = os.path.join(ROOT_DIR, "state", "latest_summary.md")
 
-    if not silent:
-        print(f"🚀 [1/5] Running live market research across tracked universe...")
+    # Resolve Execution Mode
+    mode_clean = mode.upper()
+    if mode_clean in ["FAST", "FAST_GUARDIAN"]:
+        actual_mode = "FAST_GUARDIAN"
+    elif mode_clean in ["FULL", "HOURLY"]:
+        actual_mode = "FULL"
+    else:  # AUTO
+        current_minute = datetime.datetime.now(datetime.timezone.utc).minute
+        if current_minute in [58, 59, 0, 1, 2]:
+            actual_mode = "FULL"
+        else:
+            actual_mode = "FAST_GUARDIAN"
 
-    # 1. Technical Research (1D & 4H)
+    # 1. Load Persistent Portfolio
+    portfolio = load_portfolio()
+    open_positions = portfolio.get("positions", [])
+    open_symbols = [p["symbol"] for p in open_positions]
+
+    # -------------------------------------------------------------------------
+    # A. FAST RISK GUARDIAN (Runs every 5 mins on :05, :10, :15 ... :55)
+    # -------------------------------------------------------------------------
+    if actual_mode == "FAST_GUARDIAN":
+        if not silent:
+            print(f"🛡️ [FAST GUARDIAN] Checking risk & profit-locks for {len(open_symbols)} open positions + BTC...")
+
+        research_data = run_fast_risk_research(open_symbols=open_symbols, output_path=research_path)
+        market_ctx = research_data.get("market_context", {})
+        ta_data = research_data.get("technical_analysis", {})
+        regime = market_ctx.get("market_regime", "neutral")
+        btc_flush_alert = market_ctx.get("btc_flush_alert", False)
+        macro_flush_reason = market_ctx.get("macro_flush_reason", "")
+
+        # Reuse cached sentiment
+        sentiment_data = {}
+        if os.path.exists(sentiment_path):
+            try:
+                with open(sentiment_path, "r") as f:
+                    sentiment_data = json.load(f)
+            except Exception:
+                pass
+
+        decisions = []
+        for p in open_positions:
+            sym = p.get("symbol")
+            ticker = sym if sym.endswith("USDT") else f"{sym}USDT"
+            asset_ta = ta_data.get(ticker, {})
+            d = evaluate_asset_decision(
+                symbol=sym,
+                ticker=ticker,
+                data=asset_ta,
+                portfolio=portfolio,
+                sentiment=sentiment_data,
+                regime=regime,
+                now=now,
+                btc_flush_alert=btc_flush_alert,
+                macro_flush_reason=macro_flush_reason
+            )
+            decisions.append(d)
+
+        decisions_payload = {
+            "timestamp": now,
+            "mode": "FAST_GUARDIAN",
+            "decisions": decisions
+        }
+        with open(decisions_path, "w") as f:
+            json.dump(decisions_payload, f, indent=2)
+
+        # Execute trades (ratchets trailing stops even on HOLD, or executes SELL/TRIM)
+        if not dry_run:
+            updated_portfolio = execute_trade_pass(decisions_payload)
+        else:
+            updated_portfolio = portfolio
+
+        executed_actions = [d for d in decisions if d.get("action") in ["BUY", "SELL", "TRIM"]]
+
+        # Discord Notification: SILENT unless an action executed!
+        if not dry_run and len(executed_actions) > 0:
+            if not silent:
+                print(f"📢 [FAST GUARDIAN] Action executed ({len(executed_actions)} orders)! Dispatching Discord alert...")
+            send_discord_notification(
+                portfolio=updated_portfolio,
+                decisions=decisions,
+                regime=regime
+            )
+        elif not silent:
+            print(f"🤫 [FAST GUARDIAN] Pass complete. Monitored {len(open_positions)} positions, 0 orders executed. Remaining silent on Discord.")
+
+        return {
+            "status": "success",
+            "mode": "FAST_GUARDIAN",
+            "timestamp": now,
+            "portfolio": updated_portfolio,
+            "decisions_count": len(decisions),
+            "executed_count": len(executed_actions),
+            "summary_path": summary_path
+        }
+
+    # -------------------------------------------------------------------------
+    # B. FULL ALPHA SCANNER (Runs Hourly on :00)
+    # -------------------------------------------------------------------------
+    if not silent:
+        print(f"🚀 [1/5] [FULL ALPHA SCANNER] Running full market research across tracked universe...")
+
+    # 1. Technical Research (1D & 4H across all 22 assets)
     research_data = run_research(watchlist_path=watchlist_path, output_path=research_path)
     market_ctx = research_data.get("market_context", {})
     ta_data = research_data.get("technical_analysis", {})
@@ -687,10 +791,7 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
         print(f"📰 [2/5] Querying news headlines and macro sentiment...")
     sentiment_data = analyze_news_sentiment(output_path=sentiment_path)
 
-    # 3. Load Persistent Portfolio
-    portfolio = load_portfolio()
-
-    # 4. Decision Engine (Open Positions first, then RS-Ranked Candidates)
+    # 3. Decision Engine (Open Positions first, then RS-Ranked Candidates)
     if not silent:
         print(f"🧠 [3/5] Evaluating decision rules, multi-stage TP1 scaling, and RS ranking...")
     watchlist = load_watchlist(watchlist_path)
@@ -753,21 +854,20 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
             macro_flush_reason=macro_flush_reason
         )
         decisions.append(d)
-        # If candidate triggered BUY, simulate adding to temp open count so subsequent candidates respect cap
         if d.get("action") == "BUY":
             pos_symbols.add(sym)
             current_open_count += 1
             sim_cash -= float(d.get("amount_usd", 0.0))
 
-    # Save decisions to fixed state file
     decisions_payload = {
         "timestamp": now,
+        "mode": "FULL",
         "decisions": decisions
     }
     with open(decisions_path, "w") as f:
         json.dump(decisions_payload, f, indent=2)
 
-    # 5. Trade Execution & State Persistence
+    # 4. Trade Execution & State Persistence
     if not silent:
         print(f"⚡ [4/5] Syncing state and updating portfolio...")
     if not dry_run:
@@ -777,7 +877,7 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
         if not silent:
             print("   [DRY-RUN] Skipped persistent trade execution and portfolio write.")
 
-    # 6. Generate & Save Executive Report
+    # 5. Generate & Save Executive Report
     if not silent:
         print(f"📄 [5/5] Generating Executive Summary Report...")
     summary_md = generate_executive_summary_markdown(
@@ -792,7 +892,7 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
     if not silent:
         print("\n" + summary_md)
 
-    # 7. Dispatch Discord Webhook Notification
+    # 6. Dispatch Discord Webhook Notification (ALWAYS on Hourly Full Scan)
     if not dry_run:
         send_discord_notification(
             portfolio=updated_portfolio,
@@ -802,6 +902,7 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
 
     return {
         "status": "success",
+        "mode": "FULL",
         "timestamp": now,
         "portfolio": updated_portfolio,
         "decisions_count": len(decisions),
@@ -811,8 +912,9 @@ def run_trader_pass(dry_run: bool = False, silent: bool = False) -> Dict[str, An
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ANTItrading Autonomous Twice-Daily Paper-Trading Runner")
+    parser.add_argument("--mode", type=str, default="AUTO", choices=["AUTO", "FULL", "FAST_GUARDIAN", "fast", "full"], help="Execution mode: AUTO, FULL, or FAST_GUARDIAN")
     parser.add_argument("--dry-run", action="store_true", help="Evaluate research and decisions without saving trades")
     parser.add_argument("--silent", action="store_true", help="Suppress terminal markdown rendering")
     args = parser.parse_args()
 
-    run_trader_pass(dry_run=args.dry_run, silent=args.silent)
+    run_trader_pass(mode=args.mode, dry_run=args.dry_run, silent=args.silent)
