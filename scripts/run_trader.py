@@ -250,6 +250,9 @@ def evaluate_asset_decision(
     reasoning = ""
     confidence = final_conviction
     amount_usd = 0.0
+    trade_pnl_pct = 0.0
+    trade_profit_usd = 0.0
+    trade_cost_basis = 0.0
 
     # -------------------------------------------------------------------------
     # 1. EVALUATE ACTIVE OPEN POSITIONS (Incorporating Chandelier Exit)
@@ -259,6 +262,9 @@ def evaluate_asset_decision(
         entry_p = float(pos.get("entry_price", price))
         highest_p = max(float(pos.get("highest_price", entry_p)), price)
         pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
+        trade_cost_basis = float(pos.get("cost_basis", 0.0))
+        trade_pnl_pct = pnl_pct
+        trade_profit_usd = (pnl_pct / 100.0) * trade_cost_basis
 
         # Position-level Chandelier Exit hangs from trade's highest price peak
         trade_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else round(entry_p * 0.93, 4)
@@ -267,14 +273,28 @@ def evaluate_asset_decision(
         if pos.get("tp1_hit", False) or (btc_flush_alert and symbol != "BTC" and pnl_pct > 0):
             trailing_stop = max(trailing_stop, entry_p)
 
-        # Dynamic Progressive Profit-Lock Trailing Stop:
-        # Keep whole amount in, but once peak gain reaches >= +2.0%,
-        # dynamically lock in at least 60% of peak gain (min 1.0% guaranteed)
+        # Dynamic Progressive Profit-Lock Trailing Stop (Tighter lock as profits grow):
+        # - Gain 2.0% - 4.0%: Lock 50% of peak gain (give breathing room)
+        # - Gain 4.0% - 6.0%: Lock 70% of peak gain
+        # - Gain 6.0% - 8.0%: Lock 82% of peak gain (e.g. at +6% locks 4.92%, at +7% locks 5.74%–6.0%)
+        # - Gain >= 8.0%: Lock 88% of peak gain
         peak_gain_pct = ((highest_p - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
         if peak_gain_pct >= PROFIT_LOCK_TRIGGER_PCT:
-            profit_lock_pct = max(1.0, peak_gain_pct * PROFIT_LOCK_RATIO)
+            if peak_gain_pct >= 8.0:
+                lock_ratio = 0.88
+            elif peak_gain_pct >= 6.0:
+                lock_ratio = 0.82
+            elif peak_gain_pct >= 4.0:
+                lock_ratio = 0.70
+            else:
+                lock_ratio = 0.50
+
+            profit_lock_pct = max(1.0, peak_gain_pct * lock_ratio)
             dynamic_profit_stop = round(entry_p * (1.0 + (profit_lock_pct / 100.0)), 4)
             trailing_stop = max(trailing_stop, dynamic_profit_stop)
+
+        # CRITICAL: Trailing stops are strictly monotonic non-decreasing (never lowered)
+        trailing_stop = max(trailing_stop, std_trail)
 
         tp1_hit = pos.get("tp1_hit", False)
 
@@ -282,8 +302,9 @@ def evaluate_asset_decision(
         if pnl_pct >= 10.0 and not tp1_hit:
             action = "TRIM"
             confidence = 0.92
+            trim_profit = trade_profit_usd * 0.5
             reasoning = (
-                f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash, "
+                f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash (+{trim_profit:+.2f} USD), "
                 f"locking runner trailing stop to breakeven (${entry_p:.4f})."
             )
         # Trailing / Dynamic Profit-Lock / Chandelier Stop Breach Exit
@@ -294,17 +315,17 @@ def evaluate_asset_decision(
             if locked_ret_pct > 0:
                 reasoning = (
                     f"Dynamic Profit-Lock Triggered: Price ${price:.4f} dropped below ratcheted profit stop (${trailing_stop:.4f}, "
-                    f"+{locked_ret_pct:.2f}% locked profit from ${entry_p:.4f} entry). Executing SELL to bank gains."
+                    f"+{locked_ret_pct:.2f}% locked profit from ${entry_p:.4f} entry). Realized PnL: {trade_profit_usd:+.2f} USD ({pnl_pct:+.2f}%). Executing SELL to bank gains."
                 )
             else:
-                reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Executing SELL to preserve capital."
+                reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Realized PnL: {trade_profit_usd:+.2f} USD ({pnl_pct:+.2f}%). Executing SELL to preserve capital."
         # BTC Macro Flush Defense: Exit underwater altcoins (<= -2.5%) during a macro BTC dump
         elif btc_flush_alert and symbol != "BTC" and pnl_pct <= -2.5:
             action = "SELL"
             confidence = 0.90
             reasoning = (
                 f"🚨 BTC Macro Flush Circuit Breaker Triggered: {macro_flush_reason}. "
-                f"Altcoin position is underwater ({pnl_pct:.2f}% from ${entry_p:.4f} entry). "
+                f"Altcoin position is underwater ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Realized Loss: {trade_profit_usd:+.2f} USD. "
                 f"Executing defensive SELL to prevent altcoin beta cascade."
             )
         # Ranging Regime Mean-Reversion Exit
@@ -461,6 +482,9 @@ def evaluate_asset_decision(
         "amount_usd": amount_usd,
         "qty": 0.0,
         "cost_or_proceeds": 0.0,
+        "pnl_pct": round(trade_pnl_pct, 2),
+        "profit_usd": round(trade_profit_usd, 2),
+        "cost_basis": round(trade_cost_basis, 2),
         "reasoning": reasoning,
         "confidence": confidence,
         "conviction_score": final_conviction,

@@ -437,16 +437,30 @@ def execute_trade_pass(payload):
                 if pos.get("tp1_hit", False):
                     new_stop = max(new_stop, float(pos.get("entry_price", new_stop)))
 
-                # Dynamic Progressive Profit-Lock:
-                # Ratchet stop to lock in 60% of peak gain (min 1.0%) once gain reaches >= +2.0%
+                # Dynamic Progressive Profit-Lock (Tighter lock as profits grow):
+                # - At +2.0% to +4.0% gain: lock in 50% of peak gain
+                # - At +4.0% to +6.0% gain: lock in 70% of peak gain
+                # - At +6.0% to +8.0% gain: lock in 82% of peak gain (e.g. +6% peak -> locks +4.92%; +7% peak -> locks +5.74%)
+                # - At >= +8.0% gain: lock in 88% of peak gain
                 entry_val = float(pos.get("entry_price", curr_p))
                 peak_gain_pct = ((pos["highest_price"] - entry_val) / entry_val) * 100 if entry_val > 0 else 0.0
                 if peak_gain_pct >= 2.0:
-                    profit_lock_pct = max(1.0, peak_gain_pct * 0.60)
+                    if peak_gain_pct >= 8.0:
+                        lock_ratio = 0.88
+                    elif peak_gain_pct >= 6.0:
+                        lock_ratio = 0.82
+                    elif peak_gain_pct >= 4.0:
+                        lock_ratio = 0.70
+                    else:
+                        lock_ratio = 0.50
+
+                    profit_lock_pct = max(1.0, peak_gain_pct * lock_ratio)
                     dynamic_profit_stop = round(entry_val * (1.0 + (profit_lock_pct / 100.0)), 4)
                     new_stop = max(new_stop, dynamic_profit_stop)
 
-                if new_stop > pos["trailing_stop_price"]:
+                # CRITICAL: Trailing stops are strictly monotonic non-decreasing (never lowered)
+                current_stop = float(pos.get("trailing_stop_price", 0.0))
+                if new_stop > current_stop:
                     pos["trailing_stop_price"] = new_stop
 
     # Calculate current total portfolio value

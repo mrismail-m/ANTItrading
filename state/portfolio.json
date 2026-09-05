@@ -1,5 +1,5 @@
 {
-  "cash": 4964.140284184473,
+  "cash": 2733.860284184473,
   "starting_cash": 10000.0,
   "positions": [
     {
@@ -7,8 +7,8 @@
       "qty": 19.72386587771203,
       "entry_price": 50.7,
       "cost_basis": 1000.0,
-      "highest_price": 51.57,
-      "trailing_stop_price": 47.8846,
+      "highest_price": 54.2,
+      "trailing_stop_price": 53.57,
       "opened_at": "2026-09-03T11:39:00.120688+00:00"
     },
     {
@@ -30,30 +30,12 @@
       "opened_at": "2026-09-04T06:00:48.148572+00:00"
     },
     {
-      "symbol": "DOT",
-      "qty": 1091.7031070195628,
-      "entry_price": 0.869,
-      "cost_basis": 948.69,
-      "highest_price": 0.8768,
-      "trailing_stop_price": 0.7864,
-      "opened_at": "2026-09-04T06:02:44.191742+00:00"
-    },
-    {
-      "symbol": "HNT",
-      "qty": 438.21540491505857,
-      "entry_price": 0.6063,
-      "cost_basis": 265.69,
-      "highest_price": 0.6063,
-      "trailing_stop_price": 0.3781,
-      "opened_at": "2026-09-04T17:06:55.052022+00:00"
-    },
-    {
       "symbol": "ADA",
       "qty": 3496.485473289597,
       "entry_price": 0.2134,
       "cost_basis": 746.15,
-      "highest_price": 0.2134,
-      "trailing_stop_price": 0.1848,
+      "highest_price": 0.2141,
+      "trailing_stop_price": 0.1869,
       "opened_at": "2026-09-04T17:06:55.052022+00:00"
     },
     {
@@ -61,12 +43,57 @@
       "qty": 54.59649122807018,
       "entry_price": 11.685,
       "cost_basis": 637.96,
-      "highest_price": 11.685,
-      "trailing_stop_price": 10.5002,
+      "highest_price": 11.802,
+      "trailing_stop_price": 10.6734,
       "opened_at": "2026-09-04T17:06:55.052022+00:00"
+    },
+    {
+      "symbol": "SUI",
+      "qty": 818.8287921385217,
+      "entry_price": 0.76118,
+      "cost_basis": 623.9,
+      "highest_price": 0.793,
+      "trailing_stop_price": 0.7803,
+      "opened_at": "2026-09-05T01:00:57.773807+00:00"
+    },
+    {
+      "symbol": "ICP",
+      "qty": 402.1361103949911,
+      "entry_price": 2.680339,
+      "cost_basis": 1078.94,
+      "highest_price": 2.703,
+      "trailing_stop_price": 2.409,
+      "opened_at": "2026-09-05T06:30:59.197506+00:00"
+    },
+    {
+      "symbol": "XRP",
+      "qty": 486.8172108201653,
+      "entry_price": 1.405302,
+      "cost_basis": 684.81,
+      "highest_price": 1.4075,
+      "trailing_stop_price": 1.2513,
+      "opened_at": "2026-09-05T08:01:00.257329+00:00"
+    },
+    {
+      "symbol": "HNT",
+      "qty": 516.3721024103334,
+      "entry_price": 0.624312,
+      "cost_basis": 322.7,
+      "highest_price": 0.624312,
+      "trailing_stop_price": 0.3985,
+      "opened_at": "2026-09-05T09:00:57.673377+00:00"
+    },
+    {
+      "symbol": "APT",
+      "qty": 1274.8452559613138,
+      "entry_price": 0.5997,
+      "cost_basis": 765.29,
+      "highest_price": 0.5997,
+      "trailing_stop_price": 0.5227,
+      "opened_at": "2026-09-05T09:00:57.673377+00:00"
     }
   ],
-  "trade_counter": 16,
+  "trade_counter": 22,
   "equity_history": [
     {
       "timestamp": "2026-09-02T04:24:05.439461+00:00",
@@ -207,13 +234,169 @@
       "timestamp": "2026-09-04T17:34:09.960338+00:00",
       "portfolio_value": 10074.3,
       "benchmark_value": 10070.55
+    },
+    {
+      "timestamp": "2026-09-04T18:00:57.996200+00:00",
+      "portfolio_value": 10068.95,
+      "benchmark_value": 10068.83
+    },
+    {
+      "timestamp": "2026-09-04T18:31:02.825174+00:00",
+      "portfolio_value": 10084.34,
+      "benchmark_value": 10076.31
+    },
+    {
+      "timestamp": "2026-09-04T19:01:05.945401+00:00",
+      "portfolio_value": 10092.36,
+      "benchmark_value": 10087.59
+    },
+    {
+      "timestamp": "2026-09-04T19:30:56.598353+00:00",
+      "portfolio_value": 10112.68,
+      "benchmark_value": 10100.1
+    },
+    {
+      "timestamp": "2026-09-04T20:00:57.544907+00:00",
+      "portfolio_value": 10107.38,
+      "benchmark_value": 10103.95
+    },
+    {
+      "timestamp": "2026-09-04T20:30:59.286769+00:00",
+      "portfolio_value": 10084.54,
+      "benchmark_value": 10095.95
+    },
+    {
+      "timestamp": "2026-09-04T21:00:59.871318+00:00",
+      "portfolio_value": 10087.2,
+      "benchmark_value": 10089.66
+    },
+    {
+      "timestamp": "2026-09-04T21:30:58.945087+00:00",
+      "portfolio_value": 10087.1,
+      "benchmark_value": 10101.03
+    },
+    {
+      "timestamp": "2026-09-04T22:00:58.485384+00:00",
+      "portfolio_value": 10064.51,
+      "benchmark_value": 10091.56
+    },
+    {
+      "timestamp": "2026-09-04T22:31:00.049112+00:00",
+      "portfolio_value": 10070.23,
+      "benchmark_value": 10091.67
+    },
+    {
+      "timestamp": "2026-09-04T23:01:05.747969+00:00",
+      "portfolio_value": 10055.61,
+      "benchmark_value": 10080.13
+    },
+    {
+      "timestamp": "2026-09-04T23:30:58.286698+00:00",
+      "portfolio_value": 10085.15,
+      "benchmark_value": 10091.04
+    },
+    {
+      "timestamp": "2026-09-05T00:01:00.149251+00:00",
+      "portfolio_value": 10093.63,
+      "benchmark_value": 10093.24
+    },
+    {
+      "timestamp": "2026-09-05T00:31:33.834582+00:00",
+      "portfolio_value": 10105.65,
+      "benchmark_value": 10091.59
+    },
+    {
+      "timestamp": "2026-09-05T01:00:57.773807+00:00",
+      "portfolio_value": 10096.4,
+      "benchmark_value": 10083.65
+    },
+    {
+      "timestamp": "2026-09-05T01:31:01.559500+00:00",
+      "portfolio_value": 10132.66,
+      "benchmark_value": 10096.68
+    },
+    {
+      "timestamp": "2026-09-05T02:01:47.250585+00:00",
+      "portfolio_value": 10119.18,
+      "benchmark_value": 10074.76
+    },
+    {
+      "timestamp": "2026-09-05T02:31:00.881064+00:00",
+      "portfolio_value": 10132.59,
+      "benchmark_value": 10080.17
+    },
+    {
+      "timestamp": "2026-09-05T03:00:58.340876+00:00",
+      "portfolio_value": 10147.21,
+      "benchmark_value": 10082.91
+    },
+    {
+      "timestamp": "2026-09-05T03:31:01.456964+00:00",
+      "portfolio_value": 10145.97,
+      "benchmark_value": 10086.87
+    },
+    {
+      "timestamp": "2026-09-05T04:00:56.791606+00:00",
+      "portfolio_value": 10139.81,
+      "benchmark_value": 10080.7
+    },
+    {
+      "timestamp": "2026-09-05T04:31:01.673213+00:00",
+      "portfolio_value": 10133.4,
+      "benchmark_value": 10080.58
+    },
+    {
+      "timestamp": "2026-09-05T05:00:58.076970+00:00",
+      "portfolio_value": 10140.07,
+      "benchmark_value": 10070.96
+    },
+    {
+      "timestamp": "2026-09-05T05:31:02.550116+00:00",
+      "portfolio_value": 10143.28,
+      "benchmark_value": 10078.99
+    },
+    {
+      "timestamp": "2026-09-05T06:00:59.530428+00:00",
+      "portfolio_value": 10165.97,
+      "benchmark_value": 10079.04
+    },
+    {
+      "timestamp": "2026-09-05T06:30:59.197506+00:00",
+      "portfolio_value": 10193.7,
+      "benchmark_value": 10085.29
+    },
+    {
+      "timestamp": "2026-09-05T07:00:58.913623+00:00",
+      "portfolio_value": 10217.55,
+      "benchmark_value": 10088.28
+    },
+    {
+      "timestamp": "2026-09-05T07:31:44.274348+00:00",
+      "portfolio_value": 10244.18,
+      "benchmark_value": 10100.31
+    },
+    {
+      "timestamp": "2026-09-05T08:01:00.257329+00:00",
+      "portfolio_value": 10226.24,
+      "benchmark_value": 10100.37
+    },
+    {
+      "timestamp": "2026-09-05T08:31:48.267428+00:00",
+      "portfolio_value": 10185.56,
+      "benchmark_value": 10091.5
+    },
+    {
+      "timestamp": "2026-09-05T09:00:57.673377+00:00",
+      "portfolio_value": 10204.37,
+      "benchmark_value": 10098.26
     }
   ],
   "metrics": {
-    "sharpe_ratio": -3.67,
-    "sortino_ratio": -4.36,
-    "max_drawdown_pct": 2.77,
-    "calmar_ratio": 0.27,
-    "benchmark_return_pct": 0.71
-  }
+    "sharpe_ratio": 2.44,
+    "sortino_ratio": 3.29,
+    "max_drawdown_pct": 2.92,
+    "calmar_ratio": 0.7,
+    "benchmark_return_pct": 0.98
+  },
+  "total_fees_paid": 5.9238
 }

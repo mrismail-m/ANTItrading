@@ -131,11 +131,19 @@ def send_discord_notification(
 
     actions_summary = []
     for b in buys:
-        actions_summary.append(f"BUY: {b.get('symbol')} (${float(b.get('amount_usd', 0)):.2f})")
+        actions_summary.append(f"🟢 BUY: {b.get('symbol')} (${float(b.get('amount_usd', 0)):.2f})")
     for t in trims:
-        actions_summary.append(f"TRIM: {t.get('symbol')} (Locked 50% profit)")
+        pnl = float(t.get("pnl_pct", 10.0))
+        profit_usd = float(t.get("profit_usd", 0.0))
+        p_str = f" | Banked: {profit_usd:+.2f} USD (+{pnl:.2f}%)" if profit_usd != 0 else f" (+{pnl:.2f}%)"
+        actions_summary.append(f"✂️ TRIM: {t.get('symbol')}{p_str}")
     for s in sells:
-        actions_summary.append(f"SELL: {s.get('symbol')} (Trailing Stop / Exit)")
+        pnl = float(s.get("pnl_pct", 0.0))
+        profit_usd = float(s.get("profit_usd", 0.0))
+        p_val = float(s.get("fill_price", s.get("price", 0.0)))
+        icon = "🟢" if pnl >= 0 else "🔴"
+        p_str = f" | Realized PnL: {profit_usd:+.2f} USD ({pnl:+.2f}%)" if (profit_usd != 0 or pnl != 0) else ""
+        actions_summary.append(f"{icon} SELL: {s.get('symbol')} @ ${p_val:.4f}{p_str}")
 
     embed_color = 0x00FF7F if total_pnl >= 0 else 0xFF4500
 
