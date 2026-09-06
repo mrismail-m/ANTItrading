@@ -235,40 +235,65 @@ def detect_rsi_divergence(df, order=3, lookback=40):
 
 def fetch_orderbook_imbalance(symbol):
     """
-    Fetches Binance order book depth (100 levels) and calculates bid-ask volume imbalance ratio within +/- 2% of mid-price.
-    Falls back to Futures depth API if Spot depth is unavailable.
+    Fetches order book depth (100 levels) and calculates bid-ask volume imbalance ratio within +/- 2% of mid-price.
+    Falls back across Binance Spot -> Binance Futures -> MEXC -> Bybit if unavailable or empty.
 
-    :param symbol: Binance symbol (e.g. BTCUSDT)
+    :param symbol: Ticker symbol (e.g. BTCUSDT)
     :return: Float imbalance ratio between 0.0 and 1.0 (> 0.50 = bid dominance/support)
     """
-    try:
-        url = f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100"
-        res = requests.get(url, timeout=4)
-        if res.status_code != 200:
-            res = requests.get(f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100", timeout=4)
-        if res.status_code != 200:
-            res = requests.get(f"https://api.mexc.com/api/v3/depth?symbol={symbol}&limit=100", timeout=4)
+    endpoints = [
+        f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100",
+        f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100",
+        f"https://api.mexc.com/api/v3/depth?symbol={symbol}&limit=100",
+    ]
 
-        if res.status_code == 200:
-            data = res.json()
-            bids = data.get("bids", [])
-            asks = data.get("asks", [])
+    for url in endpoints:
+        try:
+            res = requests.get(url, timeout=4)
+            if res.status_code == 200:
+                data = res.json()
+                bids = data.get("bids", [])
+                asks = data.get("asks", [])
+                if bids and asks:
+                    best_bid = float(bids[0][0])
+                    best_ask = float(asks[0][0])
+                    mid_price = (best_bid + best_ask) / 2.0
+
+                    lower_bound = mid_price * 0.98
+                    upper_bound = mid_price * 1.02
+
+                    bid_vol = sum(float(b[1]) * float(b[0]) for b in bids if float(b[0]) >= lower_bound)
+                    ask_vol = sum(float(a[1]) * float(a[0]) for a in asks if float(a[0]) <= upper_bound)
+
+                    total_vol = bid_vol + ask_vol
+                    if total_vol > 0:
+                        return round(bid_vol / total_vol, 4)
+        except Exception:
+            continue
+
+    # Try Bybit Spot orderbook
+    try:
+        bybit_url = f"https://api.bybit.com/v5/market/orderbook?category=spot&symbol={symbol}&limit=50"
+        b_res = requests.get(bybit_url, timeout=4)
+        if b_res.status_code == 200:
+            b_data = b_res.json().get("result", {})
+            bids = b_data.get("b", [])
+            asks = b_data.get("a", [])
             if bids and asks:
                 best_bid = float(bids[0][0])
                 best_ask = float(asks[0][0])
                 mid_price = (best_bid + best_ask) / 2.0
-
                 lower_bound = mid_price * 0.98
                 upper_bound = mid_price * 1.02
 
                 bid_vol = sum(float(b[1]) * float(b[0]) for b in bids if float(b[0]) >= lower_bound)
                 ask_vol = sum(float(a[1]) * float(a[0]) for a in asks if float(a[0]) <= upper_bound)
-
                 total_vol = bid_vol + ask_vol
                 if total_vol > 0:
                     return round(bid_vol / total_vol, 4)
     except Exception:
         pass
+
     return 0.50
 
 
@@ -622,7 +647,13 @@ def run_research(watchlist_path=None, output_path=None):
         try:
             ta_results[ticker] = compute_technical_indicators(name, ticker)
         except Exception as e:
-            ta_results[ticker] = {"symbol": ticker, "error": str(e)}
+            ta_results[ticker] = {
+                "symbol": ticker.replace("USDT", ""),
+                "ticker": ticker,
+                "status": "UNAVAILABLE",
+                "price": None,
+                "error": str(e)
+            }
 
     # Compute Relative Strength (RS) vs. BTC
     btc_ta = ta_results.get("BTCUSDT", {})
@@ -731,7 +762,13 @@ def run_fast_risk_research(open_symbols=None, output_path=None):
             try:
                 ta_results[ticker] = future.result()
             except Exception as e:
-                ta_results[ticker] = {"symbol": ticker, "error": str(e)}
+                ta_results[ticker] = {
+                    "symbol": ticker.replace("USDT", ""),
+                    "ticker": ticker,
+                    "status": "UNAVAILABLE",
+                    "price": None,
+                    "error": str(e)
+                }
 
     # Reuse cached market context if available to skip slow external APIs
     market_ctx = {}

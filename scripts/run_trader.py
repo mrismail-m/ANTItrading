@@ -47,6 +47,205 @@ PROFIT_LOCK_TRIGGER_PCT = 2.0  # Dynamic profit lock activates once gain reaches
 PROFIT_LOCK_RATIO = 0.60       # Ratchets stop to lock in 60% of peak gain (min 1.0% locked)
 
 
+def compute_setup_score(
+    data: Dict[str, Any],
+    regime: str,
+    sentiment_item: Dict[str, Any]
+) -> Tuple[int, Dict[str, Any]]:
+    """
+    Computes a 0-100 composite setup score across 6 technical and quantitative pillars:
+    1. Trend & Multi-Timeframe Structure (0-25 pts)
+    2. Relative Strength vs BTC Leadership (0-20 pts)
+    3. Regime-Aware Momentum & Precision (0-15 pts)
+    4. Volume & Institutional Money Flow (0-15 pts)
+    5. Market Microstructure & Whale Flow (0-15 pts)
+    6. Macro, Efficiency & Sentiment (0-10 pts)
+
+    :param data: Technical indicator dictionary for this asset
+    :param regime: Market regime string
+    :param sentiment_item: Asset-level sentiment dict
+    :return: (total_score, breakdown_dict)
+    """
+    if not data or data.get("status") == "UNAVAILABLE" or "error" in data:
+        return 0, {
+            "trend_mtf": 0, "relative_strength": 0, "momentum": 0,
+            "volume_flow": 0, "microstructure": 0, "macro_efficiency": 0, "total": 0
+        }
+
+    trend_1d = data.get("trend_bias_1d", data.get("trend_bias", "neutral"))
+    trend_4h = data.get("trend_bias_4h", "neutral")
+    di_plus = float(data.get("di_plus", 20.0))
+    di_minus = float(data.get("di_minus", 20.0))
+
+    rs_rank = data.get("rs_rank", "-")
+    rs_score = float(data.get("rs_score", 0.0))
+
+    rsi14 = float(data.get("rsi14", 50.0))
+    pct_b = float(data.get("bollinger_pct_b", 0.50))
+    divergence = data.get("divergence", "none")
+
+    cmf20 = float(data.get("cmf20", 0.0))
+    mfi14 = float(data.get("mfi14", 50.0))
+    squeeze_fired = bool(data.get("squeeze_fired", False))
+    squeeze_on = bool(data.get("squeeze_on", False))
+    volume_breakout = bool(data.get("volume_breakout", False))
+    vol_ratio = float(data.get("volume_ratio", 1.0))
+
+    whale_alert = data.get("whale_alert", "NEUTRAL_FLOW")
+    ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
+    taker_ratio = float(data.get("taker_ratio", 1.0))
+    funding_alert = data.get("funding_alert", "NEUTRAL_FUNDING")
+
+    chop14 = float(data.get("chop14", 50.0))
+    news_sent = sentiment_item.get("news_sentiment", "cautious_bullish")
+    event_risk = sentiment_item.get("event_risk", "none")
+
+    # 1. Trend & MTF Structure (0-25 pts)
+    trend_pts = 0
+    if trend_1d == "bullish":
+        trend_pts += 10
+    elif trend_1d == "bearish":
+        trend_pts -= 5
+
+    if trend_4h == "bullish":
+        trend_pts += 8
+    elif trend_4h == "bearish":
+        trend_pts -= 4
+
+    if trend_1d == "bullish" and trend_4h == "bullish":
+        trend_pts += 2  # Confluence bonus
+
+    if di_plus > di_minus:
+        trend_pts += 5
+    trend_pts = max(0, min(25, trend_pts))
+
+    # 2. Relative Strength vs BTC (0-20 pts)
+    rs_pts = 0
+    try:
+        rank_num = int(rs_rank)
+    except Exception:
+        rank_num = 99
+
+    if rank_num in [1, 2, 3]:
+        rs_pts += 20
+    elif rank_num in [4, 5, 6]:
+        rs_pts += 14
+    elif rs_score >= 3.0:
+        rs_pts += 12
+    elif rs_score > 0.0:
+        rs_pts += 6
+    rs_pts = max(0, min(20, rs_pts))
+
+    # 3. Regime-Aware Momentum & Precision (0-15 pts)
+    mom_pts = 0
+    if regime == "bullish_trend":
+        if 50.0 <= rsi14 <= 66.0:
+            mom_pts += 15
+        elif 66.0 < rsi14 <= 75.0:
+            mom_pts += 12
+        elif 40.0 <= rsi14 < 50.0:
+            mom_pts += 8
+        elif rsi14 > 75.0:
+            mom_pts -= 8
+        elif rsi14 < 35.0:
+            mom_pts -= 10
+    elif regime == "ranging":
+        if pct_b <= 0.25 or rsi14 <= 38.0:
+            mom_pts += 15
+        elif pct_b <= 0.40 or rsi14 <= 45.0:
+            mom_pts += 10
+        elif rsi14 >= 65.0 or pct_b >= 0.80:
+            mom_pts -= 8
+    else:  # neutral / normal
+        if 48.0 <= rsi14 <= 62.0:
+            mom_pts += 15
+        elif 40.0 <= rsi14 < 48.0:
+            mom_pts += 10
+        elif rsi14 > 70.0:
+            mom_pts -= 8
+
+    if divergence == "bullish":
+        mom_pts += 5
+    elif divergence == "bearish":
+        mom_pts -= 6
+    mom_pts = max(0, min(15, mom_pts))
+
+    # 4. Volume & Money Flow (0-15 pts)
+    vol_pts = 0
+    if cmf20 >= 0.08 and mfi14 >= 55.0:
+        vol_pts += 8
+    elif cmf20 >= 0.02:
+        vol_pts += 5
+    elif cmf20 <= -0.10:
+        vol_pts -= 8
+
+    if squeeze_fired:
+        vol_pts += 7
+    elif volume_breakout:
+        vol_pts += 6
+    elif vol_ratio >= 1.5:
+        vol_pts += 4
+    elif squeeze_on:
+        vol_pts += 2
+    vol_pts = max(0, min(15, vol_pts))
+
+    # 5. Market Microstructure & Whale Flow (0-15 pts)
+    micro_pts = 0
+    if whale_alert in ["WHALE_ACCUMULATION", "BULLISH_WHALE_WALL"]:
+        micro_pts += 5
+    elif whale_alert in ["WHALE_DISTRIBUTION", "BEARISH_WHALE_WALL"]:
+        micro_pts -= 8
+
+    if ob_imbalance >= 0.58:
+        micro_pts += 5
+    elif ob_imbalance >= 0.52:
+        micro_pts += 3
+    elif ob_imbalance < 0.46:
+        micro_pts -= 5
+
+    if taker_ratio >= 1.05:
+        micro_pts += 3
+    elif taker_ratio < 0.95:
+        micro_pts -= 3
+
+    if funding_alert == "SHORT_SQUEEZE_ALERT":
+        micro_pts += 4
+    elif funding_alert == "LONG_FLUSH_ALERT":
+        micro_pts -= 8
+    micro_pts = max(0, min(15, micro_pts))
+
+    # 6. Macro, Efficiency & Sentiment (0-10 pts)
+    macro_pts = 0
+    if chop14 < 45.0:
+        macro_pts += 4
+    elif chop14 > 61.8:
+        macro_pts -= 4
+
+    if news_sent == "bullish":
+        macro_pts += 4
+    elif news_sent == "cautious_bullish":
+        macro_pts += 2
+    elif news_sent == "bearish":
+        macro_pts -= 4
+
+    if event_risk == "high":
+        macro_pts -= 6
+    macro_pts = max(0, min(10, macro_pts))
+
+    raw_total = trend_pts + rs_pts + mom_pts + vol_pts + micro_pts + macro_pts
+    total_score = max(0, min(100, int(round(raw_total))))
+    breakdown = {
+        "trend_mtf": trend_pts,
+        "relative_strength": rs_pts,
+        "momentum": mom_pts,
+        "volume_flow": vol_pts,
+        "microstructure": micro_pts,
+        "macro_efficiency": macro_pts,
+        "total": total_score
+    }
+    return total_score, breakdown
+
+
 def evaluate_asset_decision(
     symbol: str,
     ticker: str,
@@ -60,7 +259,7 @@ def evaluate_asset_decision(
     macro_flush_reason: str = ""
 ) -> Dict[str, Any]:
     """
-    Evaluates trading rules for a single cryptocurrency asset.
+    Evaluates trading rules for a single cryptocurrency asset using the 0-100 Setup Scoring Engine.
 
     :param symbol: Short symbol (e.g. "SOL")
     :param ticker: Binance ticker (e.g. "SOLUSDT")
@@ -71,7 +270,7 @@ def evaluate_asset_decision(
     :param now: ISO timestamp string
     :return: Decision dictionary conforming to trade log schema
     """
-    if not data or "error" in data:
+    if not data or "error" in data or data.get("status") == "UNAVAILABLE":
         err_msg = data.get("error", "Data unavailable") if data else "Data unavailable"
         pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
         fallback_price = float(pos_map.get(symbol, {}).get("entry_price", 0.0))
@@ -82,8 +281,12 @@ def evaluate_asset_decision(
             "price": fallback_price,
             "qty": 0.0,
             "cost_or_proceeds": 0.0,
-            "reasoning": f"Data fetch error or inactive Binance spot ticker ({err_msg}). Skipping trade.",
+            "reasoning": f"Data fetch error or inactive ticker feed ({err_msg}). Skipping trade.",
             "confidence": 0.0,
+            "setup_score": 0,
+            "score_breakdown": {},
+            "conviction_score": 0.0,
+            "conviction_tier": "WEAK",
             "rsi14": 0.0,
             "ema12": 0.0,
             "ema26": 0.0,
@@ -149,73 +352,26 @@ def evaluate_asset_decision(
     event_risk = asset_sentiment.get("event_risk", "none")
 
     # -------------------------------------------------------------------------
-    # CALCULATE ADVANCED QUANT CONFLUENCE CONVICTION SCORE (0.0 to 1.0)
+    # 0-100 COMPOSITE SETUP SCORING
     # -------------------------------------------------------------------------
-    conv_score = 0.15  # baseline
+    setup_score, score_breakdown = compute_setup_score(data, regime, asset_sentiment)
 
-    # 1. Trend & Directional Movement (DMI)
-    if trend_1d == "bullish" and trend_4h == "bullish":
-        conv_score += 0.20
-    elif trend_1d == "bullish" or trend_4h == "bullish":
-        conv_score += 0.08
-    if di_plus > di_minus:
-        conv_score += 0.10
-
-    # 2. Relative Strength Leadership
-    try:
-        rank_num = int(rs_rank)
-    except Exception:
-        rank_num = 99
-
-    if rank_num in [1, 2, 3] or rs_score >= 5.0:
-        conv_score += 0.20
-    elif rank_num in [4, 5, 6] or rs_score > 0:
-        conv_score += 0.10
-
-    # 3. Institutional Money Flow (CMF & MFI)
-    if cmf20 >= 0.08 and mfi14 >= 55.0:
-        conv_score += 0.20  # Heavy smart-money accumulation
-    elif cmf20 >= 0.02:
-        conv_score += 0.10
-    elif cmf20 <= -0.10:
-        conv_score -= 0.15  # Distribution warning penalty
-
-    # 4. Volatility Expansion & Squeeze (TTM Squeeze & Volume Breakout)
-    if squeeze_fired:
-        conv_score += 0.20  # Volatility compression exploding outward
-    elif volume_breakout:
-        conv_score += 0.15  # 20-Day Donchian range breakout on heavy volume
-    elif vol_ratio >= 1.5:
-        conv_score += 0.08
-
-    # 5. Market Microstructure & Whale Flow
-    if whale_alert in ["WHALE_ACCUMULATION", "BULLISH_WHALE_WALL"] or ob_imbalance >= 0.58:
-        conv_score += 0.12
-    elif taker_ratio >= 1.05:
-        conv_score += 0.06
-
-    if funding_alert == "SHORT_SQUEEZE_ALERT":
-        conv_score += 0.15
-
-    # 6. Choppiness Index (Trend Efficiency)
-    if chop14 < 45.0:
-        conv_score += 0.08  # Strong directional efficiency
-    elif chop14 > 61.8:
-        conv_score -= 0.08  # Consolidation penalty for breakout setups
-
-    # 7. News & Sentiment Alignment
-    if news_sent == "bullish" and event_risk == "none":
-        conv_score += 0.08
-    elif news_sent == "cautious_bullish" and event_risk == "none":
-        conv_score += 0.04
-
-    # 8. Derivatives Microstructure (Short Squeeze vs Long Flush)
-    if funding_alert == "SHORT_SQUEEZE_ALERT":
-        conv_score += 0.10  # Potential violent short covering surge
-    elif funding_alert == "LONG_FLUSH_ALERT":
-        conv_score -= 0.15  # Excessive leverage long flush risk
-
-    final_conviction = min(0.98, max(0.50, round(conv_score, 2)))
+    if setup_score >= 82:
+        conviction_tier = "A+"
+        conviction_mult = 1.15
+        final_conviction = min(0.98, max(0.85, round(setup_score / 100.0, 2)))
+    elif setup_score >= 70:
+        conviction_tier = "SOLID"
+        conviction_mult = 1.00
+        final_conviction = round(setup_score / 100.0, 2)
+    elif setup_score >= 55:
+        conviction_tier = "CAUTIOUS"
+        conviction_mult = 0.75
+        final_conviction = round(setup_score / 100.0, 2)
+    else:
+        conviction_tier = "WEAK"
+        conviction_mult = 0.50
+        final_conviction = max(0.10, round(setup_score / 100.0, 2))
 
     # -------------------------------------------------------------------------
     # VOLATILITY-ADJUSTED RISK-PARITY POSITION SIZING
@@ -226,24 +382,12 @@ def evaluate_asset_decision(
     if curr_equity <= 0:
         curr_equity = float(portfolio.get("starting_cash", 10000.0))
 
-    # Base target dollar risk is 1.0% of portfolio equity ($100 on $10,000)
     dollar_risk = max(50.0, round(curr_equity * 0.010, 2))
     stop_distance_per_unit = (2.0 * atr14) if atr14 > 0 else (price * 0.05)
     stop_distance_pct = stop_distance_per_unit / price if price > 0 else 0.05
     raw_risk_parity_size = dollar_risk / stop_distance_pct if stop_distance_pct > 0 else 800.0
 
-    if final_conviction >= 0.85:
-        conviction_tier = "A+"
-        conviction_mult = 1.15
-    elif final_conviction >= 0.65:
-        conviction_tier = "SOLID"
-        conviction_mult = 1.00
-    else:
-        conviction_tier = "CAUTIOUS"
-        conviction_mult = 0.75
-
     target_size = round(raw_risk_parity_size * conviction_mult, 2)
-    # Clamp allocation between $250 floor and $1,200 ceiling
     suggested_pos_size = min(1200.0, max(250.0, target_size))
 
     action = "HOLD"
@@ -255,7 +399,7 @@ def evaluate_asset_decision(
     trade_cost_basis = 0.0
 
     # -------------------------------------------------------------------------
-    # 1. EVALUATE ACTIVE OPEN POSITIONS (Incorporating Chandelier Exit)
+    # 1. EVALUATE ACTIVE OPEN POSITIONS (Chandelier + Dynamic Profit-Lock + Runner Protection)
     # -------------------------------------------------------------------------
     if is_open:
         pos = pos_map[symbol]
@@ -266,18 +410,13 @@ def evaluate_asset_decision(
         trade_pnl_pct = pnl_pct
         trade_profit_usd = (pnl_pct / 100.0) * trade_cost_basis
 
-        # Position-level Chandelier Exit hangs from trade's highest price peak
+        # Chandelier / ATR trailing stop
         trade_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else round(entry_p * 0.93, 4)
         std_trail = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
         trailing_stop = max(std_trail, trade_chandelier_stop)
         if pos.get("tp1_hit", False) or (btc_flush_alert and symbol != "BTC" and pnl_pct > 0):
             trailing_stop = max(trailing_stop, entry_p)
 
-        # Dynamic Progressive Profit-Lock Trailing Stop (Tighter lock as profits grow):
-        # - Gain 2.0% - 4.0%: Lock 50% of peak gain (give breathing room)
-        # - Gain 4.0% - 6.0%: Lock 70% of peak gain
-        # - Gain 6.0% - 8.0%: Lock 82% of peak gain (e.g. at +6% locks 4.92%, at +7% locks 5.74%–6.0%)
-        # - Gain >= 8.0%: Lock 88% of peak gain
         peak_gain_pct = ((highest_p - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
         if peak_gain_pct >= PROFIT_LOCK_TRIGGER_PCT:
             if peak_gain_pct >= 8.0:
@@ -293,12 +432,11 @@ def evaluate_asset_decision(
             dynamic_profit_stop = round(entry_p * (1.0 + (profit_lock_pct / 100.0)), 4)
             trailing_stop = max(trailing_stop, dynamic_profit_stop)
 
-        # CRITICAL: Trailing stops are strictly monotonic non-decreasing (never lowered)
+        # Strictly monotonic non-decreasing
         trailing_stop = max(trailing_stop, std_trail)
-
         tp1_hit = pos.get("tp1_hit", False)
 
-        # TP1 Partial Profit Scaling (+10% gain lock-in)
+        # 1. TP1 Partial Profit Scaling (+10% gain lock-in)
         if pnl_pct >= 10.0 and not tp1_hit:
             action = "TRIM"
             confidence = 0.92
@@ -307,7 +445,7 @@ def evaluate_asset_decision(
                 f"Take Profit 1 (TP1) hit (+{pnl_pct:.2f}% vs +10% target). Taking 50% profit off the table into cash (+{trim_profit:+.2f} USD), "
                 f"locking runner trailing stop to breakeven (${entry_p:.4f})."
             )
-        # Trailing / Dynamic Profit-Lock / Chandelier Stop Breach Exit
+        # 2. Trailing / Dynamic Profit-Lock / Chandelier Stop Breach Exit
         elif price < trailing_stop:
             action = "SELL"
             confidence = 0.92
@@ -319,7 +457,7 @@ def evaluate_asset_decision(
                 )
             else:
                 reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Realized PnL: {trade_profit_usd:+.2f} USD ({pnl_pct:+.2f}%). Executing SELL to preserve capital."
-        # BTC Macro Flush Defense: Exit underwater altcoins (<= -2.5%) during a macro BTC dump
+        # 3. BTC Macro Flush Defense: Exit underwater altcoins (<= -2.5%) during a macro BTC dump
         elif btc_flush_alert and symbol != "BTC" and pnl_pct <= -2.5:
             action = "SELL"
             confidence = 0.90
@@ -328,23 +466,39 @@ def evaluate_asset_decision(
                 f"Altcoin position is underwater ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Realized Loss: {trade_profit_usd:+.2f} USD. "
                 f"Executing defensive SELL to prevent altcoin beta cascade."
             )
-        # Ranging Regime Mean-Reversion Exit
-        elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 62.0):
+        # 4. Ranging Regime Mean-Reversion Exit (Bank range profit at upper band)
+        elif regime == "ranging" and (pct_b >= 0.85 or rsi14 >= 65.0) and pnl_pct > 0.5:
             action = "SELL"
             confidence = 0.88
-            reasoning = f"Mean-reversion exit in ranging market: Price reached upper Bollinger Band (%B {pct_b:.2f}) with RSI {rsi14:.2f}. Locking in range profit."
-        # Daily Trend Breakdown Exit
-        elif trend_1d == "bearish" and pnl_pct < 0:
-            action = "SELL"
-            confidence = 0.88
-            reasoning = f"Daily trend bias flipped to bearish (price < EMA50) with negative position return ({pnl_pct:.2f}%). Closing position."
-        # Extreme Overbought Exhaustion Exit
+            reasoning = f"Mean-reversion exit in ranging market: Price reached upper Bollinger Band (%B {pct_b:.2f}) with RSI {rsi14:.2f}. Banking range profit (+{pnl_pct:.2f}%)."
+        # 5. Overbought & Bearish Divergence (Protect Runners in Strong Bull Trends)
         elif rsi14 >= 75.0 and divergence == "bearish":
+            if regime == "bullish_trend" and pnl_pct >= 5.0 and not tp1_hit:
+                action = "TRIM"
+                confidence = 0.90
+                trim_profit = trade_profit_usd * 0.33
+                reasoning = (
+                    f"Bullish Trend Overbought Pullback Defense: RSI is elevated ({rsi14:.2f}) with bearish divergence, but asset is in a strong macro bull trend (+{pnl_pct:.2f}%). "
+                    f"Executing partial TRIM (33% size) to bank +{trim_profit:+.2f} USD while preserving core runner."
+                )
+            elif regime == "bullish_trend" and tp1_hit:
+                action = "HOLD"
+                confidence = 0.85
+                reasoning = (
+                    f"Runner position in strong bull trend (+{pnl_pct:.2f}%). RSI is elevated ({rsi14:.2f}) with divergence, "
+                    f"but core runner is protected by trailing stop (${trailing_stop:.4f}). Holding runner to let trend extend."
+                )
+            else:
+                action = "SELL"
+                confidence = 0.88
+                reasoning = f"Overbought RSI ({rsi14:.2f}) with bearish divergence in {regime} regime. Executing SELL to bank gains (+{pnl_pct:.2f}%)."
+        # 6. Trend Breakdown Exit
+        elif trend_1d == "bearish" and pnl_pct < -2.0:
             action = "SELL"
-            confidence = 0.90
-            reasoning = f"Extreme overbought RSI ({rsi14:.2f}) combined with confirmed bearish RSI divergence. Executing profit take."
-        # Institutional Whale Distribution Exit
-        elif whale_alert == "WHALE_DISTRIBUTION" or cmf20 <= -0.18:
+            confidence = 0.88
+            reasoning = f"Daily trend bias flipped to bearish with negative position return ({pnl_pct:.2f}%). Cutting loss to preserve capital."
+        # 7. Heavy Whale Distribution Exit
+        elif whale_alert == "WHALE_DISTRIBUTION" and cmf20 <= -0.18 and pnl_pct < 2.0:
             action = "SELL"
             confidence = 0.88
             reasoning = f"Heavy institutional distribution detected (Whale Alert '{whale_alert}', CMF {cmf20:.4f}). Exiting to avoid institutional dump."
@@ -359,120 +513,62 @@ def evaluate_asset_decision(
                 runner_tag = f" [🔒 PROFIT-LOCK ACTIVE: Stop at ${trailing_stop:.4f} locks +{locked_gain:.2f}% profit]"
 
             if pnl_pct >= 0:
-                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag}. Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding full amount."
+                reasoning = f"Active position in profit (+{pnl_pct:.2f}% from ${entry_p:.4f} entry){runner_tag} (Setup Score: {setup_score}/100, {conviction_tier}). Price ${price:.4f} comfortably above trailing stop (${trailing_stop:.4f}); holding full amount."
             else:
-                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
+                reasoning = f"Active position intact ({pnl_pct:.2f}% from ${entry_p:.4f} entry) (Setup Score: {setup_score}/100, {conviction_tier}). Price ${price:.4f} is well above trailing stop (${trailing_stop:.4f}); trend structure intact."
 
     # -------------------------------------------------------------------------
-    # 2. EVALUATE WATCHLIST CANDIDATES FOR BUY ENTRIES
+    # 2. EVALUATE WATCHLIST CANDIDATES FOR BUY ENTRIES (Scoring Engine + Hard Safety Vetoes)
     # -------------------------------------------------------------------------
     else:
         open_count = active_open_count if active_open_count is not None else len(portfolio.get("positions", []))
         cash = float(portfolio.get("cash", 0.0))
 
-        if open_count >= MAX_POSITIONS:
-            action = "HOLD"
-            confidence = 0.80
-            reasoning = f"Portfolio position cap reached ({open_count}/{MAX_POSITIONS} max positions). Cash reserved until an existing position exits."
-        elif btc_flush_alert and symbol != "BTC":
+        # Hard Safety Vetoes
+        if btc_flush_alert and symbol != "BTC":
             action = "HOLD"
             confidence = 0.90
-            reasoning = f"🚨 BTC Macro Flush Alert Active ({macro_flush_reason}). Vetoing all new altcoin buy entries to preserve liquid cash."
+            reasoning = f"🚨 BTC Macro Flush Alert Active ({macro_flush_reason}). Vetoing new altcoin buy entries to preserve liquid cash."
         elif regime == "volatility_crash":
             action = "HOLD"
             confidence = 0.85
             reasoning = "Macro market regime is 'volatility_crash'. New buy entries are vetoed to prioritize capital preservation."
-        elif whale_alert in ["WHALE_DISTRIBUTION", "BEARISH_WHALE_WALL"]:
-            action = "HOLD"
-            confidence = 0.85
-            reasoning = f"Whale flow alert '{whale_alert}' detected. Institutional selling pressure vetoes buy entry."
-        elif cmf20 <= -0.10:
-            action = "HOLD"
-            confidence = 0.85
-            reasoning = f"Institutional money flow is negative (CMF {cmf20:.4f} <= -0.10). Smart money distribution vetoes buy entry."
         elif funding_alert == "LONG_FLUSH_ALERT":
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Overcrowded long leverage (Funding {funding_rate:.6f} >= +0.03%). Vetoing buy entry to avoid long liquidation flush."
-        # --- RANGING REGIME: ACTIVE MEAN-REVERSION BUY LOGIC ---
-        elif regime == "ranging":
-            if (pct_b <= 0.25 or rsi14 <= 38.0) and ob_imbalance >= 0.52 and adx14 < 25.0:
-                if cash >= suggested_pos_size:
-                    action = "BUY"
-                    amount_usd = suggested_pos_size
-                    confidence = 0.84
-                    reasoning = (
-                        f"MEAN-REVERSION ENTRY ({conviction_tier} TIER): Ranging market oversold bounce play (Bollinger %B {pct_b:.2f} <= 0.25, "
-                        f"RSI {rsi14:.2f} <= 38) with order book bid support ({ob_imbalance:.4f}). Initiating allocation (${suggested_pos_size:.2f})."
-                    )
-                else:
-                    action = "HOLD"
-                    reasoning = f"Mean-reversion setup present but insufficient cash buffer (${cash:.2f})."
-            else:
-                action = "HOLD"
-                confidence = 0.75
-                reasoning = f"Ranging regime active: Awaiting oversold lower Bollinger band touch (%B {pct_b:.2f} > 0.25)."
-        # --- TREND REGIME: TREND-FOLLOWING & BREAKOUT BUY LOGIC ---
-        elif rsi14 > (68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0):
-            max_rsi = 68.0 if (regime == "bullish_trend" and (rs_rank in [1, 2, 3] or rs_score >= 5.0) and adx14 >= 25.0) else 65.0
+        elif whale_alert in ["WHALE_DISTRIBUTION", "BEARISH_WHALE_WALL"] and cmf20 <= -0.05:
             action = "HOLD"
             confidence = 0.85
-            reasoning = f"Daily RSI is overbought ({rsi14:.2f} > {max_rsi:.0f} cutoff threshold). Standing aside to catch a healthier pullback."
-        elif rsi14 < 45.0 and not squeeze_fired:
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"RSI is weak ({rsi14:.2f} < 45) with lack of upward momentum. Awaiting technical recovery."
-        elif trend_1d != "bullish" or trend_4h != "bullish":
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"Multi-timeframe trend alignment unfulfilled (1D: '{trend_1d}', 4H: '{trend_4h}'). Requires dual bullish alignment."
-        elif adx14 < 20.0 and not (volume_breakout or squeeze_fired):
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"ADX is choppy ({adx14:.2f} < 20 cutoff), indicating range-bound / non-trending conditions."
-        elif chop14 > 61.8 and not (volume_breakout or squeeze_fired or funding_alert == "SHORT_SQUEEZE_ALERT"):
+            reasoning = f"Whale flow alert '{whale_alert}' with negative CMF ({cmf20:.4f}). Institutional selling pressure vetoes buy entry."
+        elif rsi_1h > 72.0 or price_vs_ema20_1h > 4.5:
             action = "HOLD"
             confidence = 0.80
-            reasoning = f"Choppiness Index is high ({chop14:.2f} > 61.8), confirming choppy consolidation where trend breakouts typically fail."
-        elif ob_imbalance < 0.48:
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"Order book depth skewed to asks (imbalance ratio {ob_imbalance:.4f} < 0.48). Lacks sufficient bid support."
-        elif taker_ratio < 0.95:
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"Taker buy/sell volume ratio ({taker_ratio:.4f} < 0.95) indicates active seller aggression."
-        elif price < vwap * 0.98:
-            action = "HOLD"
-            confidence = 0.75
-            reasoning = f"Price ${price:.4f} is trading notably below VWAP (${vwap:.4f}). Awaiting reclaim of VWAP."
-        # 1-Hour Intraday Precision Filter
-        elif rsi_1h > 68.0 or price_vs_ema20_1h > 3.5:
+            reasoning = f"1H timeframe is overextended (1H RSI {rsi_1h:.1f}, price +{price_vs_ema20_1h:.2f}% vs EMA20). Awaiting intraday pullback."
+        elif open_count >= MAX_POSITIONS:
             action = "HOLD"
             confidence = 0.80
-            triggers = []
-            if rsi_1h > 68.0:
-                triggers.append(f"1H RSI overbought ({rsi_1h:.2f} > 68)")
-            if price_vs_ema20_1h > 3.5:
-                triggers.append(f"price stretched +{price_vs_ema20_1h:.2f}% above 1H EMA20 (> +3.5%)")
-            reasoning = f"1H timeframe is overextended ({' and '.join(triggers)}). Awaiting intraday pullback for precision entry."
+            reasoning = f"Portfolio position cap reached ({open_count}/{MAX_POSITIONS} max positions). Candidate setup score: {setup_score}/100 ({conviction_tier}). Eligible for tournament rotation if score >= 80."
         elif cash < suggested_pos_size:
             action = "HOLD"
             confidence = 0.80
-            reasoning = f"Insufficient cash buffer (${cash:.2f} vs required ${suggested_pos_size:.2f}) to open position."
-        else:
-            # All strict buy criteria satisfied!
+            reasoning = f"Setup qualified (Score: {setup_score}/100, {conviction_tier}) but insufficient liquid cash buffer (${cash:.2f} vs ${suggested_pos_size:.2f})."
+        elif setup_score >= 70:
             action = "BUY"
             amount_usd = suggested_pos_size
             confidence = final_conviction
-            squeeze_tag = f" [⚡ TTM SQUEEZE FIRED: Coiled volatility exploding outward!]" if squeeze_fired else ""
-            breakout_tag = f" [🚀 VOLUME BREAKOUT: 24h Vol {vol_ratio:.1f}x expanding into 20D High ${donchian_h20:.4f}!]" if volume_breakout else ""
+            squeeze_tag = " [⚡ TTM SQUEEZE FIRED]" if squeeze_fired else ""
+            breakout_tag = f" [🚀 BREAKOUT Vol {vol_ratio:.1f}x]" if volume_breakout else ""
             cmf_tag = f" [💵 CMF: {cmf20:+.4f}]" if cmf20 >= 0.05 else ""
             reasoning = (
-                f"BULLISH CONFIRMATION ({conviction_tier} TIER, Score: {final_conviction:.2f}): Dual 1D/4H bullish trend alignment (Price ${price:.4f} > EMA50), "
-                f"healthy RSI ({rsi14:.2f}), strong ADX ({adx14:.2f}), Order Book bid dominance ({ob_imbalance:.4f}), "
-                f"and Taker Ratio ({taker_ratio:.4f}). RS Rank: #{rs_rank} (Score: {rs_score:+.2f}).{breakout_tag}{squeeze_tag}{cmf_tag} Initiating {conviction_tier} allocation (${suggested_pos_size:.2f})."
+                f"BULLISH CONFLUENCE ENTRY ({conviction_tier} TIER, Score: {setup_score}/100): 1D/4H trend aligned, "
+                f"healthy momentum (RSI {rsi14:.1f}), RS Rank #{rs_rank} (Score: {rs_score:+.2f}), "
+                f"Order Book imbalance {ob_imbalance:.3f}.{breakout_tag}{squeeze_tag}{cmf_tag} Initiating {conviction_tier} allocation (${suggested_pos_size:.2f})."
             )
+        else:
+            action = "HOLD"
+            confidence = final_conviction
+            reasoning = f"Candidate score {setup_score}/100 ({conviction_tier}) below 70-point execution threshold. Awaiting stronger technical alignment."
 
     return {
         "timestamp": now,
@@ -487,6 +583,8 @@ def evaluate_asset_decision(
         "cost_basis": round(trade_cost_basis, 2),
         "reasoning": reasoning,
         "confidence": confidence,
+        "setup_score": setup_score,
+        "score_breakdown": score_breakdown,
         "conviction_score": final_conviction,
         "conviction_tier": conviction_tier,
         "volume_breakout": volume_breakout,
@@ -631,18 +729,20 @@ def generate_executive_summary_markdown(
     holds = [d for d in decisions if d.get("action") == "HOLD"]
 
     lines.append(f"## 5. 🎯 Trade Actions Summary ({len(buys)} BUYS, {len(trims)} TRIMS, {len(sells)} SELLS, {len(holds)} HOLDS)\n")
-    lines.append("| Asset | Action | Live Price | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |")
-    lines.append("| :--- | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
+    lines.append("| Asset | Action | Live Price | Setup Score | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |")
+    lines.append("| :--- | :---: | :--- | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
     for d in decisions:
         rs_str = f"#{d.get('rs_rank', '-')} ({d.get('rs_score', 0.0):+.2f})"
         tier_str = f"`{d.get('conviction_tier', 'SOLID')}`"
+        score_val = d.get('setup_score', int(float(d.get('confidence', 0.5)) * 100))
+        score_str = f"**{score_val}/100**"
         cmf_val = float(d.get("cmf20", 0.0))
         cmf_str = f"`{cmf_val:+.3f}`"
         sq_str = "⚡ **FIRED**" if d.get("squeeze_fired") else ("🟠 SQUEEZE" if d.get("squeeze_on") else ("🚀 BREAKOUT" if d.get("volume_breakout") else "`NORMAL`"))
         ch_stop = f"${float(d.get('chandelier_stop', 0)):.4f}"
         lines.append(
             f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
-            f"{d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | {cmf_str} | "
+            f"{score_str} | {d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | {cmf_str} | "
             f"{sq_str} | {ch_stop} | {d.get('reasoning')} |"
         )
     lines.append("\n---\n")
@@ -818,6 +918,7 @@ def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = Fa
 
     decisions = []
     # Evaluate open positions
+    open_decisions = []
     for sym, ticker in open_items:
         asset_ta = ta_data.get(ticker, {})
         d = evaluate_asset_decision(
@@ -831,12 +932,29 @@ def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = Fa
             btc_flush_alert=btc_flush_alert,
             macro_flush_reason=macro_flush_reason
         )
+        open_decisions.append(d)
         decisions.append(d)
 
-    # Evaluate candidate assets (leaders get priority for available slots)
-    current_open_count = len(open_items)
+    # Calculate realistic projected open count and available cash after open position exits/trims
+    retained_positions = [d for d in open_decisions if d.get("action") != "SELL"]
+    current_open_count = len(retained_positions)
     sim_cash = float(portfolio.get("cash", 0.0))
+
+    for d in open_decisions:
+        pos_match = next((p for p in portfolio.get("positions", []) if p["symbol"] == d["symbol"]), None)
+        if not pos_match:
+            continue
+        fill_p = float(d.get("price", 0.0)) * 0.9995
+        if d.get("action") == "SELL":
+            gross = float(pos_match.get("qty", 0.0)) * fill_p
+            sim_cash += (gross - gross * 0.0010)
+        elif d.get("action") == "TRIM":
+            gross = (float(pos_match.get("qty", 0.0)) * 0.5) * fill_p
+            sim_cash += (gross - gross * 0.0010)
+
+    # Evaluate candidate assets (leaders get priority for available slots)
     sim_portfolio = dict(portfolio)
+    candidate_decisions = []
 
     for sym, ticker in candidate_items:
         asset_ta = ta_data.get(ticker, {})
@@ -853,11 +971,76 @@ def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = Fa
             btc_flush_alert=btc_flush_alert,
             macro_flush_reason=macro_flush_reason
         )
+        candidate_decisions.append(d)
         decisions.append(d)
         if d.get("action") == "BUY":
             pos_symbols.add(sym)
             current_open_count += 1
             sim_cash -= float(d.get("amount_usd", 0.0))
+
+    # -------------------------------------------------------------------------
+    # 3B. PORTFOLIO TOURNAMENT (Dynamic Rebalancing)
+    # -------------------------------------------------------------------------
+    # When portfolio is at position cap (>= MAX_POSITIONS) or low on cash:
+    # High-conviction candidates (Score >= 80) challenge stagnant/losing active holdings (Score < 50, PnL < 1.0%).
+    if current_open_count >= MAX_POSITIONS or sim_cash < 250.0:
+        challengers = [
+            d for d in candidate_decisions
+            if d.get("action") == "HOLD"
+            and d.get("setup_score", 0) >= 80
+            and not (btc_flush_alert and d.get("symbol") != "BTC")
+            and d.get("price", 0) > 0
+        ]
+        challengers.sort(key=lambda x: (x.get("setup_score", 0), x.get("rs_score", 0.0)), reverse=True)
+
+        eligible_laggards = []
+        for d in open_decisions:
+            if d.get("action") == "HOLD":
+                pos_match = next((p for p in portfolio.get("positions", []) if p["symbol"] == d["symbol"]), None)
+                if not pos_match:
+                    continue
+                is_tp1 = pos_match.get("tp1_hit", False)
+                pnl = float(d.get("pnl_pct", 0.0))
+                h_score = d.get("setup_score", 0)
+                if not is_tp1 and pnl < 1.0 and h_score < 50:
+                    eligible_laggards.append((h_score, pnl, d, pos_match))
+
+        eligible_laggards.sort(key=lambda x: (x[0], x[1]))
+
+        if challengers and eligible_laggards:
+            top_cand = challengers[0]
+            laggard_score, laggard_pnl, laggard_d, laggard_pos = eligible_laggards[0]
+            cand_score = top_cand.get("setup_score", 0)
+            score_gap = cand_score - laggard_score
+
+            if score_gap >= 25:
+                laggard_sym = laggard_d.get("symbol")
+                cand_sym = top_cand.get("symbol")
+                laggard_d["action"] = "SELL"
+                laggard_d["confidence"] = 0.88
+                laggard_d["reasoning"] = (
+                    f"🔄 Portfolio Tournament Rotation: Replacing stagnant laggard {laggard_sym} "
+                    f"(Score: {laggard_score}/100, Return: {laggard_pnl:+.2f}%) with higher-conviction "
+                    f"momentum setup {cand_sym} (Score: {cand_score}/100, Confluence Delta: +{score_gap} pts)."
+                )
+
+                fill_p = float(laggard_d.get("price", 0.0)) * 0.9995
+                gross_rec = float(laggard_pos.get("qty", 0.0)) * fill_p
+                net_rec = gross_rec - (gross_rec * 0.0010)
+                sim_cash += net_rec
+
+                alloc_size = min(top_cand.get("suggested_pos_size", 800.0), max(250.0, sim_cash * 0.85))
+                top_cand["action"] = "BUY"
+                top_cand["amount_usd"] = alloc_size
+                top_cand["confidence"] = top_cand.get("conviction_score", 0.85)
+                top_cand["reasoning"] = (
+                    f"🏆 TOURNAMENT PROMOTION: Promoted into portfolio via rotation replacement of "
+                    f"laggard {laggard_sym} (Score {cand_score}/100 vs {laggard_score}/100, +{score_gap} pt advantage). "
+                    f"{top_cand.get('reasoning', '')}"
+                )
+
+                if not silent:
+                    print(f"   🏆 [PORTFOLIO TOURNAMENT] Rotated laggard {laggard_sym} ({laggard_score}/100) -> {cand_sym} ({cand_score}/100, +{score_gap} pts edge)")
 
     decisions_payload = {
         "timestamp": now,

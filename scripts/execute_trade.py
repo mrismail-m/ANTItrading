@@ -300,9 +300,43 @@ def sync_human_views(portfolio, decisions, open_pos_path=None, decision_log_path
             writer.writerow(row)
 
 
+def record_closed_trade_human_view(trade, filepath=None):
+    """
+    Appends a closed or trimmed trade record to state/human_closed_trades.csv.
+    """
+    target_path = filepath or os.path.join(ROOT_DIR, "state", "human_closed_trades.csv")
+    fieldnames = [
+        "Trade ID", "Date Opened", "Symbol", "Entry Price", "Qty",
+        "Cost Basis", "Status", "Exit Date", "Exit Price", "P&L", "P&L %"
+    ]
+    file_exists = os.path.exists(target_path)
+    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    with open(target_path, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if not file_exists or os.path.getsize(target_path) == 0:
+            writer.writeheader()
+        action = trade.get("action", "SELL")
+        status_label = "PARTIAL TRIM" if action == "TRIM" else "CLOSED"
+        row = {
+            "Trade ID": trade.get("trade_id", f"TR-{trade.get('symbol')}-{trade.get('timestamp', '')[:10]}"),
+            "Date Opened": trade.get("opened_at", "—"),
+            "Symbol": trade.get("symbol"),
+            "Entry Price": f"{float(trade.get('entry_price', 0)):.4f}",
+            "Qty": f"{float(trade.get('qty', 0)):.6f}",
+            "Cost Basis": f"{float(trade.get('cost_basis', 0)):.2f}",
+            "Status": status_label,
+            "Exit Date": trade.get("timestamp"),
+            "Exit Price": f"{float(trade.get('fill_price', trade.get('price', 0))):.4f}",
+            "P&L": f"{float(trade.get('profit_usd', 0)):+.2f}",
+            "P&L %": f"{float(trade.get('pnl_pct', 0)):+.2f}%"
+        }
+        writer.writerow(row)
+
+
 def execute_trade_pass(payload):
     """
     Executes trades in payload and updates all state files.
+    Processes SELL/TRIM before BUY to ensure liquidity recycling.
 
     :param payload: Dictionary containing timestamp and list of decisions
     """
@@ -315,25 +349,109 @@ def execute_trade_pass(payload):
     chandelier_map = {}
 
     for d in decisions:
+        price = float(d.get("price", 0))
+        atr14 = float(d.get("atr14", 0))
+        chand_stop = float(d.get("chandelier_stop", 0))
+        sym = d.get("symbol")
+        if price > 0 and sym:
+            prices_map[sym] = price
+        if atr14 > 0 and sym:
+            atr_map[sym] = atr14
+        if chand_stop > 0 and sym:
+            chandelier_map[sym] = chand_stop
+
+    # Prioritize execution order: SELL & TRIM first (releases capital), then BUY
+    sell_trims = [d for d in decisions if d.get("action", "").upper() in ("SELL", "TRIM")]
+    buys = [d for d in decisions if d.get("action", "").upper() == "BUY"]
+    holds = [d for d in decisions if d.get("action", "").upper() not in ("SELL", "TRIM", "BUY")]
+    ordered_decisions = sell_trims + buys + holds
+
+    EXCHANGE_FEE_RATE = 0.0010   # 0.10% Maker/Taker exchange fee
+    SLIPPAGE_RATE = 0.0005       # 0.05% adverse fill slippage
+
+    for d in ordered_decisions:
         d["timestamp"] = now
         action = d.get("action", "HOLD").upper()
         symbol = d.get("symbol")
         price = float(d.get("price", 0))
         amount_usd = float(d.get("amount_usd", 0))
         atr14 = float(d.get("atr14", 0))
-        chand_stop = float(d.get("chandelier_stop", 0))
 
-        if price > 0:
-            prices_map[symbol] = price
-        if atr14 > 0:
-            atr_map[symbol] = atr14
-        if chand_stop > 0:
-            chandelier_map[symbol] = chand_stop
+        if action == "SELL":
+            matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
+            if matching_positions:
+                pos = matching_positions[0]
+                entry_p = float(pos.get("entry_price", price))
+                cost_b = float(pos.get("cost_basis", 0.0))
+                opened_at = pos.get("opened_at", "—")
 
-        EXCHANGE_FEE_RATE = 0.0010   # 0.10% Maker/Taker exchange fee
-        SLIPPAGE_RATE = 0.0005       # 0.05% adverse fill slippage
+                fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
+                gross_proceeds = pos["qty"] * fill_price
+                fee = round(gross_proceeds * EXCHANGE_FEE_RATE, 4)
+                net_proceeds = round(gross_proceeds - fee, 4)
 
-        if action == "BUY" and amount_usd > 0 and price > 0:
+                realized_profit_usd = round(net_proceeds - cost_b, 2)
+                realized_pnl_pct = round(((fill_price - entry_p) / entry_p) * 100, 2) if entry_p > 0 else 0.0
+
+                d["qty"] = pos["qty"]
+                d["fill_price"] = fill_price
+                d["entry_price"] = entry_p
+                d["opened_at"] = opened_at
+                d["fee"] = fee
+                d["cost_or_proceeds"] = net_proceeds
+                d["cost_basis"] = cost_b
+                d["profit_usd"] = realized_profit_usd
+                d["pnl_pct"] = realized_pnl_pct
+
+                portfolio["cash"] += net_proceeds
+                portfolio["total_fees_paid"] = round(portfolio.get("total_fees_paid", 0.0) + fee, 4)
+                portfolio["positions"].remove(pos)
+
+                record_closed_trade_human_view(d)
+            else:
+                print(f"Warning: No open position found for {symbol} SELL.", file=sys.stderr)
+
+        elif action == "TRIM":
+            matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
+            if matching_positions:
+                pos = matching_positions[0]
+                entry_p = float(pos.get("entry_price", price))
+                opened_at = pos.get("opened_at", "—")
+                trim_qty = pos["qty"] * 0.5
+
+                fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
+                gross_proceeds = trim_qty * fill_price
+                fee = round(gross_proceeds * EXCHANGE_FEE_RATE, 4)
+                net_proceeds = round(gross_proceeds - fee, 4)
+
+                trimmed_cost_basis = round(pos.get("cost_basis", 0.0) * 0.5, 2)
+                realized_profit_usd = round(net_proceeds - trimmed_cost_basis, 2)
+                realized_pnl_pct = round(((fill_price - entry_p) / entry_p) * 100, 2) if entry_p > 0 else 0.0
+
+                d["qty"] = trim_qty
+                d["fill_price"] = fill_price
+                d["entry_price"] = entry_p
+                d["opened_at"] = opened_at
+                d["fee"] = fee
+                d["cost_or_proceeds"] = net_proceeds
+                d["cost_basis"] = trimmed_cost_basis
+                d["profit_usd"] = realized_profit_usd
+                d["pnl_pct"] = realized_pnl_pct
+
+                pos["qty"] -= trim_qty
+                pos["cost_basis"] = round(pos["cost_basis"] - trimmed_cost_basis, 2)
+                pos["tp1_hit"] = True
+                pos["trailing_stop_price"] = max(pos.get("trailing_stop_price", 0.0), entry_p)
+
+                portfolio["cash"] += net_proceeds
+                portfolio["trade_counter"] += 1
+                portfolio["total_fees_paid"] = round(portfolio.get("total_fees_paid", 0.0) + fee, 4)
+
+                record_closed_trade_human_view(d)
+            else:
+                print(f"Warning: No open position found for {symbol} TRIM.", file=sys.stderr)
+
+        elif action == "BUY" and amount_usd > 0 and price > 0:
             if portfolio["cash"] >= amount_usd:
                 fill_price = round(price * (1.0 + SLIPPAGE_RATE), 6)
                 fee = round(amount_usd * EXCHANGE_FEE_RATE, 4)
@@ -344,6 +462,9 @@ def execute_trade_pass(payload):
                 d["fill_price"] = fill_price
                 d["fee"] = fee
                 d["cost_or_proceeds"] = -amount_usd
+                d["cost_basis"] = amount_usd
+                d["pnl_pct"] = 0.0
+                d["profit_usd"] = 0.0
 
                 portfolio["cash"] -= amount_usd
                 portfolio["trade_counter"] += 1
@@ -358,56 +479,7 @@ def execute_trade_pass(payload):
                     "opened_at": now
                 })
             else:
-                print(f"Warning: Insufficient cash for {symbol} BUY trade.", file=sys.stderr)
-
-        elif action == "TRIM":
-            # Partial Take Profit (Sell 50% at TP1 target, bank profit, lock stop to breakeven)
-            matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
-            if matching_positions:
-                pos = matching_positions[0]
-                trim_qty = pos["qty"] * 0.5
-                fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
-                gross_proceeds = trim_qty * fill_price
-                fee = round(gross_proceeds * EXCHANGE_FEE_RATE, 4)
-                net_proceeds = round(gross_proceeds - fee, 4)
-
-                d["qty"] = trim_qty
-                d["fill_price"] = fill_price
-                d["fee"] = fee
-                d["cost_or_proceeds"] = net_proceeds
-
-                pos["qty"] -= trim_qty
-                pos["cost_basis"] = round(pos["cost_basis"] * 0.5, 2)
-                pos["tp1_hit"] = True
-                # Lock stop to breakeven minimum
-                pos["trailing_stop_price"] = max(pos.get("trailing_stop_price", 0.0), pos.get("entry_price", fill_price))
-
-                portfolio["cash"] += net_proceeds
-                portfolio["trade_counter"] += 1
-                portfolio["total_fees_paid"] = round(portfolio.get("total_fees_paid", 0.0) + fee, 4)
-            else:
-                print(f"Warning: No open position found for {symbol} TRIM.", file=sys.stderr)
-
-        elif action == "SELL":
-            # Locate matching position
-            matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
-            if matching_positions:
-                pos = matching_positions[0]
-                fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
-                gross_proceeds = pos["qty"] * fill_price
-                fee = round(gross_proceeds * EXCHANGE_FEE_RATE, 4)
-                net_proceeds = round(gross_proceeds - fee, 4)
-
-                d["qty"] = pos["qty"]
-                d["fill_price"] = fill_price
-                d["fee"] = fee
-                d["cost_or_proceeds"] = net_proceeds
-
-                portfolio["cash"] += net_proceeds
-                portfolio["total_fees_paid"] = round(portfolio.get("total_fees_paid", 0.0) + fee, 4)
-                portfolio["positions"].remove(pos)
-            else:
-                print(f"Warning: No open position found for {symbol} SELL.", file=sys.stderr)
+                print(f"Warning: Insufficient cash for {symbol} BUY trade (${portfolio['cash']:.2f} < ${amount_usd:.2f}).", file=sys.stderr)
         else:
             d["qty"] = 0.0
             d["cost_or_proceeds"] = 0.0
