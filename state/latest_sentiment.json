@@ -33,19 +33,19 @@
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 12
+    "headline_count": 11
   },
   "ETH": {
     "symbol": "ETH",
     "headlines": [
       {
-        "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
+        "title": "What Is Robinhood Chain? The Ethereum Layer-2 Network for Tokenized Stocks and Meme Coins",
         "source": "Decrypt",
-        "published_at": "Thu, 03 Sep 2026 18:15:07 +0000",
-        "link": "https://decrypt.co/377284/bitcoin-etfs-rebound-ethereum-xrp-end-streaks"
+        "published_at": "Sat, 05 Sep 2026 16:06:41 +0000",
+        "link": "https://decrypt.co/resources/what-robinhood-chain-ethereum-layer-2-network-tokenized-stocks"
       }
     ],
-    "news_sentiment": "bullish",
+    "news_sentiment": "cautious_bullish",
     "event_risk": "none",
     "headline_count": 1
   },
@@ -67,15 +67,15 @@
     "symbol": "XRP",
     "headlines": [
       {
-        "title": "Bitcoin ETFs Rebound as Ethereum and XRP ETFs End Winning Streaks",
-        "source": "Decrypt",
-        "published_at": "Thu, 03 Sep 2026 18:15:07 +0000",
-        "link": "https://decrypt.co/377284/bitcoin-etfs-rebound-ethereum-xrp-end-streaks"
+        "title": "Here\u2019s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "published_at": "Sat, 05 Sep 2026 11:16:19 +0000",
+        "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
-    "news_sentiment": "bullish",
+    "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "headline_count": 1
+    "headline_count": 0
   },
   "ADA": {
     "symbol": "ADA",
