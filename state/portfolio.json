@@ -1454,14 +1454,29 @@
       "timestamp": "2026-09-06T04:05:32.002936+00:00",
       "portfolio_value": 10335.02,
       "benchmark_value": 10225.23
+    },
+    {
+      "timestamp": "2026-09-06T04:45:46.272207+00:00",
+      "portfolio_value": 10321.22,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-06T04:50:46.275647+00:00",
+      "portfolio_value": 10315.88,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-06T04:52:08.903408+00:00",
+      "portfolio_value": 10312.28,
+      "benchmark_value": 10207.39
     }
   ],
   "metrics": {
-    "sharpe_ratio": 6.07,
-    "sortino_ratio": 8.92,
+    "sharpe_ratio": 5.38,
+    "sortino_ratio": 7.87,
     "max_drawdown_pct": 17.06,
-    "calmar_ratio": 0.2,
-    "benchmark_return_pct": 2.25
+    "calmar_ratio": 0.18,
+    "benchmark_return_pct": 2.07
   },
   "total_fees_paid": 19.2331
 }
