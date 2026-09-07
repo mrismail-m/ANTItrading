@@ -341,13 +341,16 @@ def classify_market_regime(btc_price, btc_ema50, btc_adx14, fear_greed_val):
     - 'neutral': default state
     """
     fg = fear_greed_val if isinstance(fear_greed_val, (int, float)) else 50
+    p = float(btc_price) if btc_price is not None else 0.0
+    ema50 = float(btc_ema50) if btc_ema50 is not None else 0.0
+    adx = float(btc_adx14) if btc_adx14 is not None else 0.0
 
-    if btc_price > 0 and btc_ema50 > 0:
-        if btc_price < btc_ema50 and fg < 30:
+    if p > 0.0 and ema50 > 0.0:
+        if p < ema50 and fg < 30:
             return "volatility_crash"
-        elif btc_price > btc_ema50 and btc_adx14 > 25 and fg > 50:
+        elif p > ema50 and adx > 25.0 and fg > 50:
             return "bullish_trend"
-        elif btc_adx14 < 20:
+        elif adx < 20.0:
             return "ranging"
 
     return "neutral"
@@ -736,15 +739,15 @@ def run_research(watchlist_path=None, output_path=None):
 
     # 2. Calculate Pairwise Correlation Matrix across all analyzed assets
     pairwise_corrs = {}
-    valid_tickers = [t for t, d in ta_results.items() if len(d.get("close_returns_30", [])) >= 10]
+    valid_tickers = [t for t, d in ta_results.items() if len(d.get("close_returns_30") or []) >= 10]
     for i in range(len(valid_tickers)):
         t1 = valid_tickers[i]
         s1 = t1.replace("USDT", "")
-        r1 = pd.Series(ta_results[t1]["close_returns_30"])
+        r1 = pd.Series(ta_results[t1].get("close_returns_30") or [])
         for j in range(i + 1, len(valid_tickers)):
             t2 = valid_tickers[j]
             s2 = t2.replace("USDT", "")
-            r2 = pd.Series(ta_results[t2]["close_returns_30"])
+            r2 = pd.Series(ta_results[t2].get("close_returns_30") or [])
             p_corr = float(r1.corr(r2))
             if not np.isnan(p_corr):
                 val = round(p_corr, 2)
@@ -755,13 +758,13 @@ def run_research(watchlist_path=None, output_path=None):
 
     # Determine Market Regime & BTC Macro Flush Circuit Breaker
     btc = ta_results.get("BTCUSDT", {})
-    btc_p = btc.get("price", 0)
-    btc_ema50 = btc.get("ema50", 0)
-    btc_adx = btc.get("adx14", 0)
+    btc_p = float(btc.get("price") or 0.0)
+    btc_ema50 = float(btc.get("ema50") or 0.0)
+    btc_adx = float(btc.get("adx14") or 0.0)
     btc_trend_4h = btc.get("trend_bias_4h", "neutral")
     btc_trend_1d = btc.get("trend_bias_1d", "neutral")
-    btc_rsi_1h = btc.get("rsi_1h", 50.0)
-    btc_vs_ema20_1h = btc.get("price_vs_ema20_1h", 0.0)
+    btc_rsi_1h = float(btc.get("rsi_1h") or 50.0)
+    btc_vs_ema20_1h = float(btc.get("price_vs_ema20_1h") or 0.0)
 
     fg_val = market_ctx.get("fear_and_greed", {}).get("value", 50)
     try:
@@ -855,13 +858,13 @@ def run_fast_risk_research(open_symbols=None, output_path=None):
 
     # Update BTC Macro Flush Detection with live BTC data
     btc = ta_results.get("BTCUSDT", {})
-    btc_p = btc.get("price", 0)
-    btc_ema50 = btc.get("ema50", 0)
-    btc_adx = btc.get("adx14", 0)
+    btc_p = float(btc.get("price") or 0.0)
+    btc_ema50 = float(btc.get("ema50") or 0.0)
+    btc_adx = float(btc.get("adx14") or 0.0)
     btc_trend_4h = btc.get("trend_bias_4h", "neutral")
     btc_trend_1d = btc.get("trend_bias_1d", "neutral")
-    btc_rsi_1h = btc.get("rsi_1h", 50.0)
-    btc_vs_ema20_1h = btc.get("price_vs_ema20_1h", 0.0)
+    btc_rsi_1h = float(btc.get("rsi_1h") or 50.0)
+    btc_vs_ema20_1h = float(btc.get("price_vs_ema20_1h") or 0.0)
 
     fg_val = market_ctx.get("fear_and_greed", {}).get("value", 50)
     try:

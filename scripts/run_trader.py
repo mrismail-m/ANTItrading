@@ -85,13 +85,20 @@ class ExecutionLock:
 def should_veto_on_rsi(symbol: str, rsi14: float, adx14: float, ema12: float, ema26: float, ema50: float, price: float) -> Tuple[bool, str]:
     """Evaluates whether to veto on overbought RSI or allow riding a strong aligned trend."""
     cutoff = RSI_CUTOFFS.get(symbol, RSI_CUTOFFS["default"])
-    if rsi14 <= cutoff:
+    rsi = float(rsi14) if rsi14 is not None else 50.0
+    adx = float(adx14) if adx14 is not None else 20.0
+    p = float(price) if price is not None else 0.0
+    e12 = float(ema12) if ema12 is not None else 0.0
+    e26 = float(ema26) if ema26 is not None else 0.0
+    e50 = float(ema50) if ema50 is not None else 0.0
+
+    if rsi <= cutoff:
         return False, ""
     # Strong trend override: if trend structure is powerful and aligned, ride rather than veto
-    strong_trend = (adx14 >= 32.0) and (price > ema12 > ema26 > ema50)
+    strong_trend = (adx >= 32.0) and (p > e12 > e26 > e50)
     if strong_trend:
-        return False, f" [RSI {rsi14:.1f} > {cutoff:.0f} override: Strong trend aligned (ADX {adx14:.1f})]"
-    return True, f"RSI({rsi14:.1f}) exceeds {cutoff:.0f} threshold without strong trend alignment (ADX {adx14:.1f} < 32)."
+        return False, f" [RSI {rsi:.1f} > {cutoff:.0f} override: Strong trend aligned (ADX {adx:.1f})]"
+    return True, f"RSI({rsi:.1f}) exceeds {cutoff:.0f} threshold without strong trend alignment (ADX {adx:.1f} < 32)."
 
 
 def get_portfolio_btc_beta_exposure(open_positions: list, ta_data: dict) -> float:
@@ -101,10 +108,10 @@ def get_portfolio_btc_beta_exposure(open_positions: list, ta_data: dict) -> floa
         sym = pos.get("symbol")
         ticker = sym if sym.endswith("USDT") else f"{sym}USDT"
         asset_ta = ta_data.get(ticker, {})
-        corr = float(asset_ta.get("btc_correlation", 1.0 if sym == "BTC" else 0.85))
-        curr_price = float(asset_ta.get("price", pos.get("entry_price", 0.0)))
-        qty = float(pos.get("qty", 0.0))
-        val = (curr_price * qty) if (curr_price > 0 and qty > 0) else float(pos.get("cost_basis", 0.0))
+        corr = float(asset_ta.get("btc_correlation") or (1.0 if sym == "BTC" else 0.85))
+        curr_price = float(asset_ta.get("price") or pos.get("entry_price") or 0.0)
+        qty = float(pos.get("qty") or 0.0)
+        val = (curr_price * qty) if (curr_price > 0 and qty > 0) else float(pos.get("cost_basis") or 0.0)
         total_exposure += val * corr
     return total_exposure
 
@@ -113,11 +120,12 @@ def can_open_new_position(symbol: str, size_usd: float, open_positions: list, ta
     """Verifies that adding a new position does not breach the portfolio BTC beta exposure cap."""
     curr_exposure = get_portfolio_btc_beta_exposure(open_positions, ta_data)
     ticker = symbol if symbol.endswith("USDT") else f"{symbol}USDT"
-    new_corr = float(ta_data.get(ticker, {}).get("btc_correlation", 1.0 if symbol == "BTC" else 0.85))
+    new_corr = float(ta_data.get(ticker, {}).get("btc_correlation") or (1.0 if symbol == "BTC" else 0.85))
     projected_exposure = curr_exposure + (size_usd * new_corr)
-    max_allowed = portfolio_value * max_beta_pct
-    if projected_exposure > max_allowed:
-        pct = (projected_exposure / portfolio_value) * 100 if portfolio_value > 0 else 0.0
+    port_val = float(portfolio_value) if portfolio_value is not None else 0.0
+    max_allowed = port_val * max_beta_pct
+    if port_val > 0 and projected_exposure > max_allowed:
+        pct = (projected_exposure / port_val) * 100
         return False, f"Portfolio BTC beta cap reached ({pct:.1f}% > {max_beta_pct*100:.0f}% max). Vetoing buy to prevent correlated flush."
     return True, ""
 
@@ -143,10 +151,10 @@ def get_pairwise_correlation(symbol_a: str, symbol_b: str, market_data: dict) ->
     ta_a = ta_map.get(f"{symbol_a}USDT", ta_map.get(symbol_a, {}))
     ta_b = ta_map.get(f"{symbol_b}USDT", ta_map.get(symbol_b, {}))
 
-    corr_a = float(ta_a.get("btc_correlation", 1.0 if symbol_a == "BTC" else 0.85))
-    corr_b = float(ta_b.get("btc_correlation", 1.0 if symbol_b == "BTC" else 0.85))
-    bias_a = ta_a.get("trend_bias", "neutral")
-    bias_b = ta_b.get("trend_bias", "neutral")
+    corr_a = float(ta_a.get("btc_correlation") or (1.0 if symbol_a == "BTC" else 0.85))
+    corr_b = float(ta_b.get("btc_correlation") or (1.0 if symbol_b == "BTC" else 0.85))
+    bias_a = ta_a.get("trend_bias") or "neutral"
+    bias_b = ta_b.get("trend_bias") or "neutral"
 
     # If one is BTC, the correlation is directly the asset's btc_correlation
     if symbol_a == "BTC":
@@ -178,7 +186,7 @@ def filter_simultaneous_entries(
 
     sorted_candidates = sorted(
         candidates,
-        key=lambda x: x.get("setup_score", 0),
+        key=lambda x: x.get("setup_score") or 0,
         reverse=True
     )
 
@@ -249,33 +257,33 @@ def compute_setup_score(
             "volume_flow": 0, "microstructure": 0, "macro_efficiency": 0, "total": 0
         }
 
-    trend_1d = data.get("trend_bias_1d", data.get("trend_bias", "neutral"))
-    trend_4h = data.get("trend_bias_4h", "neutral")
-    di_plus = float(data.get("di_plus", 20.0))
-    di_minus = float(data.get("di_minus", 20.0))
+    trend_1d = data.get("trend_bias_1d") or data.get("trend_bias") or "neutral"
+    trend_4h = data.get("trend_bias_4h") or "neutral"
+    di_plus = float(data.get("di_plus") or 20.0)
+    di_minus = float(data.get("di_minus") or 20.0)
 
-    rs_rank = data.get("rs_rank", "-")
-    rs_score = float(data.get("rs_score", 0.0))
+    rs_rank = data.get("rs_rank") or "-"
+    rs_score = float(data.get("rs_score") or 0.0)
 
-    rsi14 = float(data.get("rsi14", 50.0))
-    pct_b = float(data.get("bollinger_pct_b", 0.50))
-    divergence = data.get("divergence", "none")
+    rsi14 = float(data.get("rsi14") or 50.0)
+    pct_b = float(data.get("bollinger_pct_b") or 0.50)
+    divergence = data.get("divergence") or "none"
 
-    cmf20 = float(data.get("cmf20", 0.0))
-    mfi14 = float(data.get("mfi14", 50.0))
+    cmf20 = float(data.get("cmf20") or 0.0)
+    mfi14 = float(data.get("mfi14") or 50.0)
     squeeze_fired = bool(data.get("squeeze_fired", False))
     squeeze_on = bool(data.get("squeeze_on", False))
     volume_breakout = bool(data.get("volume_breakout", False))
-    vol_ratio = float(data.get("volume_ratio", 1.0))
+    vol_ratio = float(data.get("volume_ratio") or 1.0)
 
-    whale_alert = data.get("whale_alert", "NEUTRAL_FLOW")
-    ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
-    taker_ratio = float(data.get("taker_ratio", 1.0))
-    funding_alert = data.get("funding_alert", "NEUTRAL_FUNDING")
+    whale_alert = data.get("whale_alert") or "NEUTRAL_FLOW"
+    ob_imbalance = float(data.get("ob_imbalance_2pct") or 0.50)
+    taker_ratio = float(data.get("taker_ratio") or 1.0)
+    funding_alert = data.get("funding_alert") or "NEUTRAL_FUNDING"
 
-    chop14 = float(data.get("chop14", 50.0))
-    news_sent = sentiment_item.get("news_sentiment", "cautious_bullish")
-    event_risk = sentiment_item.get("event_risk", "none")
+    chop14 = float(data.get("chop14") or 50.0)
+    news_sent = sentiment_item.get("news_sentiment") or "cautious_bullish"
+    event_risk = sentiment_item.get("event_risk") or "none"
 
     # 1. Trend & MTF Structure (0-25 pts)
     trend_pts = 0
@@ -453,10 +461,10 @@ def evaluate_asset_decision(
     :param now: ISO timestamp string
     :return: Decision dictionary conforming to trade log schema
     """
-    if not data or "error" in data or data.get("status") == "UNAVAILABLE":
+    if not data or "error" in data or data.get("status") == "UNAVAILABLE" or data.get("price") is None:
         err_msg = data.get("error", "Data unavailable") if data else "Data unavailable"
         pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
-        fallback_price = float(pos_map.get(symbol, {}).get("entry_price", 0.0))
+        fallback_price = float(pos_map.get(symbol, {}).get("entry_price") or 0.0)
         return {
             "timestamp": now,
             "symbol": symbol,
@@ -496,39 +504,39 @@ def evaluate_asset_decision(
             "suggested_pos_size": 0.0
         }
 
-    price = float(data.get("price", 0.0))
-    rsi14 = float(data.get("rsi14", 50.0))
-    adx14 = float(data.get("adx14", 20.0))
-    vwap = float(data.get("vwap", price))
-    atr14 = float(data.get("atr14", price * 0.03))
-    ema12 = float(data.get("ema12", 0.0))
-    ema26 = float(data.get("ema26", 0.0))
-    ema50 = float(data.get("ema50", 0.0))
-    trend_1d = data.get("trend_bias_1d", data.get("trend_bias", "neutral"))
-    trend_4h = data.get("trend_bias_4h", "neutral")
-    ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
-    taker_ratio = float(data.get("taker_ratio", 1.0))
-    whale_alert = data.get("whale_alert", "NEUTRAL_FLOW")
-    funding_rate = float(data.get("funding_rate", 0.0001))
-    funding_alert = data.get("funding_alert", "NEUTRAL_FUNDING")
-    rsi_1h = float(data.get("rsi_1h", 50.0))
-    price_vs_ema20_1h = float(data.get("price_vs_ema20_1h", 0.0))
-    rs_score = float(data.get("rs_score", 0.0))
-    rs_rank = data.get("rs_rank", "-")
-    divergence = data.get("divergence", "none")
-    pct_b = float(data.get("bollinger_pct_b", 0.50))
-    vol_ratio = float(data.get("volume_ratio", 1.0))
+    price = float(data.get("price") or 0.0)
+    rsi14 = float(data.get("rsi14") or 50.0)
+    adx14 = float(data.get("adx14") or 20.0)
+    vwap = float(data.get("vwap") or price)
+    atr14 = float(data.get("atr14") or (price * 0.03))
+    ema12 = float(data.get("ema12") or 0.0)
+    ema26 = float(data.get("ema26") or 0.0)
+    ema50 = float(data.get("ema50") or 0.0)
+    trend_1d = data.get("trend_bias_1d") or data.get("trend_bias") or "neutral"
+    trend_4h = data.get("trend_bias_4h") or "neutral"
+    ob_imbalance = float(data.get("ob_imbalance_2pct") or 0.50)
+    taker_ratio = float(data.get("taker_ratio") or 1.0)
+    whale_alert = data.get("whale_alert") or "NEUTRAL_FLOW"
+    funding_rate = float(data.get("funding_rate") or 0.0001)
+    funding_alert = data.get("funding_alert") or "NEUTRAL_FUNDING"
+    rsi_1h = float(data.get("rsi_1h") or 50.0)
+    price_vs_ema20_1h = float(data.get("price_vs_ema20_1h") or 0.0)
+    rs_score = float(data.get("rs_score") or 0.0)
+    rs_rank = data.get("rs_rank") or "-"
+    divergence = data.get("divergence") or "none"
+    pct_b = float(data.get("bollinger_pct_b") or 0.50)
+    vol_ratio = float(data.get("volume_ratio") or 1.0)
     volume_breakout = bool(data.get("volume_breakout", False))
-    donchian_h20 = float(data.get("donchian_high_20", price))
-    donchian_l20 = float(data.get("donchian_low_20", price))
-    cmf20 = float(data.get("cmf20", 0.0))
-    mfi14 = float(data.get("mfi14", 50.0))
-    chop14 = float(data.get("chop14", 50.0))
-    di_plus = float(data.get("di_plus", 20.0))
-    di_minus = float(data.get("di_minus", 20.0))
+    donchian_h20 = float(data.get("donchian_high_20") or price)
+    donchian_l20 = float(data.get("donchian_low_20") or price)
+    cmf20 = float(data.get("cmf20") or 0.0)
+    mfi14 = float(data.get("mfi14") or 50.0)
+    chop14 = float(data.get("chop14") or 50.0)
+    di_plus = float(data.get("di_plus") or 20.0)
+    di_minus = float(data.get("di_minus") or 20.0)
     squeeze_on = bool(data.get("squeeze_on", False))
     squeeze_fired = bool(data.get("squeeze_fired", False))
-    chandelier_stop = float(data.get("chandelier_stop", price * 0.93))
+    chandelier_stop = float(data.get("chandelier_stop") or (price * 0.93))
 
     pos_map = {p["symbol"]: p for p in portfolio.get("positions", [])}
     is_open = symbol in pos_map
@@ -590,10 +598,10 @@ def evaluate_asset_decision(
     # -------------------------------------------------------------------------
     if is_open:
         pos = pos_map[symbol]
-        entry_p = float(pos.get("entry_price", price))
-        highest_p = max(float(pos.get("highest_price", entry_p)), price)
+        entry_p = float(pos.get("entry_price") or price)
+        highest_p = max(float(pos.get("highest_price") or entry_p), price)
         pnl_pct = ((price - entry_p) / entry_p) * 100 if entry_p > 0 else 0.0
-        trade_cost_basis = float(pos.get("cost_basis", 0.0))
+        trade_cost_basis = float(pos.get("cost_basis") or 0.0)
         trade_pnl_pct = pnl_pct
         trade_profit_usd = (pnl_pct / 100.0) * trade_cost_basis
 
@@ -601,7 +609,7 @@ def evaluate_asset_decision(
         max_sl_floor = round(entry_p * 0.95, 4)
         raw_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else max_sl_floor
         trade_chandelier_stop = max(max_sl_floor, raw_chandelier_stop)
-        std_trail = float(pos.get("trailing_stop_price", max_sl_floor))
+        std_trail = float(pos.get("trailing_stop_price") or max_sl_floor)
         std_trail = max(std_trail, max_sl_floor)
         trailing_stop = max(std_trail, trade_chandelier_stop)
         if pos.get("tp1_hit", False) or (btc_flush_alert and symbol != "BTC" and pnl_pct > 0):
@@ -931,17 +939,19 @@ def generate_executive_summary_markdown(
     lines.append("| Asset | Action | Live Price | Setup Score | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |")
     lines.append("| :--- | :---: | :--- | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
     for d in decisions:
-        rs_str = f"#{d.get('rs_rank', '-')} ({d.get('rs_score', 0.0):+.2f})"
-        tier_str = f"`{d.get('conviction_tier', 'SOLID')}`"
-        score_val = d.get('setup_score', int(float(d.get('confidence', 0.5)) * 100))
+        rs_str = f"#{d.get('rs_rank') or '-'} ({float(d.get('rs_score') or 0.0):+.2f})"
+        tier_str = f"`{d.get('conviction_tier') or 'SOLID'}`"
+        score_val = d.get('setup_score') or int(float(d.get('confidence') or 0.5) * 100)
         score_str = f"**{score_val}/100**"
-        cmf_val = float(d.get("cmf20", 0.0))
+        cmf_val = float(d.get("cmf20") or 0.0)
         cmf_str = f"`{cmf_val:+.3f}`"
         sq_str = "⚡ **FIRED**" if d.get("squeeze_fired") else ("🟠 SQUEEZE" if d.get("squeeze_on") else ("🚀 BREAKOUT" if d.get("volume_breakout") else "`NORMAL`"))
-        ch_stop = f"${float(d.get('chandelier_stop', 0)):.4f}"
+        ch_stop = f"${float(d.get('chandelier_stop') or 0.0):.4f}"
+        p_val = float(d.get("price") or 0.0)
+        rsi_val = float(d.get("rsi14") or 50.0)
         lines.append(
-            f"| **{d.get('symbol')}** | **{d.get('action')}** | ${d.get('price', 0):.4f} | "
-            f"{score_str} | {d.get('rsi14', 0):.2f} | {rs_str} | {tier_str} | {cmf_str} | "
+            f"| **{d.get('symbol')}** | **{d.get('action')}** | ${p_val:.4f} | "
+            f"{score_str} | {rsi_val:.2f} | {rs_str} | {tier_str} | {cmf_str} | "
             f"{sq_str} | {ch_stop} | {d.get('reasoning')} |"
         )
     lines.append("\n---\n")
@@ -1244,11 +1254,11 @@ def _run_trader_pass_internal(mode: str = "AUTO", dry_run: bool = False, silent:
         challengers = [
             d for d in candidate_decisions
             if d.get("action") == "HOLD"
-            and d.get("setup_score", 0) >= 80
+            and (d.get("setup_score") or 0) >= 80
             and not (btc_flush_alert and d.get("symbol") != "BTC")
-            and d.get("price", 0) > 0
+            and (float(d.get("price") or 0.0)) > 0
         ]
-        challengers.sort(key=lambda x: (x.get("setup_score", 0), x.get("rs_score", 0.0)), reverse=True)
+        challengers.sort(key=lambda x: (x.get("setup_score") or 0, float(x.get("rs_score") or 0.0)), reverse=True)
 
         eligible_laggards = []
         for d in open_decisions:
@@ -1257,8 +1267,8 @@ def _run_trader_pass_internal(mode: str = "AUTO", dry_run: bool = False, silent:
                 if not pos_match:
                     continue
                 is_tp1 = pos_match.get("tp1_hit", False)
-                pnl = float(d.get("pnl_pct", 0.0))
-                h_score = d.get("setup_score", 0)
+                pnl = float(d.get("pnl_pct") or 0.0)
+                h_score = d.get("setup_score") or 0
                 if not is_tp1 and pnl < 1.0 and h_score < 50:
                     eligible_laggards.append((h_score, pnl, d, pos_match))
 
@@ -1267,7 +1277,7 @@ def _run_trader_pass_internal(mode: str = "AUTO", dry_run: bool = False, silent:
         if challengers and eligible_laggards:
             top_cand = challengers[0]
             laggard_score, laggard_pnl, laggard_d, laggard_pos = eligible_laggards[0]
-            cand_score = top_cand.get("setup_score", 0)
+            cand_score = top_cand.get("setup_score") or 0
             score_gap = cand_score - laggard_score
 
             if score_gap >= 25:

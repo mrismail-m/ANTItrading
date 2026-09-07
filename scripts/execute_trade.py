@@ -306,9 +306,9 @@ def sync_human_views(portfolio, decisions, open_pos_path=None, decision_log_path
             writer.writerow([
                 f"TRADE-{idx:03d}",
                 pos.get("symbol"),
-                f"{pos.get('entry_price'):.4f}",
-                f"{pos.get('qty'):.6f}",
-                f"{pos.get('cost_basis'):.2f}",
+                f"{float(pos.get('entry_price') or 0.0):.4f}",
+                f"{float(pos.get('qty') or 0.0):.6f}",
+                f"{float(pos.get('cost_basis') or 0.0):.2f}",
                 pos.get("opened_at"),
                 "RUNNER (TP1)" if pos.get("tp1_hit", False) else "OPEN"
             ])
@@ -390,9 +390,9 @@ def _execute_trade_pass_internal(payload):
     chandelier_map = {}
 
     for d in decisions:
-        price = float(d.get("price", 0))
-        atr14 = float(d.get("atr14", 0))
-        chand_stop = float(d.get("chandelier_stop", 0))
+        price = float(d.get("price") or 0)
+        atr14 = float(d.get("atr14") or 0)
+        chand_stop = float(d.get("chandelier_stop") or 0)
         sym = d.get("symbol")
         if price > 0 and sym:
             prices_map[sym] = price
@@ -414,20 +414,20 @@ def _execute_trade_pass_internal(payload):
         d["timestamp"] = now
         action = d.get("action", "HOLD").upper()
         symbol = d.get("symbol")
-        price = float(d.get("price", 0))
-        amount_usd = float(d.get("amount_usd", 0))
-        atr14 = float(d.get("atr14", 0))
+        price = float(d.get("price") or 0)
+        amount_usd = float(d.get("amount_usd") or 0)
+        atr14 = float(d.get("atr14") or 0)
 
         if action == "SELL":
             matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
             if matching_positions:
                 pos = matching_positions[0]
-                if float(pos.get("qty", 0.0)) <= 0:
+                if float(pos.get("qty") or 0.0) <= 0:
                     portfolio["positions"].remove(pos)
                     print(f"Warning: Position {symbol} has 0 or negative qty. Removed without sale.", file=sys.stderr)
                     continue
-                entry_p = float(pos.get("entry_price", price))
-                cost_b = float(pos.get("cost_basis", 0.0))
+                entry_p = float(pos.get("entry_price") or price)
+                cost_b = float(pos.get("cost_basis") or 0.0)
                 opened_at = pos.get("opened_at", "—")
 
                 fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
@@ -460,20 +460,20 @@ def _execute_trade_pass_internal(payload):
             matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
             if matching_positions:
                 pos = matching_positions[0]
-                if float(pos.get("qty", 0.0)) <= 0:
+                if float(pos.get("qty") or 0.0) <= 0:
                     portfolio["positions"].remove(pos)
                     print(f"Warning: Position {symbol} has 0 or negative qty. Removed without trim.", file=sys.stderr)
                     continue
-                entry_p = float(pos.get("entry_price", price))
+                entry_p = float(pos.get("entry_price") or price)
                 opened_at = pos.get("opened_at", "—")
-                trim_qty = pos["qty"] * 0.5
+                trim_qty = float(pos.get("qty") or 0.0) * 0.5
 
                 fill_price = round(price * (1.0 - SLIPPAGE_RATE), 6)
                 gross_proceeds = trim_qty * fill_price
                 fee = round(gross_proceeds * EXCHANGE_FEE_RATE, 4)
                 net_proceeds = round(gross_proceeds - fee, 4)
 
-                trimmed_cost_basis = round(pos.get("cost_basis", 0.0) * 0.5, 2)
+                trimmed_cost_basis = round(float(pos.get("cost_basis") or 0.0) * 0.5, 2)
                 realized_profit_usd = round(net_proceeds - trimmed_cost_basis, 2)
                 realized_pnl_pct = round(((fill_price - entry_p) / entry_p) * 100, 2) if entry_p > 0 else 0.0
 
@@ -488,9 +488,9 @@ def _execute_trade_pass_internal(payload):
                 d["pnl_pct"] = realized_pnl_pct
 
                 pos["qty"] -= trim_qty
-                pos["cost_basis"] = round(pos["cost_basis"] - trimmed_cost_basis, 2)
+                pos["cost_basis"] = round(float(pos.get("cost_basis") or 0.0) - trimmed_cost_basis, 2)
                 pos["tp1_hit"] = True
-                pos["trailing_stop_price"] = max(pos.get("trailing_stop_price", 0.0), entry_p)
+                pos["trailing_stop_price"] = max(float(pos.get("trailing_stop_price") or 0.0), entry_p)
 
                 portfolio["cash"] += net_proceeds
                 portfolio["trade_counter"] += 1
@@ -551,33 +551,29 @@ def _execute_trade_pass_internal(payload):
             curr_p = prices_map[sym]
             asset_atr = atr_map.get(sym, curr_p * 0.03)
             if "highest_price" not in pos:
-                pos["highest_price"] = pos.get("entry_price", curr_p)
-            if curr_p > pos["highest_price"]:
+                pos["highest_price"] = float(pos.get("entry_price") or curr_p)
+            if curr_p > float(pos["highest_price"]):
                 pos["highest_price"] = curr_p
 
-            entry_val = float(pos.get("entry_price", curr_p))
+            entry_val = float(pos.get("entry_price") or curr_p)
             max_sl_floor = round(entry_val * 0.95, 4)
             if "trailing_stop_price" not in pos:
-                raw_atr_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
+                raw_atr_stop = round(float(pos["highest_price"]) - (2.0 * asset_atr), 4)
                 pos["trailing_stop_price"] = max(max_sl_floor, raw_atr_stop)
             else:
                 # Enforce -5.0% SL minimum floor on open positions
-                if float(pos.get("trailing_stop_price", 0.0)) < max_sl_floor:
+                if float(pos.get("trailing_stop_price") or 0.0) < max_sl_floor:
                     pos["trailing_stop_price"] = max_sl_floor
 
-            if curr_p > pos["entry_price"]:
+            if curr_p > float(pos.get("entry_price") or curr_p):
                 # Adjust trailing stop upwards if higher peak reached using true ATR(14) Chandelier Exit
-                new_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
+                new_stop = round(float(pos["highest_price"]) - (2.0 * asset_atr), 4)
                 if pos.get("tp1_hit", False):
-                    new_stop = max(new_stop, float(pos.get("entry_price", new_stop)))
+                    new_stop = max(new_stop, float(pos.get("entry_price") or new_stop))
 
                 # Dynamic Progressive Profit-Lock (Tighter lock as profits grow):
-                # - At +2.0% to +4.0% gain: lock in 50% of peak gain
-                # - At +4.0% to +6.0% gain: lock in 70% of peak gain
-                # - At +6.0% to +8.0% gain: lock in 82% of peak gain (e.g. +6% peak -> locks +4.92%; +7% peak -> locks +5.74%)
-                # - At >= +8.0% gain: lock in 88% of peak gain
-                entry_val = float(pos.get("entry_price", curr_p))
-                peak_gain_pct = ((pos["highest_price"] - entry_val) / entry_val) * 100 if entry_val > 0 else 0.0
+                entry_val = float(pos.get("entry_price") or curr_p)
+                peak_gain_pct = ((float(pos["highest_price"]) - entry_val) / entry_val) * 100 if entry_val > 0 else 0.0
                 if peak_gain_pct >= 2.0:
                     if peak_gain_pct >= 8.0:
                         lock_ratio = 0.88
@@ -593,12 +589,12 @@ def _execute_trade_pass_internal(payload):
                     new_stop = max(new_stop, dynamic_profit_stop)
 
                 # CRITICAL: Trailing stops are strictly monotonic non-decreasing (never lowered)
-                current_stop = float(pos.get("trailing_stop_price", 0.0))
+                current_stop = float(pos.get("trailing_stop_price") or 0.0)
                 if new_stop > current_stop:
                     pos["trailing_stop_price"] = new_stop
 
     # Calculate current total portfolio value
-    positions_value = sum(p["qty"] * prices_map.get(p["symbol"], p["entry_price"]) for p in portfolio.get("positions", []))
+    positions_value = sum(float(p.get("qty") or 0.0) * float(prices_map.get(p.get("symbol")) or p.get("entry_price") or 0.0) for p in portfolio.get("positions", []))
     total_portfolio_value = portfolio["cash"] + positions_value
 
     # Update Equity History
@@ -606,8 +602,8 @@ def _execute_trade_pass_internal(payload):
         portfolio["equity_history"] = []
 
     # Dynamic Benchmark calculation (50/50 BTC/ETH starting from $10,000 at inception Aug 30: BTC $78,146, ETH $2,456.70)
-    btc_p = prices_map.get("BTC", prices_map.get("BTCUSDT", 77304.16))
-    eth_p = prices_map.get("ETH", prices_map.get("ETHUSDT", 2385.88))
+    btc_p = float(prices_map.get("BTC") or prices_map.get("BTCUSDT") or 77304.16)
+    eth_p = float(prices_map.get("ETH") or prices_map.get("ETHUSDT") or 2385.88)
     bench_btc_qty = 5000.0 / 78146.00
     bench_eth_qty = 5000.0 / 2456.70
     benchmark_value = (bench_btc_qty * btc_p) + (bench_eth_qty * eth_p)

@@ -2,16 +2,22 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
-      "Here\u2019s what happened in crypto today",
-      "Satoshi-era Bitcoin wakes after 16 years of dormancy as 600 BTC moves"
+      "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+      "Harmony proposes shutting down layer 1, migrating ONE to Ethereum",
+      "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest"
     ],
     "overall_sentiment": "bullish",
-    "macro_event_risk": "scam"
+    "macro_event_risk": "none"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
       {
         "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
         "source": "CoinTelegraph",
@@ -23,21 +29,21 @@
         "source": "CoinTelegraph",
         "published_at": "Sun, 06 Sep 2026 13:03:00 +0000",
         "link": "https://cointelegraph.com/news/satoshi-era-bitcoin-wakes-16-years-600-btc-moves?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Bitcoin ETF inflows hit $3.8B in strongest three-week stretch of 2026",
-        "source": "CoinTelegraph",
-        "published_at": "Sat, 05 Sep 2026 08:03:06 +0000",
-        "link": "https://cointelegraph.com/markets/bitcoin-etf-inflows-3-8-billion-strongest-three-week-run-2026?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
     "event_risk": "none",
-    "headline_count": 12
+    "headline_count": 13
   },
   "ETH": {
     "symbol": "ETH",
     "headlines": [
+      {
+        "title": "Harmony proposes shutting down layer 1, migrating ONE to Ethereum",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:00:49 +0000",
+        "link": "https://cointelegraph.com/news/harmony-proposes-shutting-down-layer-1-migrating-one-to-ethereum?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
       {
         "title": "What Is Robinhood Chain? The Ethereum Layer-2 Network for Tokenized Stocks and Meme Coins",
         "source": "Decrypt",
@@ -47,16 +53,16 @@
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "headline_count": 1
+    "headline_count": 2
   },
   "SOL": {
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -81,10 +87,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -95,10 +101,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -109,10 +115,10 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -123,10 +129,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -137,10 +143,10 @@
     "symbol": "POL",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -151,10 +157,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -165,10 +171,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -179,10 +185,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -193,10 +199,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -207,10 +213,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -221,10 +227,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -235,10 +241,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -249,10 +255,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -277,10 +283,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -291,24 +297,150 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
     "headline_count": 0
   },
-  "HYPE": {
-    "symbol": "HYPE",
+  "TAO": {
+    "symbol": "TAO",
     "headlines": [
       {
-        "title": "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest",
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
-        "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "FET": {
+    "symbol": "FET",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "TIA": {
+    "symbol": "TIA",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "OP": {
+    "symbol": "OP",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "BCH": {
+    "symbol": "BCH",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "FIL": {
+    "symbol": "FIL",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "RENDER": {
+    "symbol": "RENDER",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "STRK": {
+    "symbol": "STRK",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "GRT": {
+    "symbol": "GRT",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      }
+    ],
+    "news_sentiment": "cautious_bullish",
+    "event_risk": "none",
+    "headline_count": 0
+  },
+  "SEI": {
+    "symbol": "SEI",
+    "headlines": [
+      {
+        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
+        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

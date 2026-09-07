@@ -51,16 +51,16 @@ def format_active_trades_table(positions: List[Dict[str, Any]], price_map: Dict[
 
     for p in positions:
         sym = p.get("symbol", "-")
-        entry = float(p.get("entry_price", 0.0))
-        qty = float(p.get("qty", 0.0))
-        cost_basis = float(p.get("cost_basis", entry * qty))
-        curr = price_map.get(sym, 0.0)
-        if curr <= 0.0:
-            curr = entry if entry > 0.0 else float(p.get("highest_price", 1.0))
+        entry = float(p.get("entry_price") or 0.0)
+        qty = float(p.get("qty") or 0.0)
+        cost_basis = float(p.get("cost_basis") or (entry * qty))
+        curr = price_map.get(sym)
+        if curr is None or curr <= 0.0:
+            curr = entry if (entry and entry > 0.0) else float(p.get("highest_price") or 1.0)
 
         val = qty * curr
         diff_usd = val - cost_basis
-        diff_pct = ((curr - entry) / entry) * 100 if entry > 0 else 0.0
+        diff_pct = ((curr - entry) / entry) * 100 if (entry and entry > 0) else 0.0
 
         sign = "+" if diff_usd >= 0 else "-"
         pnl_str = f"{sign}${abs(diff_usd):.2f} ({diff_pct:+.2f}%)"
@@ -100,19 +100,19 @@ def send_discord_notification(
     # Map current prices from decisions (filter out 0.0 errors)
     price_map = {}
     for d in decisions:
-        p_val = float(d.get("price", 0.0))
+        p_val = float(d.get("price") or 0.0)
         if p_val > 0.0:
             price_map[d.get("symbol")] = p_val
 
-    total_cost_basis = sum(float(p.get("cost_basis", 0.0)) for p in positions)
+    total_cost_basis = sum(float(p.get("cost_basis") or 0.0) for p in positions)
     current_market_val = 0.0
     for p in positions:
         sym = p.get("symbol", "-")
-        qty = float(p.get("qty", 0.0))
-        entry = float(p.get("entry_price", 0.0))
-        curr = price_map.get(sym, 0.0)
-        if curr <= 0.0:
-            curr = entry if entry > 0.0 else float(p.get("highest_price", 1.0))
+        qty = float(p.get("qty") or 0.0)
+        entry = float(p.get("entry_price") or 0.0)
+        curr = price_map.get(sym)
+        if curr is None or curr <= 0.0:
+            curr = entry if (entry and entry > 0.0) else float(p.get("highest_price") or 1.0)
         current_market_val += qty * curr
 
     unrealized_pnl = current_market_val - total_cost_basis

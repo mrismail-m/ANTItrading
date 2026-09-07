@@ -52,6 +52,12 @@ def main(context: Any) -> Any:
         if hasattr(context, "req") and context.req:
             try:
                 body = getattr(context.req, "bodyJson", None) or getattr(context.req, "body", None)
+                if isinstance(body, str) and body.strip():
+                    import json
+                    try:
+                        body = json.loads(body)
+                    except Exception:
+                        pass
                 if isinstance(body, dict) and "mode" in body:
                     mode = str(body["mode"]).upper()
             except Exception:
@@ -104,13 +110,16 @@ def main(context: Any) -> Any:
         return {"status": "success", "mode": actual_mode, "portfolio_value": curr_val}
 
     except Exception as err:
-        err_msg = f"❌ Execution failed: {err}"
+        import traceback
+        tb = traceback.format_exc()
+        err_msg = f"❌ Execution failed: {err}\n{tb}"
         if hasattr(context, "error"):
             context.error(err_msg)
         if hasattr(context, "res") and hasattr(context.res, "json"):
             return context.res.json({
                 "status": "error",
                 "timestamp": now,
-                "error": str(err)
+                "error": str(err),
+                "traceback": tb
             }, 500)
         raise err
