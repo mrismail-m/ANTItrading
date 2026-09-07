@@ -469,13 +469,17 @@ def execute_trade_pass(payload):
                 portfolio["cash"] -= amount_usd
                 portfolio["trade_counter"] += 1
                 portfolio["total_fees_paid"] = round(portfolio.get("total_fees_paid", 0.0) + fee, 4)
+                max_sl_floor = fill_price * 0.95
+                raw_atr_stop = (fill_price - (2.0 * atr14)) if atr14 > 0 else max_sl_floor
+                initial_stop = round(max(max_sl_floor, raw_atr_stop), 4)
+
                 portfolio["positions"].append({
                     "symbol": symbol,
                     "qty": qty,
                     "entry_price": fill_price,
                     "cost_basis": amount_usd,
                     "highest_price": fill_price,
-                    "trailing_stop_price": round(fill_price - (2.0 * atr14) if atr14 > 0 else fill_price * 0.93, 4),
+                    "trailing_stop_price": initial_stop,
                     "opened_at": now
                 })
             else:
@@ -501,9 +505,18 @@ def execute_trade_pass(payload):
                 pos["highest_price"] = pos.get("entry_price", curr_p)
             if curr_p > pos["highest_price"]:
                 pos["highest_price"] = curr_p
+
+            entry_val = float(pos.get("entry_price", curr_p))
+            max_sl_floor = round(entry_val * 0.95, 4)
             if "trailing_stop_price" not in pos:
-                pos["trailing_stop_price"] = round(pos["highest_price"] - (2.0 * asset_atr), 4)
-            elif curr_p > pos["entry_price"]:
+                raw_atr_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
+                pos["trailing_stop_price"] = max(max_sl_floor, raw_atr_stop)
+            else:
+                # Enforce -5.0% SL minimum floor on open positions
+                if float(pos.get("trailing_stop_price", 0.0)) < max_sl_floor:
+                    pos["trailing_stop_price"] = max_sl_floor
+
+            if curr_p > pos["entry_price"]:
                 # Adjust trailing stop upwards if higher peak reached using true ATR(14) Chandelier Exit
                 new_stop = round(pos["highest_price"] - (2.0 * asset_atr), 4)
                 if pos.get("tp1_hit", False):

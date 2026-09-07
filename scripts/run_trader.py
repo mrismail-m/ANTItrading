@@ -383,7 +383,8 @@ def evaluate_asset_decision(
         curr_equity = float(portfolio.get("starting_cash", 10000.0))
 
     dollar_risk = max(50.0, round(curr_equity * 0.010, 2))
-    stop_distance_per_unit = (2.0 * atr14) if atr14 > 0 else (price * 0.05)
+    # Enforce -5.0% Stop-Loss max: risk distance cannot exceed 5.0%
+    stop_distance_per_unit = min(price * 0.05, (2.0 * atr14) if atr14 > 0 else (price * 0.05))
     stop_distance_pct = stop_distance_per_unit / price if price > 0 else 0.05
     raw_risk_parity_size = dollar_risk / stop_distance_pct if stop_distance_pct > 0 else 800.0
 
@@ -410,9 +411,12 @@ def evaluate_asset_decision(
         trade_pnl_pct = pnl_pct
         trade_profit_usd = (pnl_pct / 100.0) * trade_cost_basis
 
-        # Chandelier / ATR trailing stop
-        trade_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else round(entry_p * 0.93, 4)
-        std_trail = float(pos.get("trailing_stop_price", round(entry_p - (2.0 * atr14), 4)))
+        # Chandelier / ATR trailing stop with hard maximum -5.0% Stop-Loss floor
+        max_sl_floor = round(entry_p * 0.95, 4)
+        raw_chandelier_stop = round(highest_p - (2.0 * atr14), 4) if atr14 > 0 else max_sl_floor
+        trade_chandelier_stop = max(max_sl_floor, raw_chandelier_stop)
+        std_trail = float(pos.get("trailing_stop_price", max_sl_floor))
+        std_trail = max(std_trail, max_sl_floor)
         trailing_stop = max(std_trail, trade_chandelier_stop)
         if pos.get("tp1_hit", False) or (btc_flush_alert and symbol != "BTC" and pnl_pct > 0):
             trailing_stop = max(trailing_stop, entry_p)
@@ -456,7 +460,10 @@ def evaluate_asset_decision(
                     f"+{locked_ret_pct:.2f}% locked profit from ${entry_p:.4f} entry). Realized PnL: {trade_profit_usd:+.2f} USD ({pnl_pct:+.2f}%). Executing SELL to bank gains."
                 )
             else:
-                reasoning = f"Price ${price:.4f} breached dynamic Chandelier/ATR trailing stop level (${trailing_stop:.4f}). Realized PnL: {trade_profit_usd:+.2f} USD ({pnl_pct:+.2f}%). Executing SELL to preserve capital."
+                reasoning = (
+                    f"Stop-Loss Triggered: Price ${price:.4f} breached maximum -5.0% Stop-Loss level (${trailing_stop:.4f}, "
+                    f"{pnl_pct:+.2f}% vs -5.00% max). Realized PnL: {trade_profit_usd:+.2f} USD. Executing SELL to cut loss."
+                )
         # 3. BTC Macro Flush Defense: Exit underwater altcoins (<= -2.5%) during a macro BTC dump
         elif btc_flush_alert and symbol != "BTC" and pnl_pct <= -2.5:
             action = "SELL"

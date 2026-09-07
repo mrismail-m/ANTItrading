@@ -42,6 +42,18 @@ def _get_headers() -> Dict[str, str]:
         "Content-Type": "application/json"
     }
     api_key = os.environ.get("APPWRITE_FUNCTION_API_KEY") or os.environ.get("APPWRITE_API_KEY")
+    if not api_key:
+        prefs_path = os.path.expanduser("~/.appwrite/prefs.json")
+        if os.path.exists(prefs_path):
+            try:
+                with open(prefs_path) as f:
+                    prefs = json.load(f)
+                for k, v in prefs.items():
+                    if isinstance(v, dict) and "accessToken" in v:
+                        api_key = v["accessToken"]
+                        break
+            except Exception:
+                pass
     if api_key:
         headers["X-Appwrite-Key"] = api_key
     return headers
