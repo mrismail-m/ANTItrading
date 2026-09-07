@@ -108,12 +108,21 @@ def sync_portfolio_to_db(portfolio: Dict[str, Any], local_path: Optional[str] = 
     p_val = float(history[-1].get("portfolio_value", cash) if history else cash)
     now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
+    db_port = dict(portfolio)
+    if "equity_history" in db_port and len(db_port["equity_history"]) > 100:
+        db_port["equity_history"] = db_port["equity_history"][-100:]
+
+    port_json = json.dumps(db_port)
+    if len(port_json) > 55000 and "equity_history" in db_port:
+        db_port["equity_history"] = db_port["equity_history"][-50:]
+        port_json = json.dumps(db_port)
+
     payload = {
         "data": {
             "cash": cash,
             "portfolio_value": p_val,
             "updated_at": now_iso,
-            "data": json.dumps(portfolio)
+            "data": port_json
         }
     }
 

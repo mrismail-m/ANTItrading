@@ -613,6 +613,8 @@ def _execute_trade_pass_internal(payload):
         "portfolio_value": round(total_portfolio_value, 2),
         "benchmark_value": round(benchmark_value, 2)
     })
+    if len(portfolio["equity_history"]) > 150:
+        portfolio["equity_history"] = portfolio["equity_history"][-150:]
 
     # Compute & attach portfolio risk & performance metrics
     portfolio["metrics"] = compute_portfolio_analytics(portfolio)

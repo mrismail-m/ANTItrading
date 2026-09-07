@@ -2,16 +2,22 @@
   "_macro": {
     "regime_narrative": "Institutional trading adoption expands while market digests macro liquidity and regulatory signals.",
     "top_macro_headlines": [
-      "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
-      "Harmony proposes shutting down layer 1, migrating ONE to Ethereum",
-      "\u2018White hats\u2019 take 4000 BTC from Liquid, ETFs see best inflows of 2026: Hodler\u2019s Digest"
+      "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
+      "Philippines eyes payment operator registration freeze, tighter VASP checks",
+      "Coldcard third-wave attacker moves 45% of stolen Bitcoin"
     ],
     "overall_sentiment": "bullish",
-    "macro_event_risk": "none"
+    "macro_event_risk": "stolen"
   },
   "BTC": {
     "symbol": "BTC",
     "headlines": [
+      {
+        "title": "Coldcard third-wave attacker moves 45% of stolen Bitcoin",
+        "source": "CoinTelegraph",
+        "published_at": "Mon, 07 Sep 2026 09:36:19 +0000",
+        "link": "https://cointelegraph.com/news/coldcard-third-wave-attacker-moves-bitcoin-stolen?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+      },
       {
         "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
         "source": "CoinTelegraph",
@@ -23,16 +29,10 @@
         "source": "CoinTelegraph",
         "published_at": "Mon, 07 Sep 2026 00:05:02 +0000",
         "link": "https://cointelegraph.com/magazine/white-hats-take-4000-btc-from-liquid-btc-etfs-best-week-of-2026-hodlers-digest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-      },
-      {
-        "title": "Satoshi-era Bitcoin wakes after 16 years of dormancy as 600 BTC moves",
-        "source": "CoinTelegraph",
-        "published_at": "Sun, 06 Sep 2026 13:03:00 +0000",
-        "link": "https://cointelegraph.com/news/satoshi-era-bitcoin-wakes-16-years-600-btc-moves?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "bullish",
-    "event_risk": "none",
+    "event_risk": "hack",
     "headline_count": 13
   },
   "ETH": {
@@ -59,15 +59,15 @@
     "symbol": "SOL",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Fomo overtakes Pump.fun in daily revenue on Solana",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 07:45:39 +0000",
+        "link": "https://cointelegraph.com/news/fomo-pumpfun-revenue-app-solana?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
     "event_risk": "none",
-    "headline_count": 0
+    "headline_count": 1
   },
   "XRP": {
     "symbol": "XRP",
@@ -87,10 +87,10 @@
     "symbol": "ADA",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -101,10 +101,10 @@
     "symbol": "AVAX",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -115,10 +115,10 @@
     "symbol": "LINK",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -129,10 +129,10 @@
     "symbol": "DOT",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -143,10 +143,10 @@
     "symbol": "POL",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -157,10 +157,10 @@
     "symbol": "LTC",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -171,10 +171,10 @@
     "symbol": "UNI",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -185,10 +185,10 @@
     "symbol": "NEAR",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -199,10 +199,10 @@
     "symbol": "APT",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -213,10 +213,10 @@
     "symbol": "ICP",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -227,10 +227,10 @@
     "symbol": "XLM",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -241,10 +241,10 @@
     "symbol": "SUI",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -255,10 +255,10 @@
     "symbol": "ARB",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -283,10 +283,10 @@
     "symbol": "BNB",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -297,10 +297,10 @@
     "symbol": "TRX",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -311,10 +311,10 @@
     "symbol": "TAO",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -325,10 +325,10 @@
     "symbol": "FET",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -339,10 +339,10 @@
     "symbol": "TIA",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -353,10 +353,10 @@
     "symbol": "OP",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -367,10 +367,10 @@
     "symbol": "BCH",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -381,10 +381,10 @@
     "symbol": "FIL",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -395,10 +395,10 @@
     "symbol": "RENDER",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -409,10 +409,10 @@
     "symbol": "STRK",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -423,10 +423,10 @@
     "symbol": "GRT",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",
@@ -437,10 +437,10 @@
     "symbol": "SEI",
     "headlines": [
       {
-        "title": "Bitcoin sidechain Liquid pauses after purported \u2018white hats\u2019 withdraw $320M in BTC",
+        "title": "Citi, DBS complete first weekend tokenized cross-border deposit on Swift",
         "source": "CoinTelegraph",
-        "published_at": "Mon, 07 Sep 2026 05:40:05 +0000",
-        "link": "https://cointelegraph.com/news/liquid-network-pauses-320m-bitcoin-withdrawal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+        "published_at": "Mon, 07 Sep 2026 10:34:47 +0000",
+        "link": "https://cointelegraph.com/news/dbs-citi-first-weekend-tokenized-deposit-swift?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
       }
     ],
     "news_sentiment": "cautious_bullish",

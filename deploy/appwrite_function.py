@@ -63,6 +63,7 @@ def main(context: Any) -> Any:
             except Exception:
                 pass
 
+
         if hasattr(context, "log"):
             context.log(f"🧠 Executing autonomous trading pass (Requested Mode: {mode})...")
         result = run_trader_pass(mode=mode, dry_run=False, silent=True)

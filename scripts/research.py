@@ -141,11 +141,12 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
         raise RuntimeError(f"Symbol {symbol} is in 24h dead-symbol cooldown. Skipping API calls.")
 
     raw_data = None
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"}
 
-    # 1. Try Binance Spot API
+    # 1. Try Binance Public Vision API (Official mirror, globally accessible / US cloud runners)
     try:
-        url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
-        response = requests.get(url, timeout=5)
+        url = f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
+        response = requests.get(url, timeout=5, headers=headers)
         if response.status_code == 200:
             cand = response.json()
             if is_fresh_candles(cand):
@@ -153,11 +154,23 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
     except Exception:
         pass
 
-    # 2. Fall back to Binance Futures API
+    # 2. Try Standard Binance Spot API
+    if not raw_data:
+        try:
+            url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
+            response = requests.get(url, timeout=5, headers=headers)
+            if response.status_code == 200:
+                cand = response.json()
+                if is_fresh_candles(cand):
+                    raw_data = cand
+        except Exception:
+            pass
+
+    # 3. Fall back to Binance Futures API
     if not raw_data:
         try:
             fapi_url = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval={interval}&limit={limit}"
-            f_resp = requests.get(fapi_url, timeout=5)
+            f_resp = requests.get(fapi_url, timeout=5, headers=headers)
             if f_resp.status_code == 200:
                 cand = f_resp.json()
                 if is_fresh_candles(cand):
@@ -165,11 +178,11 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
         except Exception:
             pass
 
-    # 3. Failover to MEXC Global API (identical schema, accessible from cloud runners)
+    # 4. Failover to MEXC Global API (identical schema, accessible from cloud runners)
     if not raw_data:
         try:
             mexc_url = f"https://api.mexc.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
-            m_resp = requests.get(mexc_url, timeout=6)
+            m_resp = requests.get(mexc_url, timeout=6, headers=headers)
             if m_resp.status_code == 200:
                 cand = m_resp.json()
                 if is_fresh_candles(cand):
