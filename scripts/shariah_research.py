@@ -16,7 +16,7 @@ SYMBOL_MAP = {
     "avalanche-2": "AVAX",
     "chainlink": "LINK",
     "polkadot": "DOT",
-    "polygon": "MATIC",
+    "polygon": "POL",
     "litecoin": "LTC",
     "uniswap": "UNI",
     "near": "NEAR",
@@ -26,9 +26,19 @@ SYMBOL_MAP = {
     "sui": "SUI",
     "arbitrum": "ARB",
     "injective-protocol": "INJ",
-    "hyperliquid": "HYPE",
     "binancecoin": "BNB",
     "tron": "TRX",
+    "bittensor": "TAO",
+    "fetch-ai": "FET",
+    "celestia": "TIA",
+    "optimism": "OP",
+    "bitcoin-cash": "BCH",
+    "filecoin": "FIL",
+    "render-token": "RENDER",
+    "starknet": "STRK",
+    "the-graph": "GRT",
+    "sei-network": "SEI",
+    "hedera-hashgraph": "HBAR",
     "helium": "HNT",
     "aave": "AAVE",
     "ethena": "ENA",
@@ -160,11 +170,71 @@ SHARIAH_KNOWLEDGE_BASE = {
         "verdict": "PASS",
         "reasoning": "INJ functions as L1 gas, staking collateral, and fee burn utility for spot exchange execution. Its spot orderbook architecture is Halal and free of mandatory Riba."
     },
-    "hyperliquid": {
-        "use_case": "Hyperliquid (HYPE) is a high-performance Layer-1 blockchain optimized for a decentralized orderbook exchange. HYPE is the native token used for L1 gas fees, consensus staking, and platform governance.",
-        "news": "Hyperliquid approaches major September token unlock while reporting industry-leading DEX volume.",
+    "bittensor": {
+        "use_case": "Bittensor (TAO) is an open-source decentralized machine learning network powered by subnets. TAO rewards validators and miners for producing machine intelligence across specialized subnets.",
+        "news": "Bittensor subnets continue rapid AI model inference scaling.",
         "verdict": "PASS",
-        "reasoning": "HYPE functions as native L1 gas and staking utility for an execution engine. Provided spot trading features are prioritized over leveraged derivatives, the L1 token represents valid technical utility."
+        "reasoning": "Rewards go to validators/miners performing real ML work (proof-of-intelligence). Fee-for-service structure, not lending-based."
+    },
+    "fetch-ai": {
+        "use_case": "Artificial Superintelligence Alliance (FET) is a decentralized autonomous AI agent network and machine learning compute infrastructure.",
+        "news": "ASI Alliance integrates multi-agent AI execution pipelines.",
+        "verdict": "PASS",
+        "reasoning": "Token pays for AI agent compute/execution — direct service utility."
+    },
+    "celestia": {
+        "use_case": "Celestia (TIA) is a modular consensus and data availability blockchain network enabling scalable rollup deployment.",
+        "news": "Celestia data availability throughput expands across major Ethereum rollups.",
+        "verdict": "PASS",
+        "reasoning": "Fee is paid for real blockspace/data-availability service. Staking reward is validator compensation, not fixed-return lending."
+    },
+    "optimism": {
+        "use_case": "Optimism (OP) is a leading Ethereum Layer-2 optimistic rollup ecosystem powering the OP Stack and Superchain architecture.",
+        "news": "Superchain interoperability upgrades drive active L2 network activity.",
+        "verdict": "PASS",
+        "reasoning": "Gas + governance token for L2 infra. No embedded interest mechanic."
+    },
+    "bitcoin-cash": {
+        "use_case": "Bitcoin Cash (BCH) is a peer-to-peer electronic cash system designed as a fast, low-cost decentralized medium of exchange fork of Bitcoin.",
+        "news": "Bitcoin Cash network usage remains consistent for merchant payments.",
+        "verdict": "PASS",
+        "reasoning": "Pure P2P medium of exchange, no yield/lending layer at all. Closest to the currency analogy scholars use for BTC."
+    },
+    "filecoin": {
+        "use_case": "Filecoin (FIL) is a decentralized peer-to-peer data storage network where miners receive rewards for providing verifiable physical hard drive storage.",
+        "news": "Filecoin network storage utilization expands across decentralized datasets.",
+        "verdict": "PASS",
+        "reasoning": "Miners are paid for verifiably storing real data — tangible service rendered, reward tied to work performed."
+    },
+    "render-token": {
+        "use_case": "Render Network (RENDER) is a decentralized GPU computing network connecting artists and AI researchers with distributed GPU compute operators.",
+        "news": "Render Network processes expanding decentralized rendering and AI model workloads.",
+        "verdict": "PASS",
+        "reasoning": "Direct payment for GPU compute rendered — clean fee-for-service model."
+    },
+    "starknet": {
+        "use_case": "Starknet (STRK) is an Ethereum Layer-2 Validity Rollup (ZK-Rollup) using STARK cryptographic proofs for high throughput and low gas fees.",
+        "news": "Starknet latency reductions enhance decentralized app responsiveness.",
+        "verdict": "PASS",
+        "reasoning": "L2 gas/staking, same validator-service logic as TIA/OP."
+    },
+    "the-graph": {
+        "use_case": "The Graph (GRT) is a decentralized indexing and query protocol for querying blockchain networks using open GraphQL APIs.",
+        "news": "The Graph query volume continues expansion across multichain subgraphs.",
+        "verdict": "PASS",
+        "reasoning": "Delegators earn based on indexer query-fee performance and bear slashing risk — profit-and-loss-sharing structure, not a guaranteed fixed return, which is the key distinction from riba."
+    },
+    "sei-network": {
+        "use_case": "Sei Network (SEI) is a high-speed, parallelized Layer-1 blockchain optimized for trading execution and digital asset applications.",
+        "news": "Sei v2 parallel EVM execution demonstrates high throughput in production.",
+        "verdict": "PASS",
+        "reasoning": "General-purpose L1 gas/staking token, same validator-service logic."
+    },
+    "hedera-hashgraph": {
+        "use_case": "Hedera (HBAR) is an enterprise public distributed ledger utilizing Hashgraph consensus technology.",
+        "news": "Hedera ecosystem expands across institutional council integrations.",
+        "verdict": "REVIEW",
+        "reasoning": "Token utility (enterprise DLT fees, consensus staking) is fine on its own. Flag: the Governing Council includes conventional interest-based banks/corporates as node operators."
     },
     "binancecoin": {
         "use_case": "BNB (BNB) is the native utility token of BNB Chain and Binance ecosystem. It is used for transaction gas fees, staking, launchpad participation, and fee discounts.",
@@ -324,11 +394,18 @@ def main():
     except Exception as e:
         print(f"Error fetching volume coins: {e}")
 
-    watchlist_ids = [
-        'bitcoin', 'ethereum', 'solana', 'ripple', 'cardano', 'avalanche-2',
-        'chainlink', 'polkadot', 'polygon', 'litecoin', 'uniswap', 'near',
-        'aptos', 'internet-computer', 'stellar', 'sui'
-    ]
+    try:
+        with open('state/watchlist.json') as f:
+            watchlist_ids = list(json.load(f).keys())
+    except Exception:
+        watchlist_ids = [
+            'bitcoin', 'ethereum', 'solana', 'ripple', 'cardano', 'avalanche-2',
+            'chainlink', 'polkadot', 'polygon', 'litecoin', 'uniswap', 'near',
+            'aptos', 'internet-computer', 'stellar', 'sui', 'arbitrum',
+            'injective-protocol', 'binancecoin', 'tron', 'bittensor', 'fetch-ai',
+            'celestia', 'optimism', 'bitcoin-cash', 'filecoin', 'render-token',
+            'starknet', 'the-graph', 'sei-network'
+        ]
 
     all_ids = set(trending_ids + [c['id'] for c in volume_coins] + watchlist_ids)
     print(f"Discovered {len(all_ids)} total candidate coins to screen.")

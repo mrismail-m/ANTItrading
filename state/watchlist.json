@@ -19,5 +19,14 @@
   "injective-protocol": "INJUSDT",
   "binancecoin": "BNBUSDT",
   "tron": "TRXUSDT",
-  "hyperliquid": "HYPEUSDT"
+  "bittensor": "TAOUSDT",
+  "fetch-ai": "FETUSDT",
+  "celestia": "TIAUSDT",
+  "optimism": "OPUSDT",
+  "bitcoin-cash": "BCHUSDT",
+  "filecoin": "FILUSDT",
+  "render-token": "RENDERUSDT",
+  "starknet": "STRKUSDT",
+  "the-graph": "GRTUSDT",
+  "sei-network": "SEIUSDT"
 }

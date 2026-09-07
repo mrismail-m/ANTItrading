@@ -1,5 +1,5 @@
 {
-  "cash": 8708.5536,
+  "cash": 7508.553599999999,
   "starting_cash": 10000.0,
   "positions": [
     {
@@ -19,9 +19,18 @@
       "highest_price": 0.6316,
       "trailing_stop_price": 0.5884,
       "opened_at": "2026-09-06T03:00:46.342843+00:00"
+    },
+    {
+      "symbol": "NEAR",
+      "qty": 507.0892241001894,
+      "entry_price": 2.364081,
+      "cost_basis": 1200.0,
+      "highest_price": 2.364081,
+      "trailing_stop_price": 2.2459,
+      "opened_at": "2026-09-07T02:00:46.308400+00:00"
     }
   ],
-  "trade_counter": 32,
+  "trade_counter": 33,
   "equity_history": [
     {
       "timestamp": "2026-09-02T04:24:05.439461+00:00",
@@ -2677,14 +2686,24 @@
       "timestamp": "2026-09-07T00:00:00Z",
       "portfolio_value": 10352.59,
       "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T02:00:46.308400+00:00",
+      "portfolio_value": 10346.74,
+      "benchmark_value": 10211.08
+    },
+    {
+      "timestamp": "2026-09-07T02:05:55.597843+00:00",
+      "portfolio_value": 10342.12,
+      "benchmark_value": 9802.0
     }
   ],
   "metrics": {
-    "sharpe_ratio": 5.66,
-    "sortino_ratio": 8.65,
+    "sharpe_ratio": 5.35,
+    "sortino_ratio": 8.17,
     "max_drawdown_pct": 17.06,
-    "calmar_ratio": 0.21,
+    "calmar_ratio": 0.2,
     "benchmark_return_pct": -1.98
   },
-  "total_fees_paid": 26.1456
+  "total_fees_paid": 27.3456
 }
