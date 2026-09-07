@@ -51,9 +51,12 @@ import os
 import csv
 import sys
 import datetime
+import threading
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_PORTFOLIO_PATH = os.path.join(ROOT_DIR, "state", "portfolio.json")
+
+_trade_lock = threading.Lock()
 
 
 def load_portfolio(filepath=None):
@@ -178,69 +181,107 @@ def compute_portfolio_analytics(portfolio):
     }
 
 
+CANONICAL_TRADE_LOG_SCHEMA = [
+    "timestamp", "symbol", "action", "price", "qty", "cost_or_proceeds",
+    "reasoning", "confidence", "cash_after", "rsi14", "ema12", "ema26",
+    "ema50", "macd", "macd_signal", "momentum_10", "volume_ratio",
+    "divergence", "trend_bias", "news_sentiment", "event_risk",
+    "btc_correlation", "funding_rate", "onchain_signal", "social_trend",
+    "adx14", "vwap", "oi_change_24h", "taker_ratio", "suggested_pos_size"
+]
+
+
+def build_log_row(d: dict, cash_after: float = 0.0) -> dict:
+    """
+    Builds a canonical trade log row with explicit non-null defaults for all 30 fields.
+    Guarantees strict schema adherence and zero trailing blank commas.
+    """
+    sym = str(d.get("symbol", "")).strip()
+
+    def _fmt(val, default, decimals=None):
+        if val is None or val == "":
+            return str(default)
+        try:
+            f = float(val)
+            if decimals is not None:
+                return f"{f:.{decimals}f}"
+            return str(f)
+        except (ValueError, TypeError):
+            s = str(val).strip()
+            return s if s else str(default)
+
+    price_str = _fmt(d.get("price"), "0.0000", 4)
+    vwap_val = d.get("vwap") if d.get("vwap") is not None else d.get("price")
+
+    return {
+        "timestamp": str(d.get("timestamp") or datetime.datetime.now(datetime.timezone.utc).isoformat()),
+        "symbol": sym,
+        "action": str(d.get("action", "HOLD")).strip().upper(),
+        "price": price_str,
+        "qty": _fmt(d.get("qty"), "0.000000", 6),
+        "cost_or_proceeds": _fmt(d.get("cost_or_proceeds"), "0.00", 2),
+        "reasoning": str(d.get("reasoning", "")).strip(),
+        "confidence": _fmt(d.get("confidence"), "0.00", 2),
+        "cash_after": _fmt(cash_after, "0.00", 2),
+        "rsi14": _fmt(d.get("rsi14"), "50.00", 2),
+        "ema12": _fmt(d.get("ema12"), "0.0000", 4),
+        "ema26": _fmt(d.get("ema26"), "0.0000", 4),
+        "ema50": _fmt(d.get("ema50"), "0.0000", 4),
+        "macd": _fmt(d.get("macd"), "0.0000", 4),
+        "macd_signal": _fmt(d.get("macd_signal"), "0.0000", 4),
+        "momentum_10": _fmt(d.get("momentum_10"), "0.00", 2),
+        "volume_ratio": _fmt(d.get("volume_ratio"), "1.00", 2),
+        "divergence": str(d.get("divergence") or "none").strip(),
+        "trend_bias": str(d.get("trend_bias") or "neutral").strip(),
+        "news_sentiment": str(d.get("news_sentiment") or "neutral").strip(),
+        "event_risk": str(d.get("event_risk") or "none").strip(),
+        "btc_correlation": _fmt(d.get("btc_correlation"), "1.00" if sym == "BTC" else "0.85", 2),
+        "funding_rate": _fmt(d.get("funding_rate"), "0.000100", 6),
+        "onchain_signal": str(d.get("onchain_signal") or "neutral").strip(),
+        "social_trend": str(d.get("social_trend") or "normal").strip(),
+        "adx14": _fmt(d.get("adx14"), "20.00", 2),
+        "vwap": _fmt(vwap_val, price_str, 4),
+        "oi_change_24h": _fmt(d.get("oi_change_24h"), "0.00", 2),
+        "taker_ratio": _fmt(d.get("taker_ratio"), "1.0000", 4),
+        "suggested_pos_size": _fmt(d.get("suggested_pos_size"), "250.00", 2)
+    }
+
+
+def validate_trade_log_schema(filepath=None) -> bool:
+    """Verifies that trade_log.csv strictly contains the 30 canonical columns."""
+    target_path = filepath or os.path.join(ROOT_DIR, "state", "trade_log.csv")
+    if not os.path.exists(target_path):
+        return True
+    with open(target_path, "r", newline="") as f:
+        reader = csv.reader(f)
+        header = next(reader, None)
+        if header != CANONICAL_TRADE_LOG_SCHEMA:
+            return False
+        for row in reader:
+            if len(row) != len(CANONICAL_TRADE_LOG_SCHEMA):
+                return False
+    return True
+
+
 def append_trade_log(decisions, cash_after, filepath=None):
     """
-    Appends decision records to state/trade_log.csv.
+    Appends decision records to state/trade_log.csv conforming strictly to CANONICAL_TRADE_LOG_SCHEMA.
 
     :param decisions: List of decision dicts with TA & reasoning attributes
     :param cash_after: Updated portfolio cash after decisions
     :param filepath: Path to trade_log.csv
     """
     target_path = filepath or os.path.join(ROOT_DIR, "state", "trade_log.csv")
-    fieldnames = [
-        "timestamp", "symbol", "action", "price", "qty", "cost_or_proceeds",
-        "reasoning", "confidence", "cash_after", "rsi14", "ema12", "ema26",
-        "ema50", "macd", "macd_signal", "momentum_10", "volume_ratio",
-        "divergence", "trend_bias", "news_sentiment", "event_risk",
-        "btc_correlation", "funding_rate", "onchain_signal", "social_trend",
-        "adx14", "vwap", "oi_change_24h", "taker_ratio", "ob_imbalance_2pct",
-        "whale_alert", "market_regime", "suggested_pos_size"
-    ]
-
     file_exists = os.path.exists(target_path)
     os.makedirs(os.path.dirname(target_path), exist_ok=True)
 
     with open(target_path, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=CANONICAL_TRADE_LOG_SCHEMA, extrasaction="ignore")
         if not file_exists:
             writer.writeheader()
 
         for d in decisions:
-            row = {
-                "timestamp": d.get("timestamp", datetime.datetime.now(datetime.timezone.utc).isoformat()),
-                "symbol": d.get("symbol"),
-                "action": d.get("action"),
-                "price": f"{d.get('price'):.4f}" if isinstance(d.get("price"), (int, float)) else d.get("price"),
-                "qty": f"{d.get('qty'):.6f}" if isinstance(d.get("qty"), (int, float)) else d.get("qty"),
-                "cost_or_proceeds": f"{d.get('cost_or_proceeds'):.2f}" if isinstance(d.get("cost_or_proceeds"), (int, float)) else d.get("cost_or_proceeds"),
-                "reasoning": d.get("reasoning"),
-                "confidence": f"{d.get('confidence'):.2f}" if isinstance(d.get("confidence"), (int, float)) else d.get("confidence"),
-                "cash_after": f"{cash_after:.2f}",
-                "rsi14": d.get("rsi14"),
-                "ema12": d.get("ema12"),
-                "ema26": d.get("ema26"),
-                "ema50": d.get("ema50"),
-                "macd": d.get("macd"),
-                "macd_signal": d.get("macd_signal"),
-                "momentum_10": d.get("momentum_10"),
-                "volume_ratio": d.get("volume_ratio"),
-                "divergence": d.get("divergence"),
-                "trend_bias": d.get("trend_bias"),
-                "news_sentiment": d.get("news_sentiment"),
-                "event_risk": d.get("event_risk"),
-                "btc_correlation": d.get("btc_correlation", 1.0),
-                "funding_rate": d.get("funding_rate", 0.0),
-                "onchain_signal": d.get("onchain_signal", "no_signal"),
-                "social_trend": d.get("social_trend", "normal"),
-                "adx14": d.get("adx14"),
-                "vwap": d.get("vwap"),
-                "oi_change_24h": d.get("oi_change_24h"),
-                "taker_ratio": d.get("taker_ratio"),
-                "ob_imbalance_2pct": d.get("ob_imbalance_2pct"),
-                "whale_alert": d.get("whale_alert", "NEUTRAL_FLOW"),
-                "market_regime": d.get("market_regime", "neutral"),
-                "suggested_pos_size": d.get("suggested_pos_size")
-            }
+            row = build_log_row(d, cash_after=cash_after)
             writer.writerow(row)
 
 
@@ -333,7 +374,7 @@ def record_closed_trade_human_view(trade, filepath=None):
         writer.writerow(row)
 
 
-def execute_trade_pass(payload):
+def _execute_trade_pass_internal(payload):
     """
     Executes trades in payload and updates all state files.
     Processes SELL/TRIM before BUY to ensure liquidity recycling.
@@ -381,6 +422,10 @@ def execute_trade_pass(payload):
             matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
             if matching_positions:
                 pos = matching_positions[0]
+                if float(pos.get("qty", 0.0)) <= 0:
+                    portfolio["positions"].remove(pos)
+                    print(f"Warning: Position {symbol} has 0 or negative qty. Removed without sale.", file=sys.stderr)
+                    continue
                 entry_p = float(pos.get("entry_price", price))
                 cost_b = float(pos.get("cost_basis", 0.0))
                 opened_at = pos.get("opened_at", "—")
@@ -415,6 +460,10 @@ def execute_trade_pass(payload):
             matching_positions = [p for p in portfolio["positions"] if p["symbol"] == symbol]
             if matching_positions:
                 pos = matching_positions[0]
+                if float(pos.get("qty", 0.0)) <= 0:
+                    portfolio["positions"].remove(pos)
+                    print(f"Warning: Position {symbol} has 0 or negative qty. Removed without trim.", file=sys.stderr)
+                    continue
                 entry_p = float(pos.get("entry_price", price))
                 opened_at = pos.get("opened_at", "—")
                 trim_qty = pos["qty"] * 0.5
@@ -577,6 +626,15 @@ def execute_trade_pass(payload):
     sync_human_views(portfolio, decisions)
 
     return portfolio
+
+
+def execute_trade_pass(payload):
+    """
+    Thread-safe and idempotent entrypoint for executing trading pass.
+    Protected by _trade_lock.
+    """
+    with _trade_lock:
+        return _execute_trade_pass_internal(payload)
 
 
 if __name__ == "__main__":

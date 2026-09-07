@@ -1,8 +1,8 @@
 # 🚀 Daily Crypto Paper-Trading Agent — Executive Summary Report
 
-**Execution Timestamp:** `2026-09-06T04:52:08.903408+00:00`  
+**Execution Timestamp:** `2026-09-07T01:58:54.515954+00:00`  
 **Operational Status:** Autonomous Hourly Paper-Trading Pass Completed  
-**Tracked Assets Universe:** 22 Pre-Screened Shariah-Compliant Assets  
+**Tracked Assets Universe:** 21 Pre-Screened Shariah-Compliant Assets  
 
 ---
 
@@ -10,11 +10,11 @@
 
 | Metric | Current Value | Baseline / Target | Notes |
 | :--- | :--- | :--- | :--- |
-| **Total Portfolio Value** | **$10,312.28 USD** | $10,000.00 Starting Cash | **+$312.28 Net P&L (+3.12%)** |
-| **Cash Balance** | **$1,802.73 USD** | Min 20% Reserve | **17.48%** Capital in Liquid Cash |
-| **Active Positions Value** | **$8,509.55 USD** | Max 10 Positions | **82.52%** Capital Allocated |
-| **Open Positions Count** | **10 / 10** | Max Cap: 10 | 0 Position Slots Available |
-| **Total Executed Trades** | **31 Trades** | — | Audit trail synchronized in CSV |
+| **Total Portfolio Value** | **$10,352.59 USD** | $10,000.00 Starting Cash | **+$352.59 Net P&L (+3.53%)** |
+| **Cash Balance** | **$8,708.55 USD** | Min 20% Reserve | **84.12%** Capital in Liquid Cash |
+| **Active Positions Value** | **$1,644.04 USD** | Max 10 Positions | **15.88%** Capital Allocated |
+| **Open Positions Count** | **2 / 10** | Max Cap: 10 | 8 Position Slots Available |
+| **Total Executed Trades** | **32 Trades** | — | Audit trail synchronized in CSV |
 
 ---
 
@@ -22,12 +22,12 @@
 
 | Risk / Performance Metric | Portfolio Value | Benchmark (50/50 BTC/ETH) | Performance Alpha |
 | :--- | :--- | :--- | :--- |
-| **Total Cumulative Return** | **+3.12%** | **+2.07%** | **+1.05% Alpha** |
-| **Current Benchmark Value** | $10,312.28 | $10,207.39 | **+$104.89 Value Premium** |
+| **Total Cumulative Return** | **+3.53%** | **-1.98%** | **+5.51% Alpha** |
+| **Current Benchmark Value** | $10,352.59 | $9,802.00 | **+$550.59 Value Premium** |
 | **Max Drawdown (%)** | **17.06%** | Macro Benchmark Variance | Capital preservation filter active |
-| **Calmar Ratio** | **0.18** | — | Return to max drawdown ratio |
-| **Rolling Sharpe Ratio** | **5.38** | — | Annualized risk-adjusted return |
-| **Rolling Sortino Ratio** | **7.87** | — | Downside-volatility weighted |
+| **Calmar Ratio** | **0.21** | — | Return to max drawdown ratio |
+| **Rolling Sharpe Ratio** | **5.66** | — | Annualized risk-adjusted return |
+| **Rolling Sortino Ratio** | **8.65** | — | Downside-volatility weighted |
 
 ---
 
@@ -35,8 +35,8 @@
 
 * **Market Regime:** `bullish_trend`
 * **BTC Macro Circuit Breaker:** 🟢 **NORMAL (Healthy)**
-* **Fear & Greed Index:** **73 / 100 (Greed)**
-* **BTC Dominance:** **59.21%** | **ETH Dominance:** **11.27%**
+* **Fear & Greed Index:** **71 / 100 (Greed)**
+* **BTC Dominance:** **59.24%** | **ETH Dominance:** **11.27%**
 
 ---
 
@@ -44,45 +44,36 @@
 
 | Trade ID | Asset | Qty | Entry Price | Highest Price | Trailing Stop | Cost Basis | Scaling Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TRADE-001** | `AVAX` | 87.2564 | $7.5230 | $7.7350 | $7.6290 | $656.43 | FULL POSITION |
-| **TRADE-002** | `HYPE` | 10.5323 | $86.0620 | $86.8700 | $78.1590 | $906.43 | FULL POSITION |
-| **TRADE-003** | `ADA` | 3496.4855 | $0.2134 | $0.2238 | $0.2207 | $746.15 | FULL POSITION |
-| **TRADE-004** | `ICP` | 402.1361 | $2.6803 | $2.7280 | $2.4452 | $1078.94 | FULL POSITION |
-| **TRADE-005** | `XRP` | 486.8172 | $1.4053 | $1.4304 | $1.2800 | $684.81 | FULL POSITION |
-| **TRADE-006** | `HNT` | 519.1615 | $0.6136 | $0.6187 | $0.3929 | $318.88 | FULL POSITION |
-| **TRADE-007** | `SOL` | 10.5062 | $103.3116 | $106.9800 | $105.1458 | $1086.50 | FULL POSITION |
-| **TRADE-008** | `SUI` | 1040.4741 | $0.7971 | $0.8117 | $0.7191 | $830.19 | FULL POSITION |
-| **TRADE-009** | `APT` | 1549.7152 | $0.6194 | $0.6210 | $0.5448 | $960.87 | FULL POSITION |
-| **TRADE-010** | `DOT` | 1286.5891 | $0.9318 | $0.9320 | $0.8412 | $1200.00 | FULL POSITION |
+| **TRADE-001** | `XRP` | 486.8172 | $1.4053 | $1.4304 | $1.3350 | $684.81 | FULL POSITION |
+| **TRADE-002** | `APT` | 1549.7152 | $0.6194 | $0.6316 | $0.5884 | $960.87 | FULL POSITION |
 
 ---
 
-## 5. 🎯 Trade Actions Summary (0 BUYS, 0 TRIMS, 0 SELLS, 22 HOLDS)
+## 5. 🎯 Trade Actions Summary (1 BUYS, 0 TRIMS, 0 SELLS, 20 HOLDS)
 
 | Asset | Action | Live Price | Setup Score | RSI(14) | RS Rank | Conviction Tier | CMF(20) | Squeeze / Breakout | Chandelier Stop | Decision Rationale |
 | :--- | :---: | :--- | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **SOL** | **HOLD** | $105.8800 | **59/100** | 67.51 | #13 (+4.00) | `CAUTIOUS` | `+0.261` | `NORMAL` | $98.3464 | Active position in profit (+2.49% from $103.3116 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $105.1458 locks +1.78% profit] (Setup Score: 59/100, CAUTIOUS). Price $105.8800 comfortably above trailing stop ($105.1458); holding full amount. |
-| **XRP** | **HOLD** | $1.4204 | **47/100** | 61.80 | #19 (-2.67) | `WEAK` | `+0.100` | `NORMAL` | $1.5106 | Active position in profit (+1.07% from $1.4053 entry) (Setup Score: 47/100, WEAK). Price $1.4204 comfortably above trailing stop ($1.2800); holding full amount. |
-| **ADA** | **HOLD** | $0.2213 | **62/100** | 61.05 | #10 (+5.08) | `CAUTIOUS` | `+0.151` | `NORMAL` | $0.2243 | Active position in profit (+3.70% from $0.2134 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $0.2207 locks +3.42% profit] (Setup Score: 62/100, CAUTIOUS). Price $0.2213 comfortably above trailing stop ($0.2207); holding full amount. |
-| **AVAX** | **HOLD** | $7.6500 | **51/100** | 62.48 | #15 (+1.93) | `WEAK` | `+0.296` | `NORMAL` | $7.4901 | Active position in profit (+1.69% from $7.5230 entry) [🔒 PROFIT-LOCK ACTIVE: Stop at $7.6290 locks +1.41% profit] (Setup Score: 51/100, WEAK). Price $7.6500 comfortably above trailing stop ($7.6290); holding full amount. |
-| **DOT** | **HOLD** | $0.9300 | **59/100** | 63.79 | #9 (+5.40) | `CAUTIOUS` | `+0.214` | `NORMAL` | $0.9167 | Active position intact (-0.19% from $0.9318 entry) (Setup Score: 59/100, CAUTIOUS). Price $0.9300 is well above trailing stop ($0.8412); trend structure intact. |
-| **APT** | **HOLD** | $0.6150 | **59/100** | 57.50 | #7 (+6.98) | `CAUTIOUS` | `+0.101` | `NORMAL` | $0.6165 | Active position intact (-0.71% from $0.6194 entry) (Setup Score: 59/100, CAUTIOUS). Price $0.6150 is well above trailing stop ($0.5448); trend structure intact. |
-| **ICP** | **HOLD** | $2.6520 | **66/100** | 64.16 | #5 (+8.60) | `CAUTIOUS` | `+0.125` | `NORMAL` | $2.3629 | Active position intact (-1.06% from $2.6803 entry) (Setup Score: 66/100, CAUTIOUS). Price $2.6520 is well above trailing stop ($2.4452); trend structure intact. |
-| **SUI** | **HOLD** | $0.7978 | **56/100** | 58.35 | #14 (+2.02) | `CAUTIOUS` | `+0.103` | `NORMAL` | $0.8341 | Active position in profit (+0.09% from $0.7971 entry) (Setup Score: 56/100, CAUTIOUS). Price $0.7978 comfortably above trailing stop ($0.7191); holding full amount. |
-| **HNT** | **HOLD** | $0.5910 | **77/100** | 63.19 | #2 (+66.75) | `SOLID` | `+0.082` | `NORMAL` | $0.7328 | Active position intact (-3.68% from $0.6136 entry) (Setup Score: 77/100, SOLID). Price $0.5910 is well above trailing stop ($0.4049); trend structure intact. |
-| **HYPE** | **HOLD** | $86.5350 | **48/100** | 66.10 | #12 (+4.15) | `WEAK` | `+0.235` | `NORMAL` | $76.8182 | Active position in profit (+0.55% from $86.0620 entry) (Setup Score: 48/100, WEAK). Price $86.5350 comfortably above trailing stop ($78.1590); holding full amount. |
-| **ARB** | **HOLD** | $0.1937 | **62/100** | 85.02 | #1 (+111.53) | `CAUTIOUS` | `+0.263` | `NORMAL` | $0.1683 | 1H timeframe is overextended (1H RSI 79.8, price +16.62% vs EMA20). Awaiting intraday pullback. |
-| **UNI** | **HOLD** | $7.0650 | **65/100** | 83.24 | #3 (+42.28) | `CAUTIOUS` | `+0.244` | `NORMAL` | $6.2521 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 65/100 (CAUTIOUS). Eligible for tournament rotation if score >= 80. |
-| **NEAR** | **HOLD** | $2.2140 | **61/100** | 69.43 | #4 (+14.10) | `CAUTIOUS` | `+0.098` | `NORMAL` | $1.9485 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 61/100 (CAUTIOUS). Eligible for tournament rotation if score >= 80. |
-| **BNB** | **HOLD** | $762.8000 | **53/100** | 76.61 | #6 (+7.46) | `WEAK` | `+0.286` | `NORMAL` | $724.2756 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 53/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **LTC** | **HOLD** | $54.2900 | **59/100** | 68.47 | #8 (+6.67) | `CAUTIOUS` | `+0.155` | `NORMAL` | $50.3155 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 59/100 (CAUTIOUS). Eligible for tournament rotation if score >= 80. |
-| **LINK** | **HOLD** | $12.1720 | **54/100** | 68.53 | #11 (+4.90) | `WEAK` | `+0.204` | `NORMAL` | $11.1362 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 54/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **BTC** | **HOLD** | $79892.0100 | **36/100** | 66.95 | #16 (+0.00) | `WEAK` | `+0.284` | `NORMAL` | $76684.7626 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 36/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **ETH** | **HOLD** | $2503.7100 | **48/100** | 65.27 | #17 (-0.01) | `WEAK` | `+0.190` | `NORMAL` | $2334.7179 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 48/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **XLM** | **HOLD** | $0.1865 | **47/100** | 56.52 | #18 (-1.37) | `WEAK` | `+0.034` | `NORMAL` | $0.1992 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 47/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **INJ** | **HOLD** | $5.1000 | **51/100** | 54.21 | #20 (-3.37) | `WEAK` | `+0.084` | `NORMAL` | $5.1994 | 1H timeframe is overextended (1H RSI 74.8, price +2.41% vs EMA20). Awaiting intraday pullback. |
-| **TRX** | **HOLD** | $0.3331 | **40/100** | 49.43 | #21 (-4.61) | `WEAK` | `+0.114` | `NORMAL` | $0.3381 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 40/100 (WEAK). Eligible for tournament rotation if score >= 80. |
-| **POL** | **HOLD** | $0.0991 | **57/100** | 56.27 | #22 (-5.26) | `CAUTIOUS` | `+0.155` | `NORMAL` | $0.1108 | Portfolio position cap reached (10/10 max positions). Candidate setup score: 57/100 (CAUTIOUS). Eligible for tournament rotation if score >= 80. |
+| **XRP** | **HOLD** | $1.4065 | **44/100** | 59.84 | #20 (-2.38) | `WEAK` | `+0.101` | `NORMAL` | $1.5179 | Active position in profit (+0.09% from $1.4053 entry) (Setup Score: 44/100, WEAK). Price $1.4065 comfortably above trailing stop ($1.3350); holding full amount. |
+| **APT** | **HOLD** | $0.6170 | **62/100** | 57.32 | #7 (+8.02) | `CAUTIOUS` | `+0.113` | `NORMAL` | $0.6194 | Active position intact (-0.39% from $0.6194 entry) (Setup Score: 62/100, CAUTIOUS). Price $0.6170 is well above trailing stop ($0.5884); trend structure intact. |
+| **ARB** | **HOLD** | $0.1899 | **64/100** | 84.57 | #1 (+80.95) | `CAUTIOUS` | `+0.202` | `NORMAL` | $0.1713 | Candidate score 64/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **UNI** | **HOLD** | $7.0830 | **62/100** | 79.26 | #2 (+45.11) | `CAUTIOUS` | `+0.272` | `NORMAL` | $6.2742 | Candidate score 62/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **NEAR** | **BUY** | $2.3590 | **71/100** | 70.19 | #3 (+20.40) | `SOLID` | `+0.159` | `NORMAL` | $2.1213 | BULLISH CONFLUENCE ENTRY (SOLID TIER, Score: 71/100): 1D/4H trend aligned, healthy momentum (RSI 70.2), RS Rank #3 (Score: +20.40), Order Book imbalance 0.479. [💵 CMF: +0.1592] Initiating SOLID allocation ($1200.00). |
+| **DOT** | **HOLD** | $0.9860 | **70/100** | 69.99 | #4 (+12.79) | `SOLID` | `+0.217` | `NORMAL` | $0.9064 | RSI(70.0) exceeds 68 threshold without strong trend alignment (ADX 23.1 < 32). |
+| **LINK** | **HOLD** | $13.0120 | **58/100** | 71.87 | #5 (+12.19) | `CAUTIOUS` | `+0.228` | `NORMAL` | $11.7706 | Candidate score 58/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **ICP** | **HOLD** | $2.6950 | **64/100** | 64.83 | #6 (+10.36) | `CAUTIOUS` | `+0.155` | `NORMAL` | $2.4356 | Candidate score 64/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **LTC** | **HOLD** | $54.4200 | **61/100** | 68.18 | #8 (+7.88) | `CAUTIOUS` | `+0.193` | `NORMAL` | $51.0352 | Candidate score 61/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **BNB** | **HOLD** | $748.8500 | **63/100** | 70.53 | #9 (+6.00) | `CAUTIOUS` | `+0.270` | `NORMAL` | $723.1691 | Candidate score 63/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **ADA** | **HOLD** | $0.2215 | **65/100** | 60.59 | #10 (+5.68) | `CAUTIOUS` | `+0.176` | `NORMAL` | $0.2252 | Candidate score 65/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **AVAX** | **HOLD** | $7.8250 | **59/100** | 64.17 | #11 (+4.89) | `CAUTIOUS` | `+0.332` | `NORMAL` | $7.4776 | Candidate score 59/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **HYPE** | **HOLD** | $86.8060 | **57/100** | 65.15 | #12 (+4.35) | `CAUTIOUS` | `+0.258` | `NORMAL` | $78.3259 | Candidate score 57/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **INJ** | **HOLD** | $5.5080 | **65/100** | 61.96 | #13 (+4.20) | `CAUTIOUS` | `+0.108` | `NORMAL` | $5.1900 | 1H timeframe is overextended (1H RSI 82.3 > 72, price +5.78% vs EMA20 > 4.5%). Awaiting intraday pullback. |
+| **SUI** | **HOLD** | $0.7970 | **64/100** | 57.37 | #14 (+4.13) | `CAUTIOUS` | `+0.137` | `NORMAL` | $0.8347 | Candidate score 64/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **SOL** | **HOLD** | $105.3400 | **56/100** | 65.66 | #15 (+2.39) | `CAUTIOUS` | `+0.262` | `NORMAL` | $98.8887 | Candidate score 56/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **XLM** | **HOLD** | $0.1865 | **53/100** | 56.18 | #16 (+0.10) | `WEAK` | `+0.059` | `NORMAL` | $0.1996 | Candidate score 53/100 (WEAK) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **BTC** | **HOLD** | $79933.5800 | **41/100** | 66.07 | #17 (+0.00) | `WEAK` | `+0.292` | `NORMAL` | $76801.0583 | Candidate score 41/100 (WEAK) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **ETH** | **HOLD** | $2504.1000 | **45/100** | 64.75 | #18 (-0.27) | `WEAK` | `+0.189` | `NORMAL` | $2342.1455 | Candidate score 45/100 (WEAK) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **TRX** | **HOLD** | $0.3352 | **42/100** | 52.18 | #19 (-2.16) | `WEAK` | `+0.132` | `NORMAL` | $0.3385 | Candidate score 42/100 (WEAK) below 70-point execution threshold. Awaiting stronger technical alignment. |
+| **POL** | **HOLD** | $0.0970 | **56/100** | 53.76 | #21 (-3.99) | `CAUTIOUS` | `+0.142` | `NORMAL` | $0.1113 | Candidate score 56/100 (CAUTIOUS) below 70-point execution threshold. Awaiting stronger technical alignment. |
 
 ---
 

@@ -27,6 +27,7 @@ Usage:
 import os
 import sys
 import json
+import fcntl
 import argparse
 import datetime
 from typing import Dict, Any, List, Tuple
@@ -45,6 +46,182 @@ from scripts.discord_notifier import send_discord_notification
 MAX_POSITIONS = 10
 PROFIT_LOCK_TRIGGER_PCT = 2.0  # Dynamic profit lock activates once gain reaches +2.0%
 PROFIT_LOCK_RATIO = 0.60       # Ratchets stop to lock in 60% of peak gain (min 1.0% locked)
+MAX_PORTFOLIO_BETA_PCT = 0.60  # Max aggregate BTC beta exposure across portfolio equity
+MAX_PAIRWISE_CORR = 0.75       # Max pairwise correlation threshold for simultaneous entry gating
+
+RSI_CUTOFFS = {
+    "BTC": 78.0,
+    "ETH": 76.0,
+    "default": 68.0
+}
+
+
+class ExecutionLock:
+    """Process-level file lock using fcntl to prevent concurrent executions."""
+    def __init__(self, lockfile_path="/tmp/antitrader_run.lock"):
+        self.lockfile_path = lockfile_path
+        self.fp = None
+
+    def acquire(self) -> bool:
+        try:
+            self.fp = open(self.lockfile_path, "w")
+            fcntl.flock(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            self.fp.write(f"{os.getpid()}\n")
+            self.fp.flush()
+            return True
+        except (IOError, BlockingIOError, PermissionError):
+            return False
+
+    def release(self):
+        if self.fp:
+            try:
+                fcntl.flock(self.fp, fcntl.LOCK_UN)
+                self.fp.close()
+            except Exception:
+                pass
+            self.fp = None
+
+
+def should_veto_on_rsi(symbol: str, rsi14: float, adx14: float, ema12: float, ema26: float, ema50: float, price: float) -> Tuple[bool, str]:
+    """Evaluates whether to veto on overbought RSI or allow riding a strong aligned trend."""
+    cutoff = RSI_CUTOFFS.get(symbol, RSI_CUTOFFS["default"])
+    if rsi14 <= cutoff:
+        return False, ""
+    # Strong trend override: if trend structure is powerful and aligned, ride rather than veto
+    strong_trend = (adx14 >= 32.0) and (price > ema12 > ema26 > ema50)
+    if strong_trend:
+        return False, f" [RSI {rsi14:.1f} > {cutoff:.0f} override: Strong trend aligned (ADX {adx14:.1f})]"
+    return True, f"RSI({rsi14:.1f}) exceeds {cutoff:.0f} threshold without strong trend alignment (ADX {adx14:.1f} < 32)."
+
+
+def get_portfolio_btc_beta_exposure(open_positions: list, ta_data: dict) -> float:
+    """Calculates sum of (current_position_value * btc_correlation) across all open positions."""
+    total_exposure = 0.0
+    for pos in open_positions:
+        sym = pos.get("symbol")
+        ticker = sym if sym.endswith("USDT") else f"{sym}USDT"
+        asset_ta = ta_data.get(ticker, {})
+        corr = float(asset_ta.get("btc_correlation", 1.0 if sym == "BTC" else 0.85))
+        curr_price = float(asset_ta.get("price", pos.get("entry_price", 0.0)))
+        qty = float(pos.get("qty", 0.0))
+        val = (curr_price * qty) if (curr_price > 0 and qty > 0) else float(pos.get("cost_basis", 0.0))
+        total_exposure += val * corr
+    return total_exposure
+
+
+def can_open_new_position(symbol: str, size_usd: float, open_positions: list, ta_data: dict, portfolio_value: float, max_beta_pct: float = 0.60) -> Tuple[bool, str]:
+    """Verifies that adding a new position does not breach the portfolio BTC beta exposure cap."""
+    curr_exposure = get_portfolio_btc_beta_exposure(open_positions, ta_data)
+    ticker = symbol if symbol.endswith("USDT") else f"{symbol}USDT"
+    new_corr = float(ta_data.get(ticker, {}).get("btc_correlation", 1.0 if symbol == "BTC" else 0.85))
+    projected_exposure = curr_exposure + (size_usd * new_corr)
+    max_allowed = portfolio_value * max_beta_pct
+    if projected_exposure > max_allowed:
+        pct = (projected_exposure / portfolio_value) * 100 if portfolio_value > 0 else 0.0
+        return False, f"Portfolio BTC beta cap reached ({pct:.1f}% > {max_beta_pct*100:.0f}% max). Vetoing buy to prevent correlated flush."
+    return True, ""
+
+
+def get_pairwise_correlation(symbol_a: str, symbol_b: str, market_data: dict) -> float:
+    """
+    Returns pairwise correlation between two symbols.
+    Checks market_data["pairwise_correlations"] first.
+    Fallback Proxy: Two coins are 'the same bet' if both have btc_correlation > 0.80
+    and their price action direction lines up (same trend_bias).
+    """
+    if symbol_a == symbol_b:
+        return 1.0
+
+    pair_matrix = market_data.get("pairwise_correlations", {})
+    if f"{symbol_a}_{symbol_b}" in pair_matrix:
+        return float(pair_matrix[f"{symbol_a}_{symbol_b}"])
+    if f"{symbol_b}_{symbol_a}" in pair_matrix:
+        return float(pair_matrix[f"{symbol_b}_{symbol_a}"])
+
+    # Fallback Proxy using asset TA metadata
+    ta_map = market_data.get("technical_analysis", market_data)
+    ta_a = ta_map.get(f"{symbol_a}USDT", ta_map.get(symbol_a, {}))
+    ta_b = ta_map.get(f"{symbol_b}USDT", ta_map.get(symbol_b, {}))
+
+    corr_a = float(ta_a.get("btc_correlation", 1.0 if symbol_a == "BTC" else 0.85))
+    corr_b = float(ta_b.get("btc_correlation", 1.0 if symbol_b == "BTC" else 0.85))
+    bias_a = ta_a.get("trend_bias", "neutral")
+    bias_b = ta_b.get("trend_bias", "neutral")
+
+    # If one is BTC, the correlation is directly the asset's btc_correlation
+    if symbol_a == "BTC":
+        return corr_b
+    if symbol_b == "BTC":
+        return corr_a
+
+    # Highly correlated bet proxy: both high BTC correlation and same trend direction
+    if corr_a > 0.80 and corr_b > 0.80 and bias_a == bias_b:
+        return round(min(corr_a, corr_b), 2)
+
+    # Independent sectors or distinct catalyst behavior
+    return round(corr_a * corr_b * 0.70, 2)
+
+
+def filter_simultaneous_entries(
+    candidates: list,
+    market_data: dict,
+    open_positions: list,
+    max_pairwise_corr: float = 0.75
+) -> Tuple[list, list]:
+    """
+    Greedily accepts high-score candidate BUY signals, filtering out ones too correlated
+    to already-accepted candidates or currently held open positions.
+    Returns: (accepted_candidates, rejected_candidates_with_reason)
+    """
+    accepted = []
+    rejected = []
+
+    sorted_candidates = sorted(
+        candidates,
+        key=lambda x: x.get("setup_score", 0),
+        reverse=True
+    )
+
+    for c in sorted_candidates:
+        sym = c["symbol"]
+        too_correlated = False
+        conflict_sym = None
+        conflict_corr = 0.0
+
+        # 1. Check correlation against already accepted candidates in this batch
+        for a in accepted:
+            corr = get_pairwise_correlation(sym, a["symbol"], market_data)
+            if corr > max_pairwise_corr:
+                too_correlated = True
+                conflict_sym = a["symbol"]
+                conflict_corr = corr
+                break
+
+        # 2. Check correlation against existing open positions
+        if not too_correlated:
+            for p in open_positions:
+                p_sym = p.get("symbol")
+                if not p_sym:
+                    continue
+                corr = get_pairwise_correlation(sym, p_sym, market_data)
+                if corr > max_pairwise_corr:
+                    too_correlated = True
+                    conflict_sym = p_sym
+                    conflict_corr = corr
+                    break
+
+        if too_correlated:
+            c_copy = dict(c)
+            c_copy["action"] = "HOLD"
+            c_copy["reasoning"] = (
+                f"Pairwise Correlation Veto: Ticker {sym} has {conflict_corr:.2f} correlation (> {max_pairwise_corr:.2f}) "
+                f"with active/accepted asset {conflict_sym} (Candidate Score: {c.get('setup_score')}/100). Clustered beta risk vetoed."
+            )
+            rejected.append(c_copy)
+        else:
+            accepted.append(c)
+
+    return accepted, rejected
 
 
 def compute_setup_score(
@@ -136,6 +313,9 @@ def compute_setup_score(
         rs_pts += 6
     rs_pts = max(0, min(20, rs_pts))
 
+    sym = data.get("symbol", "")
+    adx14 = float(data.get("adx14", 20.0))
+
     # 3. Regime-Aware Momentum & Precision (0-15 pts)
     mom_pts = 0
     if regime == "bullish_trend":
@@ -146,7 +326,10 @@ def compute_setup_score(
         elif 40.0 <= rsi14 < 50.0:
             mom_pts += 8
         elif rsi14 > 75.0:
-            mom_pts -= 8
+            if sym in ["BTC", "ETH"] and adx14 >= 30.0 and rsi14 <= 78.0:
+                mom_pts += 14
+            else:
+                mom_pts -= 8
         elif rsi14 < 35.0:
             mom_pts -= 10
     elif regime == "ranging":
@@ -318,6 +501,9 @@ def evaluate_asset_decision(
     adx14 = float(data.get("adx14", 20.0))
     vwap = float(data.get("vwap", price))
     atr14 = float(data.get("atr14", price * 0.03))
+    ema12 = float(data.get("ema12", 0.0))
+    ema26 = float(data.get("ema26", 0.0))
+    ema50 = float(data.get("ema50", 0.0))
     trend_1d = data.get("trend_bias_1d", data.get("trend_bias", "neutral"))
     trend_4h = data.get("trend_bias_4h", "neutral")
     ob_imbalance = float(data.get("ob_imbalance_2pct", 0.50))
@@ -548,10 +734,16 @@ def evaluate_asset_decision(
             action = "HOLD"
             confidence = 0.85
             reasoning = f"Whale flow alert '{whale_alert}' with negative CMF ({cmf20:.4f}). Institutional selling pressure vetoes buy entry."
-        elif rsi_1h > 72.0 or price_vs_ema20_1h > 4.5:
+        elif should_veto_on_rsi(symbol, rsi14, adx14, ema12, ema26, ema50, price)[0]:
+            action = "HOLD"
+            confidence = 0.85
+            reasoning = should_veto_on_rsi(symbol, rsi14, adx14, ema12, ema26, ema50, price)[1]
+        elif rsi_1h > (78.0 if symbol in ["BTC", "ETH"] else 72.0) or price_vs_ema20_1h > (6.0 if symbol in ["BTC", "ETH"] else 4.5):
+            limit_rsi = 78.0 if symbol in ["BTC", "ETH"] else 72.0
+            limit_ema = 6.0 if symbol in ["BTC", "ETH"] else 4.5
             action = "HOLD"
             confidence = 0.80
-            reasoning = f"1H timeframe is overextended (1H RSI {rsi_1h:.1f}, price +{price_vs_ema20_1h:.2f}% vs EMA20). Awaiting intraday pullback."
+            reasoning = f"1H timeframe is overextended (1H RSI {rsi_1h:.1f} > {limit_rsi:.0f}, price +{price_vs_ema20_1h:.2f}% vs EMA20 > {limit_ema:.1f}%). Awaiting intraday pullback."
         elif open_count >= MAX_POSITIONS:
             action = "HOLD"
             confidence = 0.80
@@ -768,7 +960,7 @@ def generate_executive_summary_markdown(
     return "\n".join(lines)
 
 
-def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
+def _run_trader_pass_internal(mode: str = "AUTO", dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
     """
     Main orchestrator for paper-trading pass with Dual-Cadence Architecture:
     - FAST_GUARDIAN (Every 5 mins): Fast risk check for BTC + open positions only.
@@ -979,11 +1171,69 @@ def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = Fa
             macro_flush_reason=macro_flush_reason
         )
         candidate_decisions.append(d)
-        decisions.append(d)
-        if d.get("action") == "BUY":
-            pos_symbols.add(sym)
-            current_open_count += 1
-            sim_cash -= float(d.get("amount_usd", 0.0))
+
+    # Separate candidates that triggered BUY from others
+    raw_buys = [d for d in candidate_decisions if d.get("action") == "BUY"]
+    non_buys = [d for d in candidate_decisions if d.get("action") != "BUY"]
+
+    accepted_buys = []
+    rejected_buys = []
+
+    if raw_buys:
+        # 1. Pairwise Correlation Gate: Greedily accept highest-score setups, vetoing correlated redundant bets (> 0.75)
+        corr_accepted, corr_rejected = filter_simultaneous_entries(
+            candidates=raw_buys,
+            market_data=research_data,
+            open_positions=retained_positions,
+            max_pairwise_corr=MAX_PAIRWISE_CORR
+        )
+        rejected_buys.extend(corr_rejected)
+
+        # 2. Portfolio Beta Cap Check: Verify aggregate BTC beta exposure does not exceed 60% of equity
+        portfolio_equity = float(portfolio.get("portfolio_value", 0.0))
+        if portfolio_equity <= 0:
+            portfolio_equity = float(portfolio.get("cash", 0.0)) + sum(float(p.get("cost_basis", 0.0)) for p in portfolio.get("positions", []))
+
+        for cand in corr_accepted:
+            size_usd = float(cand.get("amount_usd", 250.0))
+            active_sim_positions = retained_positions + [
+                {"symbol": ab["symbol"], "cost_basis": float(ab.get("amount_usd", 250.0)), "qty": float(ab.get("amount_usd", 250.0)) / max(0.0001, float(ab.get("price", 1.0)))}
+                for ab in accepted_buys
+            ]
+            can_open, beta_reason = can_open_new_position(
+                symbol=cand["symbol"],
+                size_usd=size_usd,
+                open_positions=active_sim_positions,
+                ta_data=ta_data,
+                portfolio_value=portfolio_equity,
+                max_beta_pct=MAX_PORTFOLIO_BETA_PCT
+            )
+            if not can_open:
+                cand_copy = dict(cand)
+                cand_copy["action"] = "HOLD"
+                cand_copy["reasoning"] = beta_reason
+                rejected_buys.append(cand_copy)
+            elif current_open_count >= MAX_POSITIONS:
+                cand_copy = dict(cand)
+                cand_copy["action"] = "HOLD"
+                cand_copy["reasoning"] = f"Portfolio position cap reached ({current_open_count}/{MAX_POSITIONS} max positions). Candidate setup score: {cand.get('setup_score')}/100."
+                rejected_buys.append(cand_copy)
+            elif sim_cash < size_usd:
+                cand_copy = dict(cand)
+                cand_copy["action"] = "HOLD"
+                cand_copy["reasoning"] = f"Setup qualified (Score: {cand.get('setup_score')}/100) but insufficient liquid cash buffer (${sim_cash:.2f} vs ${size_usd:.2f})."
+                rejected_buys.append(cand_copy)
+            else:
+                accepted_buys.append(cand)
+                pos_symbols.add(cand["symbol"])
+                current_open_count += 1
+                sim_cash -= size_usd
+
+    # Reassemble all candidate decisions in original order and append to decisions
+    cand_lookup = {d["symbol"]: d for d in (accepted_buys + rejected_buys + non_buys)}
+    for sym, _ in candidate_items:
+        if sym in cand_lookup:
+            decisions.append(cand_lookup[sym])
 
     # -------------------------------------------------------------------------
     # 3B. PORTFOLIO TOURNAMENT (Dynamic Rebalancing)
@@ -1098,6 +1348,28 @@ def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = Fa
         "decisions_count": len(decisions),
         "summary_path": summary_path
     }
+
+
+def run_trader_pass(mode: str = "AUTO", dry_run: bool = False, silent: bool = False) -> Dict[str, Any]:
+    """
+    Thread/Process-safe wrapper around _run_trader_pass_internal.
+    Uses ExecutionLock to prevent concurrent duplicate execution.
+    """
+    lock = ExecutionLock()
+    if not lock.acquire():
+        now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        msg = "Execution skipped: Previous pass is still running (Lock active)."
+        if not silent:
+            print(f"⏳ {msg}")
+        return {
+            "status": "skipped",
+            "reason": msg,
+            "timestamp": now
+        }
+    try:
+        return _run_trader_pass_internal(mode=mode, dry_run=dry_run, silent=silent)
+    finally:
+        lock.release()
 
 
 if __name__ == "__main__":

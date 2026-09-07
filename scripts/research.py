@@ -44,6 +44,32 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_WATCHLIST_PATH = os.path.join(ROOT_DIR, "state", "watchlist.json")
 DEFAULT_RESEARCH_PATH = os.path.join(ROOT_DIR, "state", "latest_research.json")
 
+SYMBOL_REMAP = {
+    "MATIC": "POL",
+    "MATICUSDT": "POLUSDT"
+}
+DEAD_SYMBOL_COOLDOWN_HOURS = 24.0
+_dead_symbols = {}  # symbol -> float timestamp
+
+
+def resolve_symbol(symbol: str) -> str:
+    """Remaps legacy/rebranded tickers to active tickers (e.g. MATIC -> POL, MATICUSDT -> POLUSDT)."""
+    return SYMBOL_REMAP.get(symbol, symbol)
+
+
+def is_symbol_dead(symbol: str) -> bool:
+    """Checks if a symbol is in the dead-symbol cooldown window."""
+    last_dead = _dead_symbols.get(symbol)
+    if last_dead and (time.time() - last_dead) < (DEAD_SYMBOL_COOLDOWN_HOURS * 3600):
+        return True
+    return False
+
+
+def mark_symbol_dead(symbol: str):
+    """Registers a symbol in the dead-symbol cooldown cache."""
+    _dead_symbols[symbol] = time.time()
+
+
 
 def compute_choppiness_index(df, window=14):
     """
@@ -110,6 +136,10 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
     :param limit: Number of candles (default 100)
     :return: pandas.DataFrame containing open, high, low, close, volume as floats
     """
+    symbol = resolve_symbol(symbol)
+    if is_symbol_dead(symbol):
+        raise RuntimeError(f"Symbol {symbol} is in 24h dead-symbol cooldown. Skipping API calls.")
+
     raw_data = None
 
     # 1. Try Binance Spot API
@@ -168,6 +198,7 @@ def fetch_binance_klines(symbol, interval="1d", limit=100):
             pass
 
     if not raw_data:
+        mark_symbol_dead(symbol)
         raise RuntimeError(f"All global exchange sources (Binance, MEXC, Bybit) failed for {symbol}")
 
     df = pd.DataFrame(raw_data).iloc[:, :6]
@@ -241,6 +272,10 @@ def fetch_orderbook_imbalance(symbol):
     :param symbol: Ticker symbol (e.g. BTCUSDT)
     :return: Float imbalance ratio between 0.0 and 1.0 (> 0.50 = bid dominance/support)
     """
+    symbol = resolve_symbol(symbol)
+    if is_symbol_dead(symbol):
+        return 0.50
+
     endpoints = [
         f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit=100",
         f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}&limit=100",
@@ -325,6 +360,10 @@ def fetch_derivatives_microstructure(symbol):
     :param symbol: Binance symbol (e.g. BTCUSDT)
     :return: Tuple of (oi_change_24h, taker_ratio, funding_rate, funding_alert)
     """
+    symbol = resolve_symbol(symbol)
+    if is_symbol_dead(symbol):
+        return 0.0, 1.0, 0.0001, "NEUTRAL_FUNDING"
+
     oi_change_24h = 0.0
     taker_ratio = 1.0
     funding_rate = 0.0001
@@ -384,6 +423,7 @@ def compute_technical_indicators(name, symbol):
     :param symbol: Binance symbol (e.g. "BTCUSDT")
     :return: Dictionary containing key indicator metrics and trend summary
     """
+    symbol = resolve_symbol(symbol)
     df = fetch_binance_klines(symbol)
 
     # Moving Averages
@@ -550,11 +590,13 @@ def compute_technical_indicators(name, symbol):
     suggested_pos_size = min(1000.0, max(200.0, round(units * close_price, 2)))
 
     short_symbol = symbol.replace("USDT", "")
+    close_returns_30 = df["close"].pct_change().dropna().tail(30).tolist()
 
     return {
         "name": name,
         "symbol": short_symbol,
         "ticker": symbol,
+        "close_returns_30": close_returns_30,
         "price": round(close_price, 4),
         "rsi14": round(rsi_val, 2),
         "rsi_4h": rsi_4h,
@@ -679,6 +721,36 @@ def run_research(watchlist_path=None, output_path=None):
         if ticker in ta_results:
             ta_results[ticker]["rs_rank"] = rank
 
+    # 1. Calculate 30-day Rolling BTC Correlation for each asset
+    btc_returns = pd.Series(btc_ta.get("close_returns_30", []))
+    for ticker, data in ta_results.items():
+        if ticker == "BTCUSDT":
+            data["btc_correlation"] = 1.0
+            continue
+        asset_returns = pd.Series(data.get("close_returns_30", []))
+        if len(asset_returns) >= 10 and len(btc_returns) >= 10:
+            corr_val = float(asset_returns.corr(btc_returns))
+            data["btc_correlation"] = round(corr_val, 2) if not np.isnan(corr_val) else 0.85
+        else:
+            data["btc_correlation"] = 0.85
+
+    # 2. Calculate Pairwise Correlation Matrix across all analyzed assets
+    pairwise_corrs = {}
+    valid_tickers = [t for t, d in ta_results.items() if len(d.get("close_returns_30", [])) >= 10]
+    for i in range(len(valid_tickers)):
+        t1 = valid_tickers[i]
+        s1 = t1.replace("USDT", "")
+        r1 = pd.Series(ta_results[t1]["close_returns_30"])
+        for j in range(i + 1, len(valid_tickers)):
+            t2 = valid_tickers[j]
+            s2 = t2.replace("USDT", "")
+            r2 = pd.Series(ta_results[t2]["close_returns_30"])
+            p_corr = float(r1.corr(r2))
+            if not np.isnan(p_corr):
+                val = round(p_corr, 2)
+                pairwise_corrs[f"{s1}_{s2}"] = val
+                pairwise_corrs[f"{s2}_{s1}"] = val
+
     market_ctx = fetch_global_market_context()
 
     # Determine Market Regime & BTC Macro Flush Circuit Breaker
@@ -719,7 +791,8 @@ def run_research(watchlist_path=None, output_path=None):
 
     results = {
         "market_context": market_ctx,
-        "technical_analysis": ta_results
+        "technical_analysis": ta_results,
+        "pairwise_correlations": pairwise_corrs
     }
 
     if target_output:
@@ -830,6 +903,7 @@ def run_fast_risk_research(open_symbols=None, output_path=None):
                     merged_ta = cached_data.get("technical_analysis", {})
                     merged_ta.update(ta_results)
                     results["technical_analysis"] = merged_ta
+                    results["pairwise_correlations"] = cached_data.get("pairwise_correlations", {})
             except Exception:
                 pass
         with open(target_output, "w") as f:

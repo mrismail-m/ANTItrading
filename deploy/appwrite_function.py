@@ -60,6 +60,18 @@ def main(context: Any) -> Any:
         if hasattr(context, "log"):
             context.log(f"🧠 Executing autonomous trading pass (Requested Mode: {mode})...")
         result = run_trader_pass(mode=mode, dry_run=False, silent=True)
+        if result.get("status") == "skipped":
+            skip_msg = f"⏳ Pass skipped: {result.get('reason', 'Lock active')}"
+            if hasattr(context, "log"):
+                context.log(skip_msg)
+            if hasattr(context, "res") and hasattr(context.res, "json"):
+                return context.res.json({
+                    "status": "skipped",
+                    "timestamp": now,
+                    "message": skip_msg
+                })
+            return {"status": "skipped", "message": skip_msg}
+
         actual_mode = result.get("mode", "UNKNOWN")
         executed_count = result.get("executed_count", 0)
 

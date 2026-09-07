@@ -675,3 +675,4 @@ timestamp,symbol,action,price,rsi14,trend_bias,divergence,news_sentiment,event_r
 2026-09-06T04:52:08.903408+00:00,INJ,HOLD,5.1000,54.21,bullish,none,bullish,none,"1H timeframe is overextended (1H RSI 74.8, price +2.41% vs EMA20). Awaiting intraday pullback.",0.80
 2026-09-06T04:52:08.903408+00:00,TRX,HOLD,0.3331,49.43,neutral,none,cautious_bullish,none,Portfolio position cap reached (10/10 max positions). Candidate setup score: 40/100 (WEAK). Eligible for tournament rotation if score >= 80.,0.80
 2026-09-06T04:52:08.903408+00:00,POL,HOLD,0.0991,56.27,bullish,none,cautious_bullish,none,Portfolio position cap reached (10/10 max positions). Candidate setup score: 57/100 (CAUTIOUS). Eligible for tournament rotation if score >= 80.,0.80
+2026-09-07T00:00:00Z,ADA,SELL,0.6000,,,,,,,

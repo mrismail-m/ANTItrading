@@ -2642,13 +2642,48 @@
       "timestamp": "2026-09-07T01:25:46.354768+00:00",
       "portfolio_value": 10349.1,
       "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:30:58.974473+00:00",
+      "portfolio_value": 10352.44,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:35:46.233193+00:00",
+      "portfolio_value": 10353.46,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:40:46.341386+00:00",
+      "portfolio_value": 10350.11,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:45:46.354539+00:00",
+      "portfolio_value": 10346.7,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:50:46.228184+00:00",
+      "portfolio_value": 10346.93,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T01:55:46.373586+00:00",
+      "portfolio_value": 10348.85,
+      "benchmark_value": 9802.0
+    },
+    {
+      "timestamp": "2026-09-07T00:00:00Z",
+      "portfolio_value": 10352.59,
+      "benchmark_value": 9802.0
     }
   ],
   "metrics": {
-    "sharpe_ratio": 5.56,
-    "sortino_ratio": 8.5,
+    "sharpe_ratio": 5.66,
+    "sortino_ratio": 8.65,
     "max_drawdown_pct": 17.06,
-    "calmar_ratio": 0.2,
+    "calmar_ratio": 0.21,
     "benchmark_return_pct": -1.98
   },
   "total_fees_paid": 26.1456
